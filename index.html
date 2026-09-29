@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="description" content="free rooms from KP Unfiltered. a man telling women what men won't admit.">
 <meta property="og:title" content="The Reading Room · KP Unfiltered">
-<meta property="og:description" content="the first 72 hours of no contact, hour by hour. free.">
+<meta property="og:description" content="four free rooms: the first 72 hours, the available man filter, the pattern map and the 2am mind.">
 <meta property="og:url" content="https://kpreadingroom.com/">
 <meta name="theme-color" content="#15101a">
 </head>
@@ -370,6 +370,201 @@ p{margin:0}
   .sec{margin-top:70px}
   .mast .pass-pill .lbl{display:none}
 }
+
+/* ============ ROOMS 02–04 (shared) ============ */
+main[data-view]{--rc:var(--rose)}
+#v-dating{--rc:var(--sage)} #v-done{--rc:var(--slate)} #v-clarity{--rc:var(--amber)}
+.room-hero h1 span{color:var(--rc)}
+.kw.rc{background:color-mix(in srgb,var(--rc) 16%,transparent);color:var(--rc)}
+.btn-room{background:var(--rc);color:#1a1216}
+.btn-room:hover{filter:brightness(1.08)}
+.rc-text{color:var(--rc)}
+.panel{border:1px solid var(--line);border-radius:4px;background:var(--night-2);padding:28px 26px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}
+
+/* home: four rooms */
+.rooms4{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.room4{padding:26px 24px 26px;display:flex;flex-direction:column;gap:10px}
+.room4:nth-child(odd){transform:rotate(-.5deg)} .room4:nth-child(even){transform:rotate(.6deg)}
+.room4 .n{font-family:var(--display);font-size:20px;letter-spacing:.1em;color:var(--paper-dim)}
+.room4 h3{font-family:var(--display);font-size:clamp(38px,5vw,52px);line-height:.9;color:var(--paper-ink)}
+.room4 h3 span{color:var(--c)}
+.room4 .for{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--paper-dim)}
+.room4 ul{list-style:none;margin:4px 0 6px;padding:0;display:flex;flex-direction:column;gap:5px}
+.room4 li{font-size:14.5px;display:grid;grid-template-columns:16px 1fr;gap:6px}
+.room4 li::before{content:"+";font-weight:800;color:var(--c)}
+.room4 .btn{align-self:flex-start;background:var(--paper-ink);color:var(--paper)}
+
+/* rooms nav */
+.roomsnav{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.rn-card{border:1px solid var(--line);border-radius:4px;padding:18px 16px;text-decoration:none;display:flex;flex-direction:column;gap:4px;background:var(--night-2);transition:border-color .15s}
+.rn-card:hover{border-color:var(--c)}
+.rn-card b{font-family:var(--display);font-size:28px;line-height:.95;letter-spacing:.02em;color:var(--c)}
+.rn-card span{font-size:13.5px;color:var(--dim)}
+.rn-card i{font-style:normal;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+
+/* quiz */
+.quiz{max-width:720px}
+.q-prog{display:flex;gap:6px;margin-bottom:18px}
+.q-prog i{flex:1;height:4px;border-radius:4px;background:var(--night-3)}
+.q-prog i.on{background:var(--rc)}
+.q-n{font-family:var(--display);font-size:20px;letter-spacing:.1em;color:var(--faint)}
+.q-q{font-family:var(--serif);font-size:clamp(24px,3.4vw,32px);font-weight:600;line-height:1.2;margin:6px 0 18px}
+.q-opts{display:flex;flex-direction:column;gap:10px}
+.q-opt{border:1px solid var(--line);background:var(--night-2);border-radius:4px;padding:15px 16px;text-align:left;cursor:pointer;font-size:15.5px;line-height:1.4;font-weight:500;transition:border-color .15s,background .15s}
+.q-opt:hover{border-color:var(--rc)}
+.q-opt[aria-pressed="true"]{border-color:var(--rc);background:color-mix(in srgb,var(--rc) 12%,transparent)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:10px}
+.result{padding:34px 30px 34px;box-shadow:0 26px 60px rgba(0,0,0,.45)}
+.result .display{font-size:clamp(58px,10vw,110px);color:var(--paper-ink)}
+.result .tag{font-family:var(--serif);font-style:italic;font-size:clamp(19px,2.4vw,23px);line-height:1.4;margin-top:10px;max-width:40ch}
+.result .parts{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:26px}
+.result .parts h4{margin:0 0 6px;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--wine)}
+.result .parts p{font-size:15px;line-height:1.55}
+.result .avail{margin-top:22px;background:rgba(42,28,35,.07);border-radius:4px;padding:14px 16px;font-size:15px;line-height:1.55}
+.result .avail b{font-family:var(--serif)}
+.result-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.btn-line{border:1px solid rgba(42,28,35,.3);color:var(--paper-ink);background:transparent}
+
+/* scanner */
+.scan{display:grid;grid-template-columns:1.2fr .8fr;gap:22px;align-items:start}
+.scan-list{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.scan-item{display:grid;grid-template-columns:24px 1fr;gap:10px;align-items:start;padding:12px 13px;border:1px solid var(--line-soft);border-radius:4px;background:var(--night-2);cursor:pointer;font-size:14.5px;line-height:1.35}
+.scan-item input{appearance:none;-webkit-appearance:none;width:19px;height:19px;border:1.5px solid var(--dim);border-radius:50%;margin:1px 0 0;cursor:pointer}
+.scan-item.red input:checked{background:var(--rose);border-color:var(--rose)}
+.scan-item.green input:checked{background:var(--sage);border-color:var(--sage)}
+.scan-h{grid-column:1/-1;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-top:8px}
+.verdict{position:sticky;top:84px;padding:26px 24px}
+.verdict .v-word{font-family:var(--display);font-size:64px;line-height:.9}
+.verdict .v-word.go{color:var(--sage)} .verdict .v-word.watch{color:var(--candle)} .verdict .v-word.walk{color:var(--rose)} .verdict .v-word.wait{color:var(--faint)}
+.verdict p{color:var(--dim);margin-top:10px}
+.meter{height:10px;border-radius:10px;background:linear-gradient(90deg,var(--sage),var(--candle),var(--rose));position:relative;margin-top:18px}
+.meter i{position:absolute;top:-5px;width:4px;height:20px;border-radius:3px;background:var(--text);transition:left .3s ease}
+
+/* places */
+.places{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.place{padding:18px 16px 20px}
+.place .n{font-family:var(--display);font-size:34px;color:var(--paper-dim);line-height:1}
+.place h4{margin:6px 0 6px;font-family:var(--serif);font-size:18px;font-weight:600;line-height:1.2}
+.place p{font-size:13.5px;line-height:1.5}
+.skip{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.skip div{border:1px dashed var(--line);border-radius:4px;padding:14px 16px;font-size:14.5px;color:var(--dim)}
+.skip b{color:var(--rose);font-weight:700}
+.rule4{margin-top:22px;display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center}
+.rule4 .big{font-family:var(--display);font-size:120px;line-height:.8;color:var(--rc)}
+.rule4 h3{font-family:var(--serif);font-size:24px;font-weight:600}
+.rule4 p{color:var(--dim);margin-top:6px;max-width:60ch}
+
+/* pattern map */
+.pmap-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:4px;background:var(--night-2)}
+.pmap{width:100%;border-collapse:collapse;min-width:520px}
+.pmap th,.pmap td{padding:9px 10px;border-bottom:1px solid var(--line-soft);text-align:left;font-size:14.5px}
+.pmap thead th{position:sticky;top:0;background:var(--night-3);font-size:12px}
+.pmap .ex{width:78px;text-align:center}
+.pmap .ex input{width:64px;text-align:center;background:var(--night);border:1px solid var(--line);color:var(--text);border-radius:6px;padding:6px 4px;font:inherit;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.pmap .grp td{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);background:var(--night);padding-top:14px}
+.pmap td.c{text-align:center}
+.dot{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--line);background:transparent;cursor:pointer;display:inline-block;vertical-align:middle}
+.dot[aria-pressed="true"]{background:var(--rc);border-color:var(--rc)}
+.pmap tr.rep td:first-child{color:var(--rc);font-weight:700}
+.pmap tr.rep{background:color-mix(in srgb,var(--rc) 9%,transparent)}
+.pmap-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;margin-top:14px}
+.safety-in{margin-top:16px;font-size:13.5px;color:var(--paper-dim);border-top:1px solid rgba(42,28,35,.15);padding-top:12px}
+
+/* jobs */
+.jobs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.job{border:1px solid var(--line);border-radius:4px;background:var(--night-2);padding:14px;text-align:left;cursor:pointer;font-size:15px;font-weight:600;line-height:1.3}
+.job small{display:block;font-weight:400;color:var(--faint);font-size:12.5px;margin-top:3px}
+.job[aria-pressed="true"]{border-color:var(--rc);background:color-mix(in srgb,var(--rc) 12%,transparent)}
+.jobs-out{margin-top:18px;display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center}
+.jobs-out .big{font-family:var(--display);font-size:96px;line-height:.8;color:var(--rc);font-variant-numeric:tabular-nums}
+.jobs-out p{font-family:var(--serif);font-size:20px;line-height:1.45;max-width:46ch}
+
+/* standards */
+.std{display:grid;grid-template-columns:1fr .9fr;gap:24px;align-items:start}
+.std-lines{display:flex;flex-direction:column;gap:10px}
+.std-lines label{display:grid;grid-template-columns:28px 1fr;gap:8px;align-items:center;font-family:var(--display);font-size:24px;color:var(--rc)}
+.std-lines input{width:100%;background:var(--night);border:1px solid var(--line);color:var(--text);border-radius:6px;padding:11px 12px;font-family:var(--hand);font-size:23px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{border:1px dashed var(--line);border-radius:30px;padding:6px 12px;font-size:13px;color:var(--dim);background:none;cursor:pointer}
+.chip:hover{border-color:var(--rc);color:var(--text)}
+.std-prev{padding:28px 24px 30px;min-height:360px}
+.std-prev .eyebrow{color:var(--paper-dim)}
+.std-prev h3{font-family:var(--display);font-size:48px;line-height:.9;color:var(--paper-ink);margin:8px 0 14px}
+.std-prev ol{margin:0;padding-left:26px;display:flex;flex-direction:column;gap:6px}
+.std-prev li{font-family:var(--hand);font-size:26px;line-height:1.15;color:var(--paper-ink)}
+.std-prev li::marker{font-family:var(--display);color:var(--wine)}
+.std-prev .sig{font-family:var(--hand);font-size:28px;color:var(--wine);text-align:right;margin-top:16px}
+
+/* clarity: spiral log */
+.log{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}
+.log-form{display:flex;flex-direction:column;gap:14px}
+.log-form h4{margin:0 0 7px;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+.pick{display:flex;flex-wrap:wrap;gap:7px}
+.pick button{border:1px solid var(--line);background:var(--night);border-radius:30px;padding:7px 12px;font-size:13.5px;cursor:pointer;color:var(--dim)}
+.pick button[aria-pressed="true"]{border-color:var(--rc);color:var(--text);background:color-mix(in srgb,var(--rc) 14%,transparent)}
+.hourrow{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--dim)}
+.hourrow select{background:var(--night);border:1px solid var(--line);color:var(--text);border-radius:6px;padding:7px 9px;font:inherit}
+.chart{padding:22px 20px 18px}
+.bars{display:grid;grid-template-columns:repeat(24,1fr);gap:3px;align-items:end;height:150px;margin-top:14px;border-bottom:1px solid var(--line)}
+.bars i{display:block;background:color-mix(in srgb,var(--rc) 45%,transparent);border-radius:3px 3px 0 0;min-height:2px}
+.bars i.pk{background:var(--rc)}
+.bars-x{display:grid;grid-template-columns:repeat(4,1fr);font-size:11.5px;color:var(--faint);margin-top:6px;font-variant-numeric:tabular-nums}
+.chart .ex-tag{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);border:1px solid var(--line);border-radius:30px;padding:3px 8px}
+.insight{font-family:var(--serif);font-size:19px;line-height:1.45;margin-top:14px}
+.insight em{color:var(--rc);font-style:normal}
+
+/* clarity: letter */
+.letter{display:grid;grid-template-columns:.9fr 1.1fr;gap:24px;align-items:start}
+.l-step h3{font-family:var(--serif);font-size:24px;font-weight:600;margin:6px 0 12px;line-height:1.2}
+.l-step textarea{width:100%;min-height:150px;background:var(--night);border:1px solid var(--line);color:var(--text);border-radius:6px;padding:12px;font-family:var(--hand);font-size:24px;line-height:1.3;resize:vertical}
+.l-paper{padding:30px 28px 32px;min-height:320px;transition:opacity 1.2s ease,transform 1.2s ease,filter 1.2s ease}
+.l-paper p{font-family:var(--hand);font-size:25px;line-height:1.3;white-space:pre-wrap;margin-bottom:12px;color:var(--paper-ink)}
+.l-paper.burn{opacity:0;transform:translateY(-30px) scale(.96);filter:blur(4px) sepia(1)}
+.l-paper .empty{font-family:var(--serif);font-style:italic;color:var(--paper-dim);font-size:18px}
+.sealed-list{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+
+/* bridge (paid) */
+.bridge{padding:38px 34px 40px;box-shadow:0 30px 70px rgba(0,0,0,.5)}
+.bridge .display{font-size:clamp(46px,8vw,92px);color:var(--paper-ink)}
+.bridge .display span{color:var(--wine)}
+.bridge .lede2{font-family:var(--serif);font-size:clamp(18px,2.2vw,21px);line-height:1.5;max-width:52ch;margin-top:14px}
+.bridge .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px;align-items:center}
+
+/* capture + image modals */
+.cap-in{max-width:480px;margin:0 auto;display:flex;flex-direction:column;gap:16px;min-height:100%;justify-content:center}
+.cap-card{padding:30px 26px 28px}
+.cap-card h3{font-family:var(--serif);font-size:26px;font-weight:600;line-height:1.2}
+.cap-card p{margin-top:6px;font-size:15px}
+.cap-card .startf input,.cap-card .startf select{background:#fbf6ee;color:var(--paper-ink);border-color:rgba(42,28,35,.25)}
+.cap-card .startf input::placeholder{color:#8d7a82}
+.cap-card .startf .err{color:var(--wine)}
+.cap-card .startf .fine{color:var(--paper-dim)}
+.cap-card .linkish{color:var(--paper-dim)}
+.img-in{max-width:420px;margin:0 auto;display:flex;flex-direction:column;gap:14px;align-items:center;text-align:center}
+.img-in img{width:100%;max-width:340px;border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,.6)}
+.img-in p{color:var(--dim);font-size:14px}
+
+@media (max-width:860px){
+  .two,.scan,.std,.log,.letter{grid-template-columns:1fr}
+  .verdict{position:static}
+  .places{grid-template-columns:1fr 1fr}
+  .result .parts{grid-template-columns:1fr}
+  .jobs{grid-template-columns:1fr 1fr}
+  .roomsnav{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .rooms4{grid-template-columns:1fr}
+  .scan-list{grid-template-columns:1fr}
+  .skip{grid-template-columns:1fr}
+  .rule4{grid-template-columns:1fr;gap:6px}
+  .rule4 .big{font-size:84px}
+  .jobs-out{grid-template-columns:1fr;gap:6px}
+  .jobs-out .big{font-size:72px}
+  .result{padding:28px 20px}
+  .bridge{padding:30px 20px 32px}
+  .panel{padding:22px 18px}
+}
 </style>
 
 <header class="mast">
@@ -404,19 +599,18 @@ p{margin:0}
     <div class="doors" id="doorGrid"></div>
   </section>
 
-  <section class="sec">
+  <section class="sec" id="rooms">
     <div class="sec-h">
-      <p class="eyebrow">open now · room 01</p>
-      <h2>what's inside <em>the first 72 hours</em></h2>
-      <p>four tools for the start of no contact, the part where most women break it.</p>
+      <p class="eyebrow">all four rooms · open now</p>
+      <h2>four rooms. <em>one for wherever you are.</em></h2>
+      <p>each room is a set of tools you use on your own situation. start with the one that sounds like tonight.</p>
     </div>
-    <div class="tools">
-      <div class="tool paper torn"><span class="n">72</span><h3>the clock</h3><p class="muted">start it the minute you go no contact. it tells you which hour you're in and what that hour needs from you.</p></div>
-      <div class="tool paper torn"><span class="n">08</span><h3>decode his move</h3><p class="muted">the like on a 2019 photo, the story view, the "hey stranger". what each one means, from the man doing it.</p></div>
-      <div class="tool paper torn"><span class="n">11:47</span><h3>the button</h3><p class="muted">press it when you're about to text him. sixty seconds, then the truth about how he'd read it.</p></div>
-      <div class="tool paper torn"><span class="n">∞</span><h3>the unsent drawer</h3><p class="muted">write the text here instead. it never sends. you read them all on day 21.</p></div>
+    <div class="rooms4">
+      <div class="room4 paper torn" style="--c:#8a2846"><span class="n">room 01 · still in it</span><h3>the first <span>72 hours</span></h3><p class="for">for the start of no contact, the part where most women break it.</p><ul><li>a clock that knows which hour you're in</li><li>his moves decoded, from the man doing them</li><li>the 11:47 button and the unsent drawer</li></ul><a class="btn" href="#healing">open the room</a></div>
+      <div class="room4 paper torn" style="--c:#3f6b52"><span class="n">room 02 · on the apps</span><h3>the available <span>man filter</span></h3><p class="for">for when you keep meeting the same man with a different name.</p><ul><li>the quiz: which man keeps finding you</li><li>the first-three-dates scanner</li><li>where men actually are, and the 4-visit rule</li></ul><a class="btn" href="#dating">open the room</a></div>
+      <div class="room4 paper torn" style="--c:#3a4a63"><span class="n">room 03 · done repeating it</span><h3>the pattern <span>map</span></h3><p class="for">for when it's the same man in a different jacket, every time.</p><ul><li>your last three, side by side, and what repeats</li><li>every job you took in his life</li><li>a signed standards card for your lock screen</li></ul><a class="btn" href="#done">open the room</a></div>
+      <div class="room4 paper torn" style="--c:#9a5a1c"><span class="n">room 04 · can't stop thinking</span><h3>the 2am <span>mind</span></h3><p class="for">for the thoughts that loop at night, explained from the male side.</p><ul><li>ten loops decoded, and what to say back</li><li>a spiral log that shows when it always hits</li><li>the letter you'll never send</li></ul><a class="btn" href="#clarity">open the room</a></div>
     </div>
-    <div style="margin-top:28px"><a class="btn btn-rose" href="#healing">open the room</a></div>
   </section>
 
   <section class="sec about" id="about">
@@ -594,7 +788,207 @@ p{margin:0}
     </div>
     <p class="safety"><b>if you feel unsafe</b> or you're dealing with abuse, this room isn't the tool. put your safety first and make a plan with someone you trust. in the united states you can call the national domestic violence hotline at 1 800 799 7233 or text START to 88788.</p>
   </section>
+  <section class="sec" style="margin-top:56px"><p class="eyebrow" style="margin-bottom:14px">the other rooms</p><div class="roomsnav" data-nav="healing"></div></section>
 </main>
+
+
+<!-- ======================= DATING ROOM ======================= -->
+<main id="v-dating" class="wrap" data-view hidden>
+  <section class="room-hero">
+    <a class="back" href="#home">← all rooms</a>
+    <p class="eyebrow" style="margin-top:22px">room 02 · <span class="kw rc">DATING</span> · for the woman on the apps</p>
+    <h1 class="display">the available<br><span>man filter</span></h1>
+    <p class="lede">you're not unlucky. you keep meeting the same man with a different name. this room shows you which one, how to spot him by the third date, and where the other kind actually is.</p>
+    <div class="room-meta"><span><b>8</b> questions</span><span><b>5</b> men who keep finding women</span><span><b>15</b> first-date tells</span><span><b>8</b> of his texts decoded</span></div>
+  </section>
+
+  <section class="sec" id="quiz" style="margin-top:56px">
+    <div class="sec-h">
+      <p class="eyebrow">the quiz</p>
+      <h2>which man <em class="rc-text">keeps finding you?</em></h2>
+      <p>eight questions about how it usually goes. answer for the pattern, not the one you're thinking about tonight.</p>
+    </div>
+    <div id="quizBox"></div>
+  </section>
+
+  <section class="sec" id="scanner">
+    <div class="sec-h">
+      <p class="eyebrow">the first-three-dates scanner</p>
+      <h2>tick what he did. <em class="rc-text">get the read.</em></h2>
+      <p>the first three dates tell you almost everything. most women just aren't told what to look at.</p>
+    </div>
+    <div class="scan">
+      <div class="scan-list" id="scanList"></div>
+      <div class="verdict panel" id="verdict" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="sec" id="texts">
+    <div class="sec-h">
+      <p class="eyebrow">his texts, decoded</p>
+      <h2>the talking stage, <em class="rc-text">from his side of the phone.</em></h2>
+      <p>tap the text he sent.</p>
+    </div>
+    <div class="decode">
+      <div class="moves" id="dMoves"></div>
+      <article class="reading paper torn" id="dReading" aria-live="polite"></article>
+    </div>
+  </section>
+
+  <section class="sec" id="places">
+    <div class="sec-h">
+      <p class="eyebrow">where men actually are</p>
+      <h2>five rooms worth walking into. <em class="rc-text">two worth skipping.</em></h2>
+    </div>
+    <div class="places" id="placesList"></div>
+    <div class="skip" id="skipList"></div>
+    <div class="rule4 panel" style="margin-top:18px">
+      <span class="big">4</span>
+      <div><h3>the 4-visit rule</h3><p>a man almost never approaches a stranger. he approaches someone he recognises. same place, same time, four times. by the fourth visit you're not a stranger anymore, and saying hi costs him nothing. then give him a door that's already half open. ask him something small and real, like whether this is the line for the 7pm class.</p></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="bridge paper torn">
+      <p class="eyebrow" style="color:var(--paper-dim)">when you want a real answer</p>
+      <h2 class="display">a quiz reads <span>patterns.</span><br>i read him.</h2>
+      <p class="lede2">send me his texts and your situation. i'll record you a personal voice reading on what he's actually doing and what i'd do in your place. 15 to 20 minutes, in your inbox within 48 hours.</p>
+      <div class="cta"><a class="btn btn-ink" data-link="talk" href="#" target="_blank" rel="noopener">have me read him</a></div>
+    </div>
+  </section>
+
+  <section class="sec" style="margin-top:56px"><p class="eyebrow" style="margin-bottom:14px">the other rooms</p><div class="roomsnav" data-nav="dating"></div></section>
+</main>
+
+<!-- ======================= DONE ROOM ======================= -->
+<main id="v-done" class="wrap" data-view hidden>
+  <section class="room-hero">
+    <a class="back" href="#home">← all rooms</a>
+    <p class="eyebrow" style="margin-top:22px">room 03 · <span class="kw rc">DONE</span> · for the woman done repeating it</p>
+    <h1 class="display">the pattern<br><span>map</span></h1>
+    <p class="lede">why do you keep ending up with the same man in a different jacket? put your last three side by side and watch the pattern draw itself. then write the standards that break it.</p>
+    <div class="room-meta"><span><b>3</b> exes, initials only</span><span><b>16</b> behaviours</span><span><b>4</b> patterns</span><span><b>1</b> lock screen you'll keep</span></div>
+  </section>
+
+  <section class="sec" id="map" style="margin-top:56px">
+    <div class="sec-h">
+      <p class="eyebrow">the pattern map</p>
+      <h2>initials at the top. <em class="rc-text">tap what each one did.</em></h2>
+      <p>one column per man. tap a circle when it's true for him. anything that shows up for two or more of them is your pattern, not bad luck.</p>
+    </div>
+    <div class="pmap-wrap"><table class="pmap" id="pmap"></table></div>
+    <div class="pmap-foot"><span style="color:var(--dim);font-size:14px" id="pmapCount">tap at least two men to see what repeats.</span><button class="btn btn-room" type="button" id="pmapGo">show me my pattern</button></div>
+    <div id="patternOut" style="margin-top:22px"></div>
+  </section>
+
+  <section class="sec" id="jobs">
+    <div class="sec-h">
+      <p class="eyebrow">the jobs you took</p>
+      <h2>every job you did <em class="rc-text">in his life.</em></h2>
+      <p>tap every one you did for the last man. be honest. nobody sees this but you.</p>
+    </div>
+    <div class="jobs" id="jobsGrid"></div>
+    <div class="jobs-out"><span class="big" id="jobsN">0</span><p id="jobsP">tap the jobs you held. the number is the point.</p></div>
+  </section>
+
+  <section class="sec" id="standards">
+    <div class="sec-h">
+      <p class="eyebrow">the standards card</p>
+      <h2>five lines. <em class="rc-text">signed. on your lock screen.</em></h2>
+      <p>write the five things you won't negotiate next time. tap a suggestion if you're stuck. then sign it and save it as your lock screen, so you see it every time you reach for your phone.</p>
+    </div>
+    <div class="std">
+      <div>
+        <div class="std-lines" id="stdLines"></div>
+        <div class="chips" id="stdChips"></div>
+        <div class="startf" style="margin-top:16px;max-width:none"><input id="stdSig" placeholder="sign it with your first name" aria-label="your signature"></div>
+        <div class="clock-actions" style="margin-top:14px"><button class="btn btn-room" type="button" id="stdMake">make my lock screen</button></div>
+      </div>
+      <div class="std-prev paper torn" id="stdPrev"></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="bridge paper torn">
+      <p class="eyebrow" style="color:var(--paper-dim)">the next page</p>
+      <h2 class="display">the map shows the <span>loop.</span><br>this breaks it.</h2>
+      <p class="lede2">high value women is my science-backed program for the woman who's done choosing the same man in a different jacket. the pattern map shows you what repeats. the program is where you become the woman it can't find.</p>
+      <div class="cta"><a class="btn btn-ink" data-link="hvw" href="#" target="_blank" rel="noopener">get high value women</a></div>
+    </div>
+  </section>
+
+  <section class="sec" style="margin-top:56px"><p class="eyebrow" style="margin-bottom:14px">the other rooms</p><div class="roomsnav" data-nav="done"></div></section>
+</main>
+
+<!-- ======================= CLARITY ROOM ======================= -->
+<main id="v-clarity" class="wrap" data-view hidden>
+  <section class="room-hero">
+    <a class="back" href="#home">← all rooms</a>
+    <p class="eyebrow" style="margin-top:22px">room 04 · <span class="kw rc">CLARITY</span> · for the woman who can't stop thinking</p>
+    <h1 class="display">the 2am<br><span>mind</span></h1>
+    <p class="lede">a man explaining the inside of your own head back to you. the thoughts that loop at 2am, what's actually true inside them, and the letter you'll never send.</p>
+    <div class="room-meta"><span><b>10</b> loops decoded</span><span><b>24</b>-hour spiral map</span><span><b>6</b> prompts, one letter</span><span>your words stay on <b>your</b> phone</span></div>
+  </section>
+
+  <section class="sec" id="loops" style="margin-top:56px">
+    <div class="sec-h">
+      <p class="eyebrow">the loop decoder</p>
+      <h2>the thought on repeat. <em class="rc-text">the lie inside it.</em></h2>
+      <p>tap the one that's loudest tonight.</p>
+    </div>
+    <div class="decode">
+      <div class="moves" id="cMoves"></div>
+      <article class="reading paper torn" id="cReading" aria-live="polite"></article>
+    </div>
+  </section>
+
+  <section class="sec" id="spiral">
+    <div class="sec-h">
+      <p class="eyebrow">the spiral log</p>
+      <h2>log it when it hits. <em class="rc-text">see when it always hits.</em></h2>
+      <p>every time your mind starts running, log it here. after a few, you'll see your spirals have a schedule and a trigger. once you can see them, you can get ahead of them.</p>
+    </div>
+    <div class="log">
+      <div class="panel log-form" id="logForm"></div>
+      <div class="panel chart" id="logChart"></div>
+    </div>
+  </section>
+
+  <section class="sec" id="letter">
+    <div class="sec-h">
+      <p class="eyebrow">the letter you won't send</p>
+      <h2>six prompts. <em class="rc-text">one letter. nobody reads it.</em></h2>
+      <p>closure is a thing you write, not a thing he gives you. answer the prompts, read it back once, then seal it or burn it. it never leaves this phone.</p>
+    </div>
+    <div class="letter">
+      <div class="panel l-step" id="lStep"></div>
+      <div>
+        <div class="l-paper paper torn" id="lPaper"></div>
+        <div class="sealed-list" id="lSealed"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="bridge paper torn">
+      <p class="eyebrow" style="color:var(--paper-dim)">some loops need a real answer</p>
+      <h2 class="display">send me the <span>thought</span><br>that won't let go.</h2>
+      <p class="lede2">tell me the loop and the story behind it. i'll record you a personal voice reading on what's happening in your head and in his. 15 to 20 minutes, in your inbox within 48 hours.</p>
+      <div class="cta"><a class="btn btn-ink" data-link="talk" href="#" target="_blank" rel="noopener">talk with me</a><a class="btn btn-line" data-link="substack" href="#" target="_blank" rel="noopener">or read my tuesday letters, free</a></div>
+    </div>
+  </section>
+
+  <section class="sec" style="margin-top:56px"><p class="eyebrow" style="margin-bottom:14px">the other rooms</p><div class="roomsnav" data-nav="clarity"></div></section>
+</main>
+
+<!-- capture modal (rooms 02–04) -->
+<div class="overlay" id="cap" hidden role="dialog" aria-modal="true" aria-label="save your result">
+  <div class="cap-in"><div class="cap-card paper torn" id="capCard"></div></div>
+</div>
+<!-- image modal (result card + lock screen) -->
+<div class="overlay" id="imgov" hidden role="dialog" aria-modal="true" aria-label="your image">
+  <div class="img-in" id="imgIn"></div>
+</div>
 
 <div class="wrap">
   <footer class="foot">
@@ -619,8 +1013,10 @@ p{margin:0}
 var CONFIG = {
   api: "https://script.google.com/macros/s/AKfycbyyFkxJ-6jMacOrIE5jZsYveGMcpFOkAFBOXhyjmFrBJ8rtGwXS_sALWDv5w7K01m3T/exec", // Google Apps Script web app URL (ends in /exec). empty = nothing leaves the phone (preview mode).
   room: "healing",
-  detox: "https://stan.store/unfilteredkp",      // Detox From Him product link
-  talk: "https://stan.store/unfilteredkp",       // Talk With Me product link
+  detox: "https://stan.store/unfilteredkp/p/detox-from-him",              // HEALING → Detox From Him
+  talk: "https://stan.store/unfilteredkp/p/clarity-session-jka79riv",     // DATING + 2am → Talk With Me
+  hvw: "https://stan.store/unfilteredkp/p/high-value-women-science-backed", // DONE → High Value Women
+  substack: "https://kpunfiltered.substack.com",
   ig: "https://instagram.com/kpunfilteredkp"
 };
 /* track where she came from: link to  kpreadingroom.com/?src=ig#healing  (ig, tiktok, fb, email, bio) */
@@ -644,7 +1040,7 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
 /* sheet sync. text/plain keeps it a simple request, so no CORS preflight */
 function api(payload){
   if(!CONFIG.api)return Promise.resolve({ok:true,local:true});
-  payload.room=CONFIG.room;
+  payload.room=payload.room||CONFIG.room;
   return fetch(CONFIG.api,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)})
     .then(function(r){return r.json();}).catch(function(){return {ok:false};});
 }
@@ -683,10 +1079,10 @@ document.querySelectorAll(".torn").forEach(tear);
 
 /* ================= content ================= */
 var DOORS = [
-  {id:"pain",c:"var(--rose)",phase:"still in it",quote:"“i know i should stop checking his page.”",room:"the first 72 hours",kw:"HEALING",open:true,more:"the hour-by-hour of the start of no contact. a clock, his moves decoded, and a button for the moment you're about to text him."},
-  {id:"searching",c:"var(--sage)",phase:"on the apps",quote:"“where are the men who actually want something?”",room:"the available man filter",kw:"DATING",open:false,more:"a quiz that tells you which man keeps finding you, a red-flag scanner for the first three dates, and where men actually are."},
-  {id:"rebuilding",c:"var(--slate)",phase:"done repeating it",quote:"“why do i keep ending up with the same man in a different jacket?”",room:"the pattern map",kw:"DONE",open:false,more:"put your last three relationships side by side and watch the pattern draw itself. then write the standards card you'll actually keep."},
-  {id:"inward",c:"var(--amber)",phase:"can't stop thinking",quote:"“it's 2am and i'm replaying it again.”",room:"the 2am mind",kw:"CLARITY",open:false,more:"the loops your mind runs about him, decoded from the male side, and a guided letter you'll never send."}
+  {id:"pain",to:"healing",c:"var(--rose)",phase:"still in it",quote:"“i know i should stop checking his page.”",room:"the first 72 hours",kw:"HEALING",open:true,more:"the hour-by-hour of the start of no contact. a clock, his moves decoded, and a button for the moment you're about to text him."},
+  {id:"searching",to:"dating",c:"var(--sage)",phase:"on the apps",quote:"“where are the men who actually want something?”",room:"the available man filter",kw:"DATING",open:false,more:"a quiz that tells you which man keeps finding you, a red-flag scanner for the first three dates, and where men actually are."},
+  {id:"rebuilding",to:"done",c:"var(--slate)",phase:"done repeating it",quote:"“why do i keep ending up with the same man in a different jacket?”",room:"the pattern map",kw:"DONE",open:false,more:"put your last three relationships side by side and watch the pattern draw itself. then write the standards card you'll actually keep."},
+  {id:"inward",to:"clarity",c:"var(--amber)",phase:"can't stop thinking",quote:"“it's 2am and i'm replaying it again.”",room:"the 2am mind",kw:"CLARITY",open:false,more:"the loops your mind runs about him, decoded from the male side, and a guided letter you'll never send."}
 ];
 
 var BLOCKS = [
@@ -787,29 +1183,44 @@ var CUTS = [
 ];
 
 /* ================= router ================= */
+var VIEWS=["healing","dating","done","clarity"], visitPinged={};
 function route(){
   var h=(location.hash||"").replace("#","");
   if(h==="healing-open")h="healing";
+  if(h==="2am")h="clarity";
   var view;
-  if(h==="healing")view="healing";
+  if(VIEWS.indexOf(h)>=0)view=h;
   else if(h===""||h==="home")view="home";
-  else view=route.cur||(["doors","about"].indexOf(h)>=0?"home":"healing");
+  else{var el=document.getElementById(h),m=el&&el.closest("[data-view]");view=m?m.id.slice(2):(route.cur||"home");}
   route.cur=view;
   document.querySelectorAll("[data-view]").forEach(function(v){v.hidden=(v.id!=="v-"+view);});
-  if(view==="healing"){if(!S.visited.healing){S.visited.healing=true;save();}renderHealing();}
+  if(view!=="home"&&!S.visited[view]){S.visited[view]=true;save();}
+  if(view==="healing")renderHealing();
+  else if(view==="dating")renderDating();
+  else if(view==="done")renderDone();
+  else if(view==="clarity")renderClarity();
   else renderHome();
+  if(view!=="home"&&view!=="healing"&&R(view).started&&S.email&&!visitPinged[view]){visitPinged[view]=1;trackRoom(view,"visit");}
   renderPass();
-  if(h==="home"||h==="healing"||h==="")window.scrollTo(0,0);
+  if(VIEWS.indexOf(h)>=0||h==="home"||h==="")window.scrollTo(0,0);
   else{var t=$(h);if(t)t.scrollIntoView();}
 }
 window.addEventListener("hashchange",route);
 
 /* ================= passport ================= */
-function stampsEarned(){var n=0;if(S.start)n=1;return n;}
+function stampState(){
+  var d=(S.rooms&&S.rooms.dating)||{},n=(S.rooms&&S.rooms.done)||{},c=(S.rooms&&S.rooms.clarity)||{};
+  return [
+    {on:!!S.start,label:S.done72?"72 hours done":"72 hours started",name:"the first 72 hours"},
+    {on:!!d.result,label:"filter done",name:"the available man filter"},
+    {on:!!(n.pattern||n.stdMade),label:"pattern found",name:"the pattern map"},
+    {on:!!((c.logs&&c.logs.length)||(c.letters&&c.letters.length)||c.burned),label:"2am, faced",name:"the 2am mind"}
+  ];
+}
+function stampsEarned(){return stampState().filter(function(x){return x.on;}).length;}
 function renderPass(){
-  var earned=stampsEarned();
-  var d="";for(var i=0;i<4;i++)d+='<i class="'+(i<earned?"on":"")+'"></i>';
-  $("passDots").innerHTML=d;
+  var st=stampState(),earned=stampsEarned();
+  $("passDots").innerHTML=st.map(function(x){return '<i class="'+(x.on?"on":"")+'"></i>';}).join("");
   $("passLbl").textContent=earned+" of 4 rooms";
 }
 
@@ -819,12 +1230,11 @@ function renderHome(){
   g.innerHTML=DOORS.map(function(d){
     var sel=S.phase===d.id;
     return '<button class="door" type="button" style="--c:'+d.c+'" data-door="'+d.id+'" aria-pressed="'+sel+'">'+
-      '<span class="door-top"><span class="door-phase">'+esc(d.phase)+'</span><span class="door-status'+(d.open?" open":"")+'">'+(d.open?"open now":"opening soon")+'</span></span>'+
+      '<span class="door-top"><span class="door-phase">'+esc(d.phase)+'</span><span class="door-status open">open now</span></span>'+
       '<span class="door-quote">'+esc(d.quote)+'</span>'+
       '<span class="door-room">your room: <b>'+esc(d.room)+'</b></span>'+
       '<span class="door-more"><span>'+esc(d.more)+'</span>'+
-        (d.open?'<a class="btn btn-rose" href="#healing" data-stop>open the first 72 hours</a>'
-               :'<span>want it the day it opens? comment <span class="kw">'+d.kw+'</span> on any of my videos and it comes straight to your dms.</span>')+
+        ('<a class="btn btn-rose" style="background:'+d.c+'" href="#'+d.to+'" data-stop>open '+esc(d.room)+'</a>')+
       '</span></button>';
   }).join("");
   g.querySelectorAll("[data-door]").forEach(function(b){
@@ -833,11 +1243,10 @@ function renderHome(){
       S.phase=(S.phase===b.dataset.door)?null:b.dataset.door;save();renderHome();
     });
   });
-  var earned=stampsEarned();
-  var names=["the first 72 hours","the available man filter","the pattern map","the 2am mind"];
-  $("stamps").innerHTML=names.map(function(n,i){return '<span class="stamp'+(i<earned?" on":"")+'">'+(i<earned?(S.done72?"72 hours done":"72 hours started"):n)+'</span>';}).join("");
-  $("passH").textContent=earned?"first stamp earned":"one stamp per room you finish";
-  $("passP").textContent=earned?(S.done72?"you finished the first 72 hours. three rooms left.":"your clock is running. finish the 72 hours and this stamp turns permanent."):"start the first 72 hours to earn your first stamp.";
+  var st=stampState(),earned=stampsEarned();
+  $("stamps").innerHTML=st.map(function(x){return '<span class="stamp'+(x.on?" on":"")+'">'+esc(x.on?x.label:x.name)+'</span>';}).join("");
+  $("passH").textContent=earned===0?"one stamp per room you finish":(earned===4?"all four stamps. you did the whole room.":earned+" of 4 stamps earned");
+  $("passP").textContent=earned===0?"use any room to earn your first stamp.":(earned===4?"that's the work most people never do. the back room is where it goes next.":(4-earned)+" room"+(4-earned>1?"s":"")+" left. each one is a different part of the same story.");
 }
 
 /* ================= healing ================= */
@@ -1111,6 +1520,455 @@ $("footIg").href=CONFIG.ig;
 /* live clock tick */
 setInterval(function(){if(!$("v-healing").hidden&&S.start){renderClock();renderStrip();renderUrges();}},60000);
 
+
+/* ======================================================================
+   ROOMS 02–04 · dating · done · clarity
+   ====================================================================== */
+if(!S.rooms)S.rooms={};
+function R(room){if(!S.rooms[room])S.rooms[room]={};return S.rooms[room];}
+function trackRoom(room,ev,fields){
+  if(!S.email||!CONFIG.api)return;
+  api({action:"event",room:room,email:S.email,event:ev,fields:fields||{}});
+}
+var LINKS={talk:CONFIG.talk,hvw:CONFIG.hvw,detox:CONFIG.detox,substack:CONFIG.substack};
+function wireLinks(scope){(scope||document).querySelectorAll("[data-link]").forEach(function(a){a.href=LINKS[a.dataset.link]||"#";});}
+
+/* ---------- shared capture (name / email / country) ---------- */
+var KNOWN=["united states","canada","united kingdom","australia","ireland","new zealand","europe","india"];
+function needCapture(room,title,sub,cb){
+  var r=R(room);
+  if(r.started&&S.email){cb();return;}
+  var card=$("capCard"), isOther=S.country&&KNOWN.indexOf(S.country)<0;
+  card.innerHTML='<p class="eyebrow" style="color:var(--wine)">free · ten seconds</p><h3>'+esc(title)+'</h3><p class="muted">'+esc(sub)+'</p>'+
+    '<form class="startf" id="capF" novalidate style="margin-top:16px;max-width:none">'+
+      '<div class="row"><input id="cfName" autocomplete="given-name" placeholder="your first name" aria-label="your first name" value="'+esc(S.name)+'">'+
+      '<input id="cfEmail" type="email" autocomplete="email" placeholder="your email" aria-label="your email" value="'+esc(S.email)+'"></div>'+
+      '<select id="cfWhere" aria-label="where you\'re reading from"><option value="">where are you reading from?</option>'+
+        KNOWN.map(function(c){return '<option'+(S.country===c?' selected':'')+'>'+c+'</option>';}).join("")+
+        '<option value="__other"'+(isOther?' selected':'')+'>somewhere else, i\'ll type it</option></select>'+
+      '<input id="cfOther" placeholder="type your country" aria-label="type your country" value="'+(isOther?esc(S.country):"")+'"'+(isOther?"":" hidden")+'>'+
+      '<div class="err" id="cfErr"></div>'+
+      '<div class="clock-actions"><button class="btn btn-ink" type="submit">show me</button><button class="linkish" type="button" id="cfClose">not now</button></div>'+
+      '<p class="fine">by continuing you agree to get emails from me. one tap to unsubscribe. anything you write in these rooms stays on your phone.</p>'+
+    '</form>';
+  tear(card);
+  $("cap").hidden=false;document.body.style.overflow="hidden";
+  setTimeout(function(){var f=S.name?$("cfEmail"):$("cfName");if(f&&!S.email)f.focus();},200);
+  $("cfWhere").onchange=function(){var o=$("cfWhere").value==="__other";$("cfOther").hidden=!o;if(o)$("cfOther").focus();};
+  $("cfClose").onclick=closeCap;
+  $("capF").onsubmit=function(e){
+    e.preventDefault();
+    var name=$("cfName").value.trim(), em=$("cfEmail").value.trim().toLowerCase(), w=$("cfWhere").value, err=$("cfErr");
+    var country=(w==="__other")?$("cfOther").value.trim():w;
+    if(!name){err.textContent="put in your first name.";$("cfName").focus();return;}
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){err.textContent="that email doesn't look right. check it and try again.";$("cfEmail").focus();return;}
+    if(!country){err.textContent=(w==="__other")?"type your country.":"pick where you're reading from.";return;}
+    S.name=name.slice(0,80);S.email=em;S.country=country.slice(0,60);r.started=Date.now();save();
+    api({action:"start",room:room,email:S.email,name:S.name,country:S.country,clock_start:r.started,source:S.src});
+    closeCap();renderPass();cb();
+  };
+}
+function closeCap(){$("cap").hidden=true;document.body.style.overflow="";}
+$("cap").addEventListener("click",function(e){if(e.target===$("cap"))closeCap();});
+
+/* ---------- image cards (canvas → image the viewer can save) ---------- */
+function wrapText(ctx,text,maxW){
+  var words=String(text).split(" "),lines=[],line="";
+  words.forEach(function(w){var t=line?line+" "+w:w;if(ctx.measureText(t).width>maxW&&line){lines.push(line);line=w;}else line=t;});
+  if(line)lines.push(line);return lines;
+}
+function tornRect(ctx,x,y,w,h){
+  ctx.beginPath();ctx.moveTo(x,y+Math.random()*10);
+  for(var i=1;i<=30;i++)ctx.lineTo(x+w*i/30,y+Math.random()*12);
+  for(var j=30;j>=0;j--)ctx.lineTo(x+w*j/30,y+h-Math.random()*12);
+  ctx.closePath();
+}
+function drawCard(o){
+  var c=document.createElement("canvas");c.width=1080;c.height=1920;var x=c.getContext("2d");
+  x.fillStyle="#15101a";x.fillRect(0,0,1080,1920);
+  var g=x.createRadialGradient(240,120,20,240,120,900);g.addColorStop(0,o.glow||"rgba(226,117,146,.22)");g.addColorStop(1,"rgba(21,16,26,0)");
+  x.fillStyle=g;x.fillRect(0,0,1080,1920);
+  x.fillStyle="#f0e7dc";x.font="400 64px 'Bebas Neue', Impact, sans-serif";x.fillText("KP",90,150);
+  x.fillStyle="#e27592";x.font="italic 400 40px Fraunces, Georgia, serif";x.fillText("Unfiltered",165,150);
+  x.save();x.translate(540,960);x.rotate(-0.012);x.translate(-540,-960);
+  var top=o.top||300,ph=o.paperH||1240;tornRect(x,80,top,920,ph);x.fillStyle="#efe4d3";x.fill();x.restore();
+  var y=top+120;
+  x.fillStyle="#6e5762";x.font="700 30px Manrope, sans-serif";
+  if(x.letterSpacing!==undefined)x.letterSpacing="6px";
+  x.fillText(String(o.eyebrow||"").toUpperCase(),150,y);
+  if(x.letterSpacing!==undefined)x.letterSpacing="0px";
+  y+=40;
+  x.font="400 "+(o.bigSize||150)+"px 'Bebas Neue', Impact, sans-serif";
+  wrapText(x,String(o.big).toUpperCase(),780).forEach(function(l,i){x.fillStyle=(i===0?"#2a1c23":(o.accent||"#8a2846"));y+=(o.bigSize||150)*0.92;x.fillText(l,150,y);});
+  y+=40;
+  if(o.sub){x.fillStyle="#2a1c23";x.font="italic 400 48px Fraunces, Georgia, serif";wrapText(x,o.sub,780).forEach(function(l){y+=64;x.fillText(l,150,y);});}
+  if(o.lines){y+=30;x.font="600 58px Caveat, 'Bradley Hand', cursive";o.lines.forEach(function(l,i){
+    x.fillStyle="#8a2846";x.font="400 50px 'Bebas Neue', Impact, sans-serif";x.fillText(String(i+1),150,y+66);
+    x.fillStyle="#2a1c23";x.font="600 58px Caveat, 'Bradley Hand', cursive";
+    wrapText(x,l,700).forEach(function(w,k){y+=66;x.fillText(w,210,y);});y+=18;});}
+  if(o.sig){x.fillStyle="#8a2846";x.font="700 64px Caveat, 'Bradley Hand', cursive";x.textAlign="right";x.fillText("· "+o.sig,930,Math.min(Math.max(y+110,top+ph-260),top+ph-70));x.textAlign="left";}
+  x.fillStyle="#b9a9b4";x.font="600 34px Manrope, sans-serif";x.textAlign="center";x.fillText(o.foot||"kpreadingroom.com · @kpunfilteredkp",540,o.footY||1760);x.textAlign="left";
+  return c.toDataURL("image/png");
+}
+function showImage(dataUrl,name,note){
+  $("imgIn").innerHTML='<img src="'+dataUrl+'" alt="your card">'+
+    '<p>'+esc(note||"press and hold the image to save it to your photos.")+'</p>'+
+    '<div class="clock-actions" style="justify-content:center"><a class="btn btn-candle" download="'+esc(name)+'" href="'+dataUrl+'">save image</a><button class="btn btn-ghost" type="button" id="imgClose">close</button></div>';
+  $("imgov").hidden=false;document.body.style.overflow="hidden";
+  $("imgClose").onclick=function(){$("imgov").hidden=true;document.body.style.overflow="";};
+}
+function whenFonts(cb){try{document.fonts.ready.then(cb,cb);}catch(e){cb();}}
+
+/* ---------- rooms nav ---------- */
+var ROOMS_META={
+  healing:{n:"01",name:"the first 72 hours",c:"var(--rose)",kw:"HEALING",for:"still in it"},
+  dating:{n:"02",name:"the available man filter",c:"var(--sage)",kw:"DATING",for:"on the apps"},
+  done:{n:"03",name:"the pattern map",c:"var(--slate)",kw:"DONE",for:"done repeating it"},
+  clarity:{n:"04",name:"the 2am mind",c:"var(--amber)",kw:"CLARITY",for:"can't stop thinking"}
+};
+function renderRoomsNav(){
+  document.querySelectorAll("[data-nav]").forEach(function(box){
+    var cur=box.dataset.nav;
+    box.innerHTML=Object.keys(ROOMS_META).filter(function(k){return k!==cur;}).map(function(k){var m=ROOMS_META[k];
+      return '<a class="rn-card" style="--c:'+m.c+'" href="#'+k+'"><i>room '+m.n+' · '+m.for+'</i><b>'+esc(m.name)+'</b><span>open the room →</span></a>';}).join("");
+  });
+}
+
+/* ======================= DATING ======================= */
+var MEN={
+  rush:{name:"the rush",tag:"he comes in at a hundred miles an hour, then disappears at the same speed.",
+    why:"you're warm and you respond. to a man like this, intensity is the hook, not the relationship. he's chasing the feeling of being wanted fast.",
+    tell:"he talks about your future before he knows your middle name. real interest is curious. the rush is certain.",
+    todo:"slow the tempo on purpose. one date a week for the first month. a real man is fine with that. the rush gets bored and leaves, which is exactly the point."},
+  almost:{name:"the almost",tag:"almost ready, almost yours, almost the one.",
+    why:"you're patient and you see potential. he gets everything a relationship gives him without ever making the decision.",
+    tell:"by the third date he's already explained why now isn't a good time, and you've already explained it back to yourself.",
+    todo:"take him at his word. not ready is an answer, not a phase. give it a date in your own head, not his."},
+  collector:{name:"the collector",tag:"you're one of several, and he likes it that way.",
+    why:"you don't make demands and you don't make it hard. that makes you low cost, and a collector keeps whatever costs him nothing.",
+    tell:"plans are last minute and always at night. you've never met a single one of his friends.",
+    todo:"ask one clear question early. are you seeing other people? the collector hates clarity, so he'll show you who he is."},
+  project:{name:"the project",tag:"he comes with a story and you come with a plan.",
+    why:"you're capable and kind. he feels your competence and quietly hands you the job of fixing his life.",
+    tell:"by the third date you know about his ex, his debt and his dad, and he knows almost nothing about you.",
+    todo:"stop auditioning as his therapist. notice who's asking the questions. if it's only you, it's a job, not a date."},
+  available:{name:"the available one",tag:"he's already finding you. you keep calling him boring.",
+    why:"you're ready for something real, but calm feels unfamiliar when you're used to chasing.",
+    tell:"he confirms plans, texts back and asks about your week. you feel nothing, because nothing is wrong.",
+    todo:"give the calm three dates before you decide. the spark you're used to was usually anxiety. what's left when it's gone is what lasts."}
+};
+var QUIZ=[
+  {q:"how does it usually start?",a:[["he's intense from day one. good morning texts by day three.","rush"],["slow and warm, but he's vague about what this is.","almost"],["fun, but i can tell i'm not the only one he's talking to.","collector"],["he tells me about his hard year pretty early.","project"],["steady. he makes a plan and shows up. i'm not sure i'm into it.","available"]]},
+  {q:"his texting usually looks like",a:[["a flood, then days of silence","rush"],["consistent enough, but never about the future","almost"],["\"wyd\" at 11pm","collector"],["long voice notes about how stressed he is","project"],["boring but reliable. he replies and confirms plans.","available"]]},
+  {q:"the thing you end up saying to your friends",a:[["\"it just moved so fast\"","rush"],["\"he said he's not ready, but it feels real\"","almost"],["\"i don't even know what we are\"","collector"],["\"he's going through a lot right now\"","project"],["\"he's nice, i just don't feel the spark\"","available"]]},
+  {q:"what he says about the future",a:[["trips we'll take, two weeks in","rush"],["\"let's see where it goes\"","almost"],["nothing. it never comes up.","collector"],["\"once i get my life together\"","project"],["he asks what i want and tells me what he wants","available"]]},
+  {q:"how it usually ends",a:[["he pulls back as fast as he came in","rush"],["it fizzles out after months of almost","almost"],["i find out about someone else","collector"],["i'm exhausted from carrying him","project"],["i end it because i'm bored","available"]]},
+  {q:"when he pulls away, you",a:[["try to get the first two weeks back","rush"],["wait, because he said he needs time","almost"],["act chill so i don't lose my spot","collector"],["try harder to help him","project"],["honestly, he doesn't really pull away","available"]]},
+  {q:"what pulls you in first",a:[["the chemistry. it feels like fate.","rush"],["the potential. he's almost exactly what i want.","almost"],["he's hard to get, so it means more","collector"],["being the one he finally opens up to","project"],["he makes me feel calm","available"]]},
+  {q:"the part of dating that drains you most",a:[["the whiplash","rush"],["the waiting","almost"],["the guessing","collector"],["the carrying","project"],["feeling like i'm lowering the bar","available"]]}
+];
+var qi=0;
+function quizResult(ans){
+  var sc={rush:0,almost:0,collector:0,project:0,available:0};
+  ans.forEach(function(k){if(k)sc[k]++;});
+  var order=["rush","almost","collector","project","available"],best=order[0];
+  order.forEach(function(k){if(sc[k]>sc[best])best=k;});
+  return best;
+}
+function renderQuiz(){
+  var r=R("dating"), box=$("quizBox");
+  if(!r.answers)r.answers=[];
+  if(r.result){renderResult();return;}
+  var q=QUIZ[qi], picked=r.answers[qi];
+  box.innerHTML='<div class="quiz"><div class="q-prog">'+QUIZ.map(function(_,i){return '<i class="'+(i<=qi?"on":"")+'"></i>';}).join("")+'</div>'+
+    '<span class="q-n">question '+(qi+1)+' of '+QUIZ.length+'</span><h3 class="q-q">'+esc(q.q)+'</h3>'+
+    '<div class="q-opts">'+q.a.map(function(a,i){return '<button class="q-opt" type="button" data-a="'+i+'" aria-pressed="'+(picked===a[1]&&r["pick"+qi]===i)+'">'+esc(a[0])+'</button>';}).join("")+'</div>'+
+    '<div class="q-nav"><button class="linkish" type="button" id="qBack"'+(qi===0?' hidden':'')+'>← back</button><span></span></div></div>';
+  box.querySelectorAll("[data-a]").forEach(function(b){b.onclick=function(){
+    var i=+b.dataset.a;r.answers[qi]=q.a[i][1];r["pick"+qi]=i;save();
+    if(qi<QUIZ.length-1){qi++;renderQuiz();}
+    else{
+      needCapture("dating","your result is ready.","put in your name and email to see which man keeps finding you. your result saves to your email, so it's here when you come back.",function(){
+        r.result=quizResult(r.answers);save();
+        trackRoom("dating","quiz_result",{result:MEN[r.result].name});
+        renderQuiz();renderPass();$("quiz").scrollIntoView({block:"start"});
+      });
+    }
+  };});
+  var bk=$("qBack");if(bk)bk.onclick=function(){if(qi>0){qi--;renderQuiz();}};
+}
+function renderResult(){
+  var r=R("dating"), m=MEN[r.result], box=$("quizBox");
+  box.innerHTML='<div class="result paper torn"><p class="eyebrow" style="color:var(--paper-dim)">'+(S.name?esc(S.name.split(" ")[0].toLowerCase())+', the':"the")+' man who keeps finding you</p>'+
+    '<h3 class="display">'+esc(m.name)+'</h3><p class="tag">'+esc(m.tag)+'</p>'+
+    '<div class="parts"><div><h4>why he picks you</h4><p>'+esc(m.why)+'</p></div><div><h4>the tell by date three</h4><p>'+esc(m.tell)+'</p></div><div><h4>what you do</h4><p>'+esc(m.todo)+'</p></div></div>'+
+    (r.result!=="available"?'<div class="avail"><b>what the available man looks like to you:</b> he plans the second date on the first one. he texts back like it\'s normal. you won\'t get butterflies. you\'ll feel safe, and it will feel strange at first. that strange feeling is the point.</div>':'')+
+    '<div class="result-actions"><button class="btn btn-ink" type="button" id="qCard">save my result card</button><a class="btn btn-line" href="#scanner">scan your last three dates →</a><button class="linkish" type="button" id="qRedo" style="color:var(--paper-dim)">take it again</button></div></div>';
+  tear(box.querySelector(".torn"));
+  $("qCard").onclick=function(){whenFonts(function(){showImage(drawCard({eyebrow:"the man who keeps finding me",big:m.name,sub:m.tag,glow:"rgba(143,193,160,.25)",accent:"#3f6b52"}),"kp-reading-room-result.png","press and hold to save it. post it to your story and tag @kpunfilteredkp.");});trackRoom("dating","result_card");};
+  $("qRedo").onclick=function(){r.result=null;r.answers=[];qi=0;save();renderQuiz();};
+}
+
+var SCAN=[
+  {t:"checked his phone through dinner",w:1},{t:"brought up his ex more than once",w:2},{t:"was rude to the server",w:3},
+  {t:"pushed to come back to yours on date one or two",w:2},{t:"made plans at 9pm for tonight",w:1},{t:"said \"i've never felt like this\" by date two",w:2},
+  {t:"asked you almost nothing about your life",w:2},{t:"was vague about his job or where he lives",w:2},{t:"joked about his \"crazy\" exes",w:2},
+  {t:"drank a lot and got pushy",w:3},
+  {t:"asked follow-up questions about you",w:-2,g:1},{t:"planned the date and confirmed it",w:-2,g:1},{t:"took a no without sulking",w:-2,g:1},
+  {t:"mentioned his friends by name",w:-1,g:1},{t:"texted after to say he had fun and asked for the next one",w:-2,g:1}
+];
+function renderScan(){
+  var r=R("dating");if(!r.scan)r.scan={};
+  var html='<p class="scan-h">what worried you</p>';
+  SCAN.forEach(function(s,i){
+    if(i===10)html+='<p class="scan-h">what he got right</p>';
+    html+='<label class="scan-item '+(s.g?"green":"red")+'" for="sc'+i+'"><input type="checkbox" id="sc'+i+'" data-s="'+i+'"'+(r.scan[i]?" checked":"")+'><span>'+esc(s.t)+'</span></label>';
+  });
+  $("scanList").innerHTML=html;
+  $("scanList").querySelectorAll("[data-s]").forEach(function(cb){cb.onchange=function(){r.scan[cb.dataset.s]=cb.checked;save();renderVerdict();};});
+  renderVerdict();
+}
+var scanT=null;
+function renderVerdict(){
+  var r=R("dating"),score=0,any=false,heavy=false;
+  SCAN.forEach(function(s,i){if(r.scan[i]){any=true;score+=s.w;if(s.w>=3)heavy=true;}});
+  var v;
+  if(!any)v={k:"wait",w:"tick",p:"tick what happened on your last one to three dates. the read updates as you go."};
+  else if(score>=5||(heavy&&score>=3))v={k:"walk",w:"walk",p:"you already know. the things you ticked don't get better with time, they get normal. leave while it's still easy."};
+  else if(score>=1||heavy)v={k:"watch",w:"watch him",p:"one more date with your eyes open. say one clear thing about what you want and watch what he does with it."};
+  else v={k:"go",w:"keep going",p:"green light, slowly. he's showing up like a man who wants to be chosen. let him keep earning it."};
+  var pos=Math.max(0,Math.min(100,(score+6)/14*100));
+  $("verdict").innerHTML='<p class="eyebrow">the read</p><div class="v-word '+v.k+'">'+v.w+'</div><p>'+esc(v.p)+'</p>'+(any?'<div class="meter" aria-hidden="true"><i style="left:calc('+pos.toFixed(0)+'% - 2px)"></i></div>':'');
+  clearTimeout(scanT);if(any)scanT=setTimeout(function(){trackRoom("dating","scanner",{detail:"scanner: "+v.w});},3000);
+}
+
+var DTEXTS=[
+  {id:"wyd",label:"\"wyd\" at 11pm",hope:"he's thinking about me.",real:"he's checking if you're available tonight, not whether you're interesting. a man who wants to know you asks earlier and asks more.",todo:"reply tomorrow, in daylight, if at all."},
+  {id:"sometime",label:"\"we should hang out sometime\"",hope:"he wants to see me.",real:"sometime is no time. it keeps you warm without committing him to anything. a man who wants to see you names a day.",todo:"say \"sure, what day works?\" and let him fill it in. if he can't, you have your answer."},
+  {id:"haha",label:"\"haha\" and nothing else",hope:"he's just a dry texter.",real:"he's not carrying the conversation. maybe he's busy, maybe he's not that into it. either way, it's information.",todo:"stop carrying it for him. match his energy and see if he picks it back up."},
+  {id:"serious",label:"\"i'm not looking for anything serious\"",hope:"he'll change once he gets to know me.",real:"believe him. that's the most honest he will ever be with you. men say this to be let off the hook later.",todo:"decide if casual is what you want. if it isn't, this is your exit, and it's a clean one."},
+  {id:"different",label:"\"you're different from other girls\"",hope:"he sees something special in me.",real:"it's a line that works because it flatters you and dismisses other women in one go. a man who actually likes you tells you specifically what he likes.",todo:"ask him what he means. a real answer is specific. a line falls apart."},
+  {id:"slow",label:"he replies every six hours, like clockwork",hope:"(he's playing games.)",real:"if it's consistent, he's busy, not playing. men who play games are inconsistent on purpose. steady and slow is still steady.",todo:"judge the consistency and the plans, not the speed."},
+  {id:"bad",label:"\"i'm so bad at texting\"",hope:"that explains it.",real:"he's lowering the bar in advance so you don't hold him to it. men text what we want to text, when we want to.",todo:"let his actions set the bar, not his disclaimer."},
+  {id:"double",label:"he double-texts when you go quiet",hope:"(is that too keen?)",real:"that's interest. a man who's into you doesn't let the thread die. it's one of the clearest signals you'll get.",todo:"don't punish it by pulling back. reward it by being warm."}
+];
+var dMove="wyd";
+function renderDTexts(){
+  $("dMoves").innerHTML=DTEXTS.map(function(m){return '<button class="move" type="button" data-m="'+m.id+'" aria-pressed="'+(m.id===dMove)+'">'+esc(m.label)+'</button>';}).join("");
+  $("dMoves").querySelectorAll("[data-m]").forEach(function(b){b.onclick=function(){dMove=b.dataset.m;renderDTexts();if(window.innerWidth<860)$("dReading").scrollIntoView({behavior:"smooth",block:"start"});};});
+  var m=DTEXTS.filter(function(x){return x.id===dMove;})[0];
+  $("dReading").innerHTML='<p class="eyebrow" style="color:var(--paper-dim)">the reading</p><h3 class="move-name">'+esc(m.label)+'</h3>'+
+    '<div class="rd-part rd-hope"><h4>what you hope it means</h4><p>'+esc(m.hope)+'</p></div>'+
+    '<div class="rd-part rd-real"><h4>what it actually is, from a man</h4><p>'+esc(m.real)+'</p></div>'+
+    '<div class="rd-part rd-do"><h4>what you do</h4><p>'+esc(m.todo)+'</p></div>';
+}
+var PLACES=[
+  ["run clubs","men show up alone and come back every week. you get to be a familiar face before anyone has to be brave."],
+  ["rec leagues and pickup","co-ed kickball, volleyball, pickleball. men are relaxed when they're doing something with their hands."],
+  ["climbing gyms","people talk between climbs. it's social by design, and nobody's performing."],
+  ["a weekly class","cooking, jiu jitsu, a language. the point is the same faces at the same time, every week."],
+  ["your friends' dinners","a lot of real relationships still start through friends. tell yours you're open to being set up. most never ask."]
+];
+function renderPlaces(){
+  $("placesList").innerHTML=PLACES.map(function(p,i){return '<div class="place paper torn"><span class="n">0'+(i+1)+'</span><h4>'+esc(p[0])+'</h4><p class="muted">'+esc(p[1])+'</p></div>';}).join("");
+  $("skipList").innerHTML='<div><b>skip · the bar at midnight.</b> most men there are looking for tonight, not for you.</div><div><b>skip · only the apps.</b> the apps aren\'t the problem. only the apps is.</div>';
+  $("placesList").querySelectorAll(".torn").forEach(tear);
+}
+function renderDating(){renderQuiz();renderScan();renderDTexts();renderPlaces();wireLinks($("v-dating"));}
+
+/* ======================= DONE ======================= */
+var PATTERNS={
+  waiting:{name:"the waiting room",items:["never knew what we were","kept me separate from his friends","went quiet when i needed him","said he wasn't ready"],
+    what:"you keep choosing men who are halfway in. you do the waiting and they do the deciding.",
+    why:"a man who's halfway in can feel when a woman will wait. he doesn't have to decide, so he doesn't. you don't pick bad men. you pick men who never have to choose, because you never make them.",
+    ask:"\"what are you looking for right now?\" then believe the answer the first time."},
+  caretaker:{name:"the caretaker",items:["i managed his life","i paid more than my share","his moods ran the house","i felt like his mom"],
+    what:"you become the most competent person in his life, then the most tired.",
+    why:"men notice capable women fast. some of us are looking for a partner. some are looking for someone to run what we won't. that second kind finds you, because you say yes before he even asks.",
+    ask:"who's asking the questions tonight? if it's only you, you're interviewing for a job."},
+  smaller:{name:"the smaller self",items:["checked my phone or location","made me feel crazy for asking","didn't like my friends","i shrank to avoid a fight"],
+    what:"you get a little quieter in every relationship so it stays calm.",
+    why:"a man who needs control reads a kind woman as a safe place to take it. it isn't that you're weak. it's that you keep the peace by giving up space, and he takes the space.",
+    ask:"\"how are things with your exes?\" contempt for every one of them is a preview."},
+  chase:{name:"the chase",items:["said \"i love you\" fast","moved in or made big plans fast","hot then cold","by month three i was the one chasing"],
+    what:"it starts like a movie and ends with you running after it.",
+    why:"intensity feels like love. for a man like this, the start is the whole point. once you're sure of him he's bored, and you spend the rest of it chasing the first month.",
+    ask:"\"what did you do last weekend?\" a man with a steady life has a boring answer. boring is a good sign."}
+};
+var PKEYS=["waiting","caretaker","smaller","chase"];
+function renderMap(){
+  var r=R("done");if(!r.ex)r.ex=["","",""];if(!r.marks)r.marks={};
+  var h='<thead><tr><th>what he did</th>'+[0,1,2].map(function(i){return '<th class="ex"><input id="ex'+i+'" maxlength="3" placeholder="ex '+(i+1)+'" aria-label="initials of ex '+(i+1)+'" value="'+esc(r.ex[i])+'"></th>';}).join("")+'</tr></thead><tbody>';
+  PKEYS.forEach(function(pk){
+    h+='<tr class="grp"><td colspan="4">'+(r.pattern?esc(PATTERNS[pk].name):"&nbsp;")+'</td></tr>';
+    PATTERNS[pk].items.forEach(function(it,j){
+      var id=pk+j, n=[0,1,2].filter(function(i){return r.marks[id+"_"+i];}).length;
+      h+='<tr class="'+(r.pattern&&n>=2?"rep":"")+'"><td>'+esc(it)+'</td>'+[0,1,2].map(function(i){return '<td class="c"><button class="dot" type="button" data-m="'+id+'_'+i+'" aria-pressed="'+!!r.marks[id+"_"+i]+'" aria-label="'+esc(it)+', ex '+(i+1)+'"></button></td>';}).join("")+'</tr>';
+    });
+  });
+  $("pmap").innerHTML=h+'</tbody>';
+  [0,1,2].forEach(function(i){$("ex"+i).oninput=function(){r.ex[i]=this.value.toUpperCase();save();};});
+  $("pmap").querySelectorAll("[data-m]").forEach(function(b){b.onclick=function(){var k=b.dataset.m;r.marks[k]=!r.marks[k];b.setAttribute("aria-pressed",!!r.marks[k]);save();mapCount();if(r.pattern){r.pattern=null;save();$("patternOut").innerHTML="";renderMap();}};});
+  mapCount();
+  if(r.pattern)renderPattern();
+}
+function menUsed(){var r=R("done");return [0,1,2].filter(function(i){return Object.keys(r.marks).some(function(k){return r.marks[k]&&k.slice(-1)===String(i);});}).length;}
+function mapCount(){var n=menUsed();$("pmapCount").textContent=n<2?"tap for at least two men to see what repeats.":n+" men mapped. ready when you are.";}
+$("pmapGo").addEventListener("click",function(){
+  if(menUsed()<2){toast("map at least two men first");return;}
+  needCapture("done","your pattern is ready.","put in your name and email to see it. your map stays on this phone, only the pattern name saves to your email.",function(){
+    var r=R("done"),sc={};
+    PKEYS.forEach(function(pk){sc[pk]=0;PATTERNS[pk].items.forEach(function(_,j){var n=[0,1,2].filter(function(i){return r.marks[pk+j+"_"+i];}).length;if(n>=2)sc[pk]+=n;});});
+    var best=PKEYS.reduce(function(a,b){return sc[b]>sc[a]?b:a;},PKEYS[0]);
+    r.pattern=sc[best]>0?best:"none";save();
+    trackRoom("done","pattern",{result:r.pattern==="none"?"no repeat":PATTERNS[best].name});
+    renderMap();renderPass();$("patternOut").scrollIntoView({block:"start"});
+  });
+});
+function renderPattern(){
+  var r=R("done"),box=$("patternOut");
+  if(r.pattern==="none"){box.innerHTML='<div class="result paper torn"><p class="eyebrow" style="color:var(--paper-dim)">your map</p><h3 class="display">no repeat yet</h3><p class="tag">nothing shows up for two or more men. either you\'ve already broken the loop, or there\'s a man missing from this map.</p></div>';tear(box.firstChild);return;}
+  var p=PATTERNS[r.pattern];
+  box.innerHTML='<div class="result paper torn"><p class="eyebrow" style="color:var(--paper-dim)">'+(S.name?esc(S.name.split(" ")[0].toLowerCase())+', your':"your")+' pattern</p><h3 class="display">'+esc(p.name)+'</h3><p class="tag">'+esc(p.what)+'</p>'+
+    '<div class="parts"><div><h4>why it keeps happening</h4><p>'+esc(p.why)+'</p></div><div><h4>the rows lit up above</h4><p>those are the things that repeated. they\'re not about one man. they\'re the part of the story you keep agreeing to.</p></div><div><h4>ask this on date one</h4><p>'+esc(p.ask)+'</p></div></div>'+
+    (r.pattern==="smaller"?'<p class="safety-in">if any of this is happening now and you feel unsafe, put your safety first. in the united states the national domestic violence hotline is 1 800 799 7233, or text START to 88788.</p>':'')+
+    '<div class="result-actions"><a class="btn btn-ink" href="#standards">write the standards that break it →</a></div></div>';
+  tear(box.firstChild);
+}
+var JOBS=[["his alarm clock","getting him up and out"],["his calendar","remembering every date"],["his therapist","processing his feelings"],["his cheerleader","hyping him through everything"],["his chef","feeding him"],["his cleaner","picking up after him"],["his translator","smoothing things with his family"],["his bank","covering him when he was short"],["his social life","making every plan"],["his stylist","making him presentable"],["his conscience","reminding him to do the right thing"],["his reason to try","being why he got up"]];
+function renderJobs(){
+  var r=R("done");if(!r.jobs)r.jobs={};
+  $("jobsGrid").innerHTML=JOBS.map(function(j,i){return '<button class="job" type="button" data-j="'+i+'" aria-pressed="'+!!r.jobs[i]+'">'+esc(j[0])+'<small>'+esc(j[1])+'</small></button>';}).join("");
+  $("jobsGrid").querySelectorAll("[data-j]").forEach(function(b){b.onclick=function(){var i=b.dataset.j;r.jobs[i]=!r.jobs[i];save();renderJobs();};});
+  var n=Object.keys(r.jobs).filter(function(k){return r.jobs[k];}).length;
+  $("jobsN").textContent=n;
+  $("jobsP").textContent=n===0?"tap the jobs you held. the number is the point.":(n<4?"you held "+n+" job"+(n>1?"s":"")+" in his life. next time, ask what job he's taking in yours.":"you held "+n+" jobs in his life and none of them had the title partner. next time, ask one question early. what job is he taking in yours?");
+}
+var STD_SUG=["he makes plans. i don't chase them.","consistency over chemistry.","i meet his friends by month two.","i don't manage a grown man.","my calm is not negotiable.","if i have to ask twice, that's the answer.","he asks about my life, not just his."];
+function renderStd(){
+  var r=R("done");if(!r.std)r.std=["","","","",""];
+  $("stdLines").innerHTML=r.std.map(function(v,i){return '<label for="std'+i+'"><span>'+(i+1)+'</span><input id="std'+i+'" maxlength="60" placeholder="i don\'t negotiate on..." value="'+esc(v)+'"></label>';}).join("");
+  $("stdChips").innerHTML=STD_SUG.map(function(s){return '<button class="chip" type="button">'+esc(s)+'</button>';}).join("");
+  if(!$("stdSig").value)$("stdSig").value=r.sig||(S.name?S.name.split(" ")[0].toLowerCase():"");
+  r.std.forEach(function(_,i){$("std"+i).oninput=function(){r.std[i]=this.value;save();stdPrev();};});
+  $("stdSig").oninput=function(){r.sig=this.value;save();stdPrev();};
+  $("stdChips").querySelectorAll(".chip").forEach(function(c){c.onclick=function(){var i=r.std.findIndex(function(x){return !x.trim();});if(i<0){toast("all five lines are full");return;}r.std[i]=c.textContent;save();$("std"+i).value=c.textContent;stdPrev();};});
+  stdPrev();
+}
+function stdPrev(){
+  var r=R("done"),lines=r.std.filter(function(x){return x.trim();});
+  $("stdPrev").innerHTML='<p class="eyebrow">my standards</p><h3>i don\'t negotiate these</h3>'+(lines.length?'<ol>'+lines.map(function(l){return '<li>'+esc(l)+'</li>';}).join("")+'</ol>':'<p class="muted" style="font-family:var(--serif);font-style:italic">your five lines show up here as you write them.</p>')+(r.sig?'<p class="sig">· '+esc(r.sig)+'</p>':'');
+}
+$("stdMake").addEventListener("click",function(){
+  var r=R("done"),lines=r.std.filter(function(x){return x.trim();});
+  if(lines.length<3){toast("write at least three lines first");return;}
+  needCapture("done","your lock screen is ready.","put in your name and email and i'll make it. your lines stay on this phone.",function(){
+    whenFonts(function(){showImage(drawCard({eyebrow:"my standards",big:"i don't negotiate these",bigSize:110,lines:lines,sig:r.sig||$("stdSig").value.trim(),glow:"rgba(163,181,216,.22)",accent:"#3a4a63",top:600,paperH:1130,footY:1830}),"my-standards-lock-screen.png","press and hold to save it, then set it as your lock screen.");});
+    r.stdMade=true;save();trackRoom("done","standards_card",{detail:"standards card: "+lines.length+" lines"});renderPass();
+  });
+});
+function renderDone(){renderMap();renderJobs();renderStd();wireLinks($("v-done"));}
+
+/* ======================= CLARITY ======================= */
+var LOOPS=[
+  {id:"me",label:"\"maybe it was me\"",lie:"that one person can cause a whole relationship to end.",real:"men leave for reasons that were there before you. you were the one who stayed long enough to find out.",say:"i was part of it. i wasn't all of it."},
+  {id:"her",label:"\"what if he's better with her\"",lie:"that he changed for someone else.",real:"men don't transform in six weeks. what you're seeing is the highlight reel of the first chapter. you had that chapter too.",say:"she's met the first chapter of him. so did i."},
+  {id:"words",label:"\"if i'd just said it differently\"",lie:"that the right words would have kept him.",real:"a man who wants to stay hears you even when you say it badly. a man who's leaving finds a reason even when you say it perfectly.",say:"there was no perfect sentence. there was just his decision."},
+  {id:"think",label:"\"does he think about me\"",lie:"that his thinking about you would change anything.",real:"he probably does, in passing. thinking about you and choosing you are different things, and men know the difference even when we pretend not to.",say:"his thoughts aren't my business anymore."},
+  {id:"never",label:"\"i'll never find this again\"",lie:"that the feeling came from him.",real:"the feeling was yours. you brought it. you'll bring it again, to someone who actually meets it.",say:"i didn't lose the feeling. i lost the address."},
+  {id:"seen",label:"\"i should have seen it\"",lie:"that you had all the information.",real:"he showed you what he wanted you to see. hindsight is a view he handed you on the way out.",say:"i know more now. that's all hindsight is."},
+  {id:"enough",label:"\"why wasn't i enough\"",lie:"that enough is something you can be for someone.",real:"enough isn't a size. a man who isn't ready finds a woman too much or too little no matter who she is.",say:"i was a whole person. he wanted a smaller role."},
+  {id:"text",label:"\"what if i text him and it's different\"",lie:"that time changed him.",real:"nothing changed except how much you miss him. that's your side of it, not his.",say:"missing him isn't new information."},
+  {id:"speed",label:"\"everyone else moves on faster\"",lie:"that healing has a speed limit you're failing.",real:"you're comparing your 2am to their instagram.",say:"slow is still moving."},
+  {id:"much",label:"\"i'm too much\"",lie:"that your needs were the problem.",real:"too much usually means more than he wanted to give. that's a measurement of him, not you.",say:"i'm the right amount for the right person."}
+];
+var cMove="me";
+function renderLoops(){
+  $("cMoves").innerHTML=LOOPS.map(function(m){return '<button class="move" type="button" data-m="'+m.id+'" aria-pressed="'+(m.id===cMove)+'">'+esc(m.label)+'</button>';}).join("");
+  $("cMoves").querySelectorAll("[data-m]").forEach(function(b){b.onclick=function(){cMove=b.dataset.m;renderLoops();if(window.innerWidth<860)$("cReading").scrollIntoView({behavior:"smooth",block:"start"});};});
+  var m=LOOPS.filter(function(x){return x.id===cMove;})[0];
+  $("cReading").innerHTML='<p class="eyebrow" style="color:var(--paper-dim)">the loop</p><h3 class="move-name">'+esc(m.label)+'</h3>'+
+    '<div class="rd-part rd-hope"><h4>the lie inside it</h4><p style="text-decoration:none">'+esc(m.lie)+'</p></div>'+
+    '<div class="rd-part rd-real"><h4>what\'s true, from a man</h4><p>'+esc(m.real)+'</p></div>'+
+    '<div class="rd-part rd-do"><h4>say this back to it</h4><p style="font-family:var(--hand);font-size:26px;line-height:1.2">'+esc(m.say)+'</p></div>';
+}
+var TRIG=["his name on my phone","a song","his story or post","a place we went","lying in bed","after a drink","someone mentioned him","nothing, it just came"];
+var logDraft={trig:null,loop:null,lvl:3,hour:null};
+function renderLogForm(){
+  if(logDraft.hour===null)logDraft.hour=new Date().getHours();
+  var hrs="";for(var h=0;h<24;h++)hrs+='<option value="'+h+'"'+(h===logDraft.hour?" selected":"")+'>'+fmtHour(h)+'</option>';
+  $("logForm").innerHTML='<div class="hourrow"><label for="lgHour">it hit at</label><select id="lgHour">'+hrs+'</select></div>'+
+    '<div><h4>what set it off</h4><div class="pick" id="lgTrig">'+TRIG.map(function(t,i){return '<button type="button" data-i="'+i+'" aria-pressed="'+(logDraft.trig===i)+'">'+esc(t)+'</button>';}).join("")+'</div></div>'+
+    '<div><h4>the thought on repeat</h4><div class="pick" id="lgLoop">'+LOOPS.map(function(l,i){return '<button type="button" data-i="'+i+'" aria-pressed="'+(logDraft.loop===i)+'">'+esc(l.label.replace(/"/g,""))+'</button>';}).join("")+'</div></div>'+
+    '<div><h4>how loud, 1 to 5</h4><div class="pick" id="lgLvl">'+[1,2,3,4,5].map(function(n){return '<button type="button" data-i="'+n+'" aria-pressed="'+(logDraft.lvl===n)+'">'+n+'</button>';}).join("")+'</div></div>'+
+    '<div class="clock-actions"><button class="btn btn-room" type="button" id="lgSave">log this spiral</button></div>';
+  $("lgHour").onchange=function(){logDraft.hour=+this.value;};
+  [["lgTrig","trig"],["lgLoop","loop"],["lgLvl","lvl"]].forEach(function(p){$(p[0]).querySelectorAll("button").forEach(function(b){b.onclick=function(){logDraft[p[1]]=+b.dataset.i;renderLogForm();};});});
+  $("lgSave").onclick=function(){
+    if(logDraft.trig===null||logDraft.loop===null){toast("pick what set it off and the thought");return;}
+    needCapture("clarity","your spiral map starts here.","put in your name and email to start your log. your entries stay on this phone, only the count saves to your email.",function(){
+      var r=R("clarity");if(!r.logs)r.logs=[];
+      r.logs.push({t:Date.now(),h:logDraft.hour,trig:logDraft.trig,loop:logDraft.loop,lvl:logDraft.lvl});save();
+      logDraft={trig:null,loop:null,lvl:3,hour:null};
+      toast("logged. you noticed it, that's the first step");renderLogForm();renderChart();renderPass();
+      trackRoom("clarity","spiral",{detail:"spirals logged: "+r.logs.length});
+    });
+  };
+}
+function fmtHour(h){return h===0?"12am":h<12?h+"am":h===12?"12pm":(h-12)+"pm";}
+function renderChart(){
+  var r=R("clarity"),logs=r.logs||[],ex=logs.length===0;
+  var data=ex?[{h:23,trig:4,loop:0},{h:0,trig:4,loop:3},{h:1,trig:0,loop:3},{h:1,trig:4,loop:1},{h:2,trig:2,loop:0},{h:0,trig:4,loop:3},{h:22,trig:1,loop:4},{h:13,trig:3,loop:5}]:logs;
+  var c=new Array(24).fill(0),tc={},lc={};
+  data.forEach(function(d){c[d.h]++;tc[d.trig]=(tc[d.trig]||0)+1;lc[d.loop]=(lc[d.loop]||0)+1;});
+  var max=Math.max.apply(null,c)||1,pk=c.indexOf(max);
+  var topT=+Object.keys(tc).sort(function(a,b){return tc[b]-tc[a];})[0], topL=+Object.keys(lc).sort(function(a,b){return lc[b]-lc[a];})[0];
+  $("logChart").innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><p class="eyebrow">'+(ex?"what your map will look like":"your spirals by hour · "+logs.length+" logged")+'</p>'+(ex?'<span class="ex-tag">example</span>':'')+'</div>'+
+    '<div class="bars" role="img" aria-label="spirals by hour of day">'+c.map(function(n,h){return '<i class="'+(n===max&&n>0?"pk":"")+'" style="height:'+(n?Math.max(6,n/max*100):0)+'%" title="'+fmtHour(h)+': '+n+'"></i>';}).join("")+'</div>'+
+    '<div class="bars-x"><span>12am</span><span>6am</span><span>12pm</span><span>6pm</span></div>'+
+    (data.length?'<p class="insight">'+(ex?"in this example, spirals":"your spirals")+' peak around <em>'+fmtHour(pk)+'</em>. the most common trigger is <em>'+esc(TRIG[topT])+'</em>, and the loudest thought is <em>'+esc(LOOPS[topL].label.replace(/"/g,""))+'</em>.</p>'+
+      (!ex&&logs.length>=3?'<p style="color:var(--dim);margin-top:8px;font-size:14.5px">plan the hour before '+fmtHour(pk)+'. phone in another room, one person you can text instead, and the decoder open on "'+esc(LOOPS[topL].label.replace(/"/g,""))+'".</p>':''):'');
+}
+var LPROMPTS=["what i never got to say to you","what i'm still angry about","what i'm grateful for, if anything","what i'm taking back","what i'm leaving with you","the last line"];
+var lIdx=0;
+function renderLetter(){
+  var r=R("clarity");if(!r.draft)r.draft=["","","","","",""];if(!r.letters)r.letters=[];
+  var done=lIdx>=LPROMPTS.length;
+  $("lStep").innerHTML=done?
+    '<p class="eyebrow">read it back once</p><h3>then choose.</h3><p style="color:var(--dim)">sealing keeps it on this phone for the day you want to see how far you\'ve come. burning is for the day you\'re ready to let it go completely.</p>'+
+    '<div class="clock-actions" style="margin-top:16px"><button class="btn btn-room" type="button" id="lSeal">seal it</button><button class="btn btn-ghost" type="button" id="lBurn">burn it</button><button class="linkish" type="button" id="lEdit">edit</button></div>'
+   :'<p class="eyebrow">prompt '+(lIdx+1)+' of '+LPROMPTS.length+'</p><h3>'+esc(LPROMPTS[lIdx])+'</h3><textarea id="lIn" placeholder="write it the way you\'d say it...">'+esc(r.draft[lIdx])+'</textarea>'+
+    '<div class="clock-actions" style="margin-top:12px"><button class="btn btn-room" type="button" id="lNext">'+(lIdx===LPROMPTS.length-1?"finish the letter":"next")+'</button>'+(lIdx>0?'<button class="linkish" type="button" id="lPrev">← back</button>':'')+'</div>';
+  var body=r.draft.filter(function(x){return x.trim();});
+  $("lPaper").className="l-paper paper torn";
+  $("lPaper").innerHTML=body.length?body.map(function(p){return '<p>'+esc(p)+'</p>';}).join(""):'<p class="empty">your letter builds here as you write. nobody sees it but you.</p>';
+  tear($("lPaper"));
+  if(!done){
+    $("lIn").oninput=function(){r.draft[lIdx]=this.value;save();var b=r.draft.filter(function(x){return x.trim();});$("lPaper").innerHTML=b.length?b.map(function(p){return '<p>'+esc(p)+'</p>';}).join(""):'<p class="empty">your letter builds here as you write. nobody sees it but you.</p>';};
+    $("lNext").onclick=function(){lIdx++;renderLetter();};
+    var pv=$("lPrev");if(pv)pv.onclick=function(){lIdx--;renderLetter();};
+  }else{
+    $("lEdit").onclick=function(){lIdx=0;renderLetter();};
+    $("lSeal").onclick=function(){
+      if(!body.length){toast("write at least one part first");return;}
+      needCapture("clarity","before you seal it.","put in your name and email. the letter stays on this phone forever, nothing you wrote is sent anywhere.",function(){
+        r.letters.push({t:Date.now(),text:body.join("\n\n")});r.draft=["","","","","",""];lIdx=0;save();
+        trackRoom("clarity","letter_sealed",{detail:"letters sealed: "+r.letters.length});
+        toast("sealed. it's yours");renderLetter();renderPass();
+      });
+    };
+    $("lBurn").onclick=function(){
+      var paper=$("lPaper");paper.classList.add("burn");
+      setTimeout(function(){r.draft=["","","","","",""];lIdx=0;r.burned=(r.burned||0)+1;save();trackRoom("clarity","letter_burned",{detail:"letters burned: "+r.burned});renderLetter();toast("gone. you said it, that was the point");renderPass();},1300);
+    };
+  }
+  $("lSealed").innerHTML=r.letters.map(function(l,i){return '<button class="slip sealed" type="button" data-l="'+i+'"><span class="slip-top"><span>sealed · '+esc(fmtWhen(l.t))+'</span><span>tap to open</span></span><span class="slip-body">'+esc(l.text)+'</span></button>';}).join("");
+  $("lSealed").querySelectorAll("[data-l]").forEach(function(b){b.onclick=function(){b.classList.toggle("sealed");};});
+}
+function renderClarity(){renderLoops();renderLogForm();renderChart();renderLetter();wireLinks($("v-clarity"));}
+
+renderRoomsNav();
+document.addEventListener("keydown",function(e){if(e.key==="Escape"){if(!$("cap").hidden)closeCap();if(!$("imgov").hidden){$("imgov").hidden=true;document.body.style.overflow="";}}});
 route();
 if(S.start&&S.email){ if(S.synced===false)syncStart(); else track("visit",true); }
 })();
