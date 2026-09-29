@@ -1,0 +1,1120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="free rooms from KP Unfiltered. a man telling women what men won't admit.">
+<meta property="og:title" content="The Reading Room · KP Unfiltered">
+<meta property="og:description" content="the first 72 hours of no contact, hour by hour. free.">
+<meta property="og:url" content="https://kpreadingroom.com/">
+<meta name="theme-color" content="#15101a">
+</head>
+<body>
+<title>The Reading Room</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@500;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400;1,9..144,600&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+/* KP Unfiltered · The Reading Room
+   One deliberate world: a room at 2am. Night ground, torn paper notes on top.
+   Type system from the brand: Bebas Neue display, Fraunces serif, Manrope body, Caveat for KP's hand. */
+:root{
+  color-scheme: dark;
+  --night:#15101a; --night-2:#1d1623; --night-3:#271d2d; --line:#3a2c40; --line-soft:#2a2030;
+  --text:#f0e7dc; --dim:#b9a9b4; --faint:#85737f;
+  --paper:#efe4d3; --paper-2:#e4d5bf; --paper-ink:#2a1c23; --paper-dim:#6e5762;
+  --rose:#e27592; --rose-soft:rgba(226,117,146,.14); --wine:#8a2846;
+  --candle:#eab861; --candle-soft:rgba(234,184,97,.14);
+  --sage:#8fc1a0; --slate:#a3b5d8; --amber:#dc9d55;
+  --display:"Bebas Neue","Oswald",Impact,"Arial Narrow",sans-serif;
+  --serif:"Fraunces","Iowan Old Style",Georgia,serif;
+  --body:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --hand:"Caveat","Bradley Hand","Segoe Print",cursive;
+  --gut:20px; --maxw:1060px;
+  --grain:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .35 0 0 0 0 .24 0 0 0 0 .18 0 0 0 .10 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background-color:var(--night);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(ellipse 70% 45% at 12% -8%,rgba(234,184,97,.11),transparent 70%),radial-gradient(ellipse 50% 40% at 95% 4%,rgba(226,117,146,.09),transparent 70%);
+  background-repeat:no-repeat;
+}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--candle);outline-offset:3px;border-radius:3px}
+.wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:var(--gut)}
+h1,h2,h3{margin:0;text-wrap:balance}
+p{margin:0}
+
+/* masthead */
+.mast{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:rgba(21,16,26,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line-soft)}
+.mast-in{display:flex;align-items:center;justify-content:space-between;gap:14px;padding-block:12px}
+.wordmark{display:inline-flex;align-items:baseline;gap:7px;text-decoration:none}
+.wordmark .kp{font-family:var(--display);font-size:24px;letter-spacing:.04em;line-height:1;color:var(--text)}
+.wordmark .un{font-family:var(--serif);font-style:italic;font-size:16px;color:var(--rose)}
+.mast-r{display:flex;align-items:center;gap:10px}
+.pass-pill{font-size:12px;font-weight:600;color:var(--dim);border:1px solid var(--line);border-radius:30px;padding:5px 11px;display:inline-flex;align-items:center;gap:7px;text-decoration:none;white-space:nowrap}
+.pass-pill .dots{display:inline-flex;gap:3px}
+.pass-pill .dots i{width:7px;height:7px;border-radius:50%;border:1px solid var(--faint);display:block}
+.pass-pill .dots i.on{background:var(--candle);border-color:var(--candle)}
+
+/* shared type */
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--faint)}
+.eyebrow b{color:var(--rose);font-weight:700}
+.display{font-family:var(--display);font-weight:400;letter-spacing:.01em;line-height:.86;text-transform:uppercase}
+.sec{margin-top:88px}
+.sec-h{display:flex;flex-direction:column;gap:10px;margin-bottom:26px;max-width:640px}
+.sec-h h2{font-family:var(--serif);font-weight:600;font-size:clamp(28px,4.4vw,40px);line-height:1.08;letter-spacing:-.01em}
+.sec-h h2 em{font-style:italic;color:var(--rose);font-weight:400}
+.sec-h p{color:var(--dim);font-size:16px;max-width:60ch}
+.kw{font-family:var(--display);font-size:15px;letter-spacing:.12em;padding:3px 9px 1px;border-radius:3px;background:var(--rose-soft);color:var(--rose);white-space:nowrap}
+
+/* paper */
+.paper{background-color:var(--paper);background-image:var(--grain);color:var(--paper-ink);position:relative}
+.paper .muted{color:var(--paper-dim)}
+.hand{font-family:var(--hand);font-weight:600;line-height:1.15}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border-radius:40px;padding:13px 22px;font-weight:700;font-size:15px;text-decoration:none;border:1px solid transparent;cursor:pointer;transition:transform .15s ease,background .15s ease,border-color .15s ease}
+.btn:active{transform:translateY(1px)}
+.btn-rose{background:var(--rose);color:#23111a}
+.btn-rose:hover{background:#ec8aa4}
+.btn-candle{background:var(--candle);color:#241808}
+.btn-candle:hover{background:#f2c778}
+.btn-ghost{border-color:var(--line);background:transparent;color:var(--text)}
+.btn-ghost:hover{border-color:var(--dim)}
+.btn-ink{background:var(--paper-ink);color:var(--paper)}
+.linkish{background:none;border:none;padding:0;cursor:pointer;color:var(--dim);font-size:13px;text-decoration:underline;text-underline-offset:3px}
+
+/* ============ HOME ============ */
+.hero{padding-block:56px 10px;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(260px,.8fr);gap:40px;align-items:end}
+.hero h1{font-size:clamp(76px,15vw,176px);margin-top:14px}
+.hero h1 .row2{display:block;color:var(--rose)}
+.hero .lede{font-family:var(--serif);font-size:clamp(19px,2.3vw,23px);line-height:1.45;color:var(--text);max-width:34ch;margin-top:22px}
+.hero .lede em{color:var(--candle)}
+.pin-note{padding:26px 24px 30px;transform:rotate(1.6deg);box-shadow:0 20px 50px rgba(0,0,0,.45);width:min(340px,100%);justify-self:end}
+.pin-note .hand{font-size:27px;color:var(--wine)}
+.pin-note .sig{font-family:var(--hand);font-size:24px;color:var(--paper-dim);margin-top:10px;text-align:right}
+.pin-note::before{content:"";position:absolute;top:-11px;left:50%;width:84px;height:24px;margin-left:-42px;background:rgba(234,184,97,.55);transform:rotate(-3deg)}
+
+.doors{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.door{display:flex;flex-direction:column;gap:12px;text-align:left;cursor:pointer;border:1px solid var(--line);border-radius:4px;padding:24px 22px 22px;background:var(--night-2);transition:border-color .2s ease,background .2s ease,transform .2s ease;position:relative;overflow:hidden}
+.door:hover{border-color:var(--c);transform:translateY(-2px)}
+.door[aria-pressed="true"]{border-color:var(--c);background:var(--night-3)}
+.door::after{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--c);opacity:.0;transition:opacity .2s}
+.door[aria-pressed="true"]::after{opacity:1}
+.door-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.door-phase{font-family:var(--display);font-size:30px;letter-spacing:.03em;line-height:1;color:var(--c)}
+.door-status{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);display:inline-flex;align-items:center;gap:6px}
+.door-status.open{color:var(--sage)}
+.door-status.open::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--sage);box-shadow:0 0 0 4px rgba(143,193,160,.18)}
+.door-quote{font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.35;color:var(--text)}
+.door-room{font-size:13.5px;color:var(--dim)}
+.door-room b{color:var(--text);font-weight:600}
+.door-more{display:none;border-top:1px dashed var(--line);padding-top:14px;margin-top:2px;font-size:14.5px;color:var(--dim);flex-direction:column;gap:14px}
+.door[aria-pressed="true"] .door-more{display:flex}
+.door-more .btn{align-self:flex-start}
+
+.tools{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.tool{padding:22px 18px 24px;display:flex;flex-direction:column;gap:8px}
+.tool:nth-child(odd){transform:rotate(-.8deg)}
+.tool:nth-child(even){transform:rotate(.9deg)}
+.tool .n{font-family:var(--display);font-size:42px;line-height:.9;color:var(--wine)}
+.tool h3{font-family:var(--serif);font-size:19px;font-weight:600;line-height:1.2}
+.tool p{font-size:14px;line-height:1.5}
+
+.about{display:grid;grid-template-columns:1fr 1.1fr;gap:44px;align-items:start}
+.about-big{font-family:var(--serif);font-size:clamp(24px,3.3vw,34px);line-height:1.3;font-weight:400}
+.about-big em{color:var(--rose)}
+.rules{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line)}
+.rule{display:grid;grid-template-columns:44px 1fr;gap:12px;padding:18px 0;border-bottom:1px solid var(--line)}
+.rule .rn{font-family:var(--display);font-size:30px;color:var(--candle);line-height:1}
+.rule h3{font-family:var(--serif);font-size:18px;font-weight:600;margin-bottom:3px}
+.rule p{color:var(--dim);font-size:14.5px}
+
+.passport{padding:30px 28px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}
+.passport h2{font-family:var(--serif);font-size:26px;font-weight:600;line-height:1.15}
+.passport p{font-size:14.5px;margin-top:6px}
+.stamps{display:flex;gap:12px;flex-wrap:wrap}
+.stamp{width:78px;height:78px;border-radius:50%;border:2px dashed rgba(42,28,35,.3);display:grid;place-items:center;text-align:center;font-family:var(--display);font-size:13px;letter-spacing:.06em;line-height:1.05;color:rgba(42,28,35,.35);padding:8px}
+.stamp.on{border:3px double var(--wine);color:var(--wine);transform:rotate(-8deg);background:rgba(138,40,70,.06)}
+
+.backroom{border:1px solid var(--line);border-radius:4px;padding:34px 30px;display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center;background:linear-gradient(120deg,var(--night-2),var(--night))}
+.backroom .display{font-size:clamp(46px,7vw,72px);color:var(--candle)}
+.backroom p{color:var(--dim);max-width:52ch}
+.backroom p b{color:var(--text)}
+
+/* ============ HEALING ROOM ============ */
+.room-hero{padding-block:40px 8px}
+.back{font-size:13px;font-weight:600;color:var(--dim);text-decoration:none;display:inline-flex;gap:6px;align-items:center}
+.back:hover{color:var(--text)}
+.room-hero h1{font-size:clamp(70px,13.5vw,158px);margin-top:18px}
+.room-hero h1 span{color:var(--rose)}
+.room-hero .lede{font-family:var(--serif);font-size:clamp(18px,2.2vw,22px);line-height:1.5;max-width:44ch;margin-top:18px}
+.room-meta{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:22px;font-size:13px;color:var(--dim)}
+.room-meta b{color:var(--text)}
+
+.clock{margin-top:44px;display:grid;grid-template-columns:auto 1fr;gap:36px;align-items:center;border:1px solid var(--line);border-radius:4px;padding:30px;background:var(--night-2)}
+.ring{position:relative;width:210px;height:210px;flex:none}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring-in{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.ring-h{font-family:var(--display);font-size:84px;line-height:.8;color:var(--candle);font-variant-numeric:tabular-nums}
+.ring-l{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);margin-top:6px}
+.clock-body{display:flex;flex-direction:column;gap:14px}
+.clock-body h2{font-family:var(--serif);font-size:clamp(24px,3vw,30px);font-weight:600;line-height:1.15}
+.clock-body h2 em{color:var(--candle);font-weight:400}
+.clock-body p{color:var(--dim);max-width:52ch}
+.clock-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.backdate{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13px;color:var(--dim)}
+.backdate input{background:var(--night);border:1px solid var(--line);color:var(--text);border-radius:6px;padding:7px 9px;font:inherit;font-size:13px}
+
+.strip-wrap{margin-top:18px;overflow-x:auto;border:1px solid var(--line-soft);border-radius:4px;background:var(--night)}
+.strip-wrap svg{display:block;min-width:640px;width:100%;height:auto}
+.strip-cap{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:12.5px;color:var(--faint);margin-top:10px}
+.strip-cap i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+
+.blocks{display:flex;flex-direction:column;gap:14px}
+.block{border:1px solid var(--line);border-radius:4px;background:var(--night-2);overflow:hidden}
+.block.now{border-color:var(--candle);box-shadow:0 0 0 1px var(--candle),0 18px 40px rgba(0,0,0,.35)}
+.block.past{opacity:.72}
+.block-h{width:100%;display:grid;grid-template-columns:92px 1fr auto;gap:16px;align-items:center;padding:18px 20px;background:none;border:none;cursor:pointer;text-align:left}
+.block-hrs{font-family:var(--display);font-size:24px;letter-spacing:.04em;color:var(--dim);line-height:1;font-variant-numeric:tabular-nums}
+.block.now .block-hrs{color:var(--candle)}
+.block-t{display:flex;flex-direction:column;gap:2px}
+.block-t b{font-family:var(--serif);font-size:20px;font-weight:600;line-height:1.2}
+.block-t span{font-size:13.5px;color:var(--dim)}
+.block-tag{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:4px 9px;border-radius:30px;border:1px solid var(--line);color:var(--faint);white-space:nowrap}
+.block.now .block-tag{background:var(--candle);border-color:var(--candle);color:#241808}
+.block.past .block-tag{color:var(--sage);border-color:rgba(143,193,160,.4)}
+.block-b{display:grid;grid-template-columns:1.1fr 1fr;gap:26px;padding:4px 20px 24px 128px}
+.block-b[hidden]{display:none}
+.block-b h4{margin:0 0 7px;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+.block-b .happen{font-family:var(--serif);font-size:17.5px;line-height:1.55}
+.do-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+.do-list li{display:grid;grid-template-columns:18px 1fr;gap:8px;font-size:15px;line-height:1.45}
+.do-list li::before{content:"";width:9px;height:9px;margin-top:7px;border:1.5px solid var(--candle);border-radius:2px}
+.dont{margin-top:16px;font-size:14.5px;color:var(--dim);border-left:2px solid var(--rose);padding-left:12px}
+.dont b{color:var(--rose)}
+.margin{grid-column:1/-1;padding:16px 20px 18px;transform:rotate(-.6deg);max-width:560px}
+.margin .hand{font-size:23px;color:var(--wine)}
+.margin .from{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--paper-dim);margin-bottom:4px}
+
+/* decoder */
+.decode{display:grid;grid-template-columns:.9fr 1.1fr;gap:22px;align-items:start}
+.moves{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.move{border:1px solid var(--line);background:var(--night-2);border-radius:4px;padding:14px 14px;text-align:left;cursor:pointer;font-size:14.5px;line-height:1.35;font-weight:600;transition:border-color .15s,background .15s;min-height:66px}
+.move:hover{border-color:var(--dim)}
+.move[aria-pressed="true"]{border-color:var(--rose);background:var(--rose-soft);color:var(--text)}
+.reading{padding:28px 26px 30px;box-shadow:0 20px 50px rgba(0,0,0,.4);position:sticky;top:84px}
+.reading .move-name{font-family:var(--display);font-size:clamp(32px,4vw,44px);line-height:.95;color:var(--paper-ink)}
+.rd-part{margin-top:18px}
+.rd-part h4{margin:0 0 5px;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+.rd-hope h4{color:var(--paper-dim)}
+.rd-hope p{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--paper-dim);text-decoration:line-through;text-decoration-color:rgba(138,40,70,.55);text-decoration-thickness:2px}
+.rd-real h4{color:var(--wine)}
+.rd-real p{font-family:var(--serif);font-size:18.5px;line-height:1.5}
+.rd-do{background:rgba(42,28,35,.07);border-radius:4px;padding:12px 14px}
+.rd-do h4{color:var(--paper-ink)}
+.rd-do p{font-size:15px;line-height:1.5}
+
+/* gate */
+.gate{position:relative;border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.gate-peek{padding:28px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;filter:blur(5px);opacity:.45;pointer-events:none;user-select:none}
+.gate-peek div{height:150px;border-radius:4px;background:var(--night-3);padding:18px;font-family:var(--serif);font-size:20px}
+.gate-card{position:absolute;inset:0;display:grid;place-items:center;padding:20px;background:linear-gradient(180deg,rgba(21,16,26,.55),rgba(21,16,26,.92))}
+.gate-in{max-width:470px;width:100%;padding:30px 28px 28px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.gate-in h3{font-family:var(--serif);font-size:25px;font-weight:600;line-height:1.2}
+.gate-in p{font-size:15px;margin-top:8px}
+.gate-form{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.gate-form input{width:100%;border:1px solid rgba(42,28,35,.25);background:#fbf6ee;border-radius:40px;padding:13px 18px;font:inherit;font-size:15px;color:var(--paper-ink)}
+.gate-form .row{display:flex;gap:10px}
+.gate-form select{flex:1;min-width:0;border:1px solid rgba(42,28,35,.25);background:#fbf6ee;border-radius:40px;padding:12px 14px;font:inherit;font-size:14px;color:var(--paper-ink)}
+.gate-err{font-size:13px;color:var(--wine);min-height:18px}
+.gate-small{font-size:12px;color:var(--paper-dim);margin-top:4px}
+.startf{display:flex;flex-direction:column;gap:10px;max-width:460px}
+.startf .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.startf input,.startf select{width:100%;background:var(--night);border:1px solid var(--line);color:var(--text);border-radius:40px;padding:12px 16px;font:inherit;font-size:15px}
+.startf input::placeholder{color:var(--faint)}
+.startf input:focus,.startf select:focus{outline:none;border-color:var(--candle)}
+.startf .err{font-size:13px;color:var(--rose);min-height:18px}
+.startf .fine{font-size:12px;color:var(--faint);line-height:1.5}
+.startf .alt{display:flex;flex-wrap:wrap;gap:6px 18px}
+@media (max-width:640px){.startf .row{grid-template-columns:1fr}}
+
+/* 11:47 */
+.urge-panel{display:grid;grid-template-columns:auto 1fr;gap:36px;align-items:center;border:1px solid var(--line);border-radius:4px;padding:34px 30px;background:radial-gradient(ellipse at 18% 50%,rgba(226,117,146,.16),transparent 60%),var(--night-2)}
+.big-red{width:196px;height:196px;border-radius:50%;border:none;cursor:pointer;background:radial-gradient(circle at 35% 30%,#f39ab1,var(--rose) 45%,var(--wine));color:#200c14;box-shadow:0 0 0 10px rgba(226,117,146,.14),0 0 0 22px rgba(226,117,146,.06),0 20px 40px rgba(0,0,0,.4);display:grid;place-items:center;text-align:center;padding:24px;transition:transform .15s}
+.big-red:hover{transform:scale(1.03)}
+.big-red .t{font-family:var(--display);font-size:46px;line-height:.85}
+.big-red .s{font-size:13px;font-weight:700;margin-top:4px;line-height:1.25}
+.urge-panel h3{font-family:var(--serif);font-size:clamp(24px,3vw,30px);font-weight:600;line-height:1.15}
+.urge-panel p{color:var(--dim);margin-top:10px;max-width:52ch}
+.urge-stats{display:flex;flex-wrap:wrap;gap:26px;margin-top:18px}
+.urge-stats div{display:flex;flex-direction:column}
+.urge-stats b{font-family:var(--display);font-size:40px;line-height:.9;color:var(--rose);font-variant-numeric:tabular-nums}
+.urge-stats span{font-size:12px;color:var(--faint);letter-spacing:.08em;text-transform:uppercase}
+.urge-trend{font-size:14px;color:var(--sage);margin-top:10px}
+
+.overlay{position:fixed;inset:0;z-index:60;background:rgba(12,9,15,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);overflow-y:auto;padding:calc(env(safe-area-inset-top,0px) + 20px) var(--gut) calc(env(safe-area-inset-bottom,0px) + 30px)}
+.ov-in{max-width:620px;margin:0 auto;display:flex;flex-direction:column;gap:22px;min-height:100%;justify-content:center}
+.ov-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.ov-close{background:none;border:1px solid var(--line);border-radius:30px;padding:7px 14px;cursor:pointer;font-size:13px;color:var(--dim)}
+.breath{display:grid;place-items:center;padding:20px 0}
+.breath-c{width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(234,184,97,.5),rgba(234,184,97,.08) 70%);display:grid;place-items:center;transform:scale(.55);transition:transform 4s ease-in-out}
+.breath-c span{font-family:var(--display);font-size:30px;letter-spacing:.06em;color:var(--text)}
+.breath-n{font-family:var(--display);font-size:22px;color:var(--faint);letter-spacing:.1em;margin-top:10px;font-variant-numeric:tabular-nums}
+.ov-say{font-family:var(--serif);font-size:clamp(22px,4vw,28px);line-height:1.35;text-align:center}
+.ov-say em{color:var(--rose)}
+.sendopts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sendopt{border:1px solid var(--line);background:var(--night-2);border-radius:4px;padding:14px;text-align:left;cursor:pointer;font-weight:600;font-size:15px}
+.sendopt:hover{border-color:var(--rose)}
+.his-read{padding:24px 24px 26px}
+.his-read h4{margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--wine)}
+.his-read p{font-family:var(--serif);font-size:19px;line-height:1.5}
+.ov-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+
+/* drawer */
+.drawer{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start}
+.drawer-write{padding:24px 24px 26px}
+.drawer-write label{display:block;font-family:var(--serif);font-size:20px;font-weight:600;margin-bottom:10px}
+.drawer-write textarea{width:100%;min-height:170px;resize:vertical;border:none;background:repeating-linear-gradient(transparent 0 31px,rgba(138,40,70,.18) 31px 32px);font-family:var(--hand);font-size:25px;line-height:32px;color:var(--paper-ink);padding:0 4px}
+.drawer-write textarea:focus{outline:none}
+.drawer-write .row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap}
+.slips{display:flex;flex-direction:column;gap:10px}
+.slip{border:1px solid var(--line);border-radius:4px;background:var(--night-2);padding:14px 16px;cursor:pointer;text-align:left;width:100%;display:flex;flex-direction:column;gap:6px}
+.slip:hover{border-color:var(--dim)}
+.slip-top{display:flex;justify-content:space-between;gap:10px;font-size:12px;color:var(--faint);letter-spacing:.06em;text-transform:uppercase;font-weight:700}
+.slip-body{font-family:var(--hand);font-size:23px;line-height:1.2;color:var(--text);white-space:pre-wrap;word-break:break-word}
+.slip.sealed .slip-body{filter:blur(6px);user-select:none}
+.slip-empty{border:1px dashed var(--line);border-radius:4px;padding:26px 20px;color:var(--faint);font-size:14.5px;text-align:center}
+.slip-burn{align-self:flex-end;background:none;border:none;color:var(--faint);font-size:12px;cursor:pointer;text-decoration:underline}
+
+/* cut list */
+.cut{display:grid;grid-template-columns:1fr 1fr;gap:10px 18px}
+.cut-item{display:grid;grid-template-columns:26px 1fr;gap:10px;align-items:start;padding:13px 14px;border:1px solid var(--line-soft);border-radius:4px;background:var(--night-2);cursor:pointer}
+.cut-item input{appearance:none;-webkit-appearance:none;width:20px;height:20px;border:1.5px solid var(--dim);border-radius:4px;margin:2px 0 0;display:grid;place-items:center;cursor:pointer}
+.cut-item input:checked{background:var(--sage);border-color:var(--sage)}
+.cut-item input:checked::after{content:"";width:6px;height:11px;border:solid #13241a;border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.cut-item b{display:block;font-size:15px;font-weight:600;line-height:1.35}
+.cut-item span{display:block;font-size:13px;color:var(--faint);margin-top:2px;line-height:1.4}
+.cut-item.done b{color:var(--dim);text-decoration:line-through;text-decoration-color:var(--sage)}
+.cut-bar{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.cut-track{flex:1;height:10px;border-radius:10px;background:var(--night-3);overflow:hidden}
+.cut-fill{height:100%;background:linear-gradient(90deg,var(--sage),#b6dcc2);border-radius:10px;transition:width .35s ease}
+.cut-n{font-family:var(--display);font-size:26px;color:var(--sage);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* next page */
+.next{padding:40px 36px 42px;box-shadow:0 30px 70px rgba(0,0,0,.5)}
+.next .display{font-size:clamp(54px,9vw,104px);color:var(--paper-ink)}
+.next .display span{color:var(--wine)}
+.next-lede{font-family:var(--serif);font-size:clamp(18px,2.2vw,21px);line-height:1.5;max-width:52ch;margin-top:16px}
+.phases{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}
+.phase{border:1px solid rgba(42,28,35,.18);border-radius:4px;padding:18px 16px;background:rgba(255,255,255,.28)}
+.phase.did{background:rgba(138,40,70,.08);border-color:rgba(138,40,70,.35)}
+.phase .d{font-family:var(--display);font-size:20px;letter-spacing:.06em;color:var(--paper-dim)}
+.phase.did .d{color:var(--wine)}
+.phase h4{margin:2px 0 6px;font-family:var(--serif);font-size:20px;font-weight:600}
+.phase p{font-size:14px;line-height:1.5;color:var(--paper-dim)}
+.inside{margin-top:26px;display:grid;grid-template-columns:1fr 1fr;gap:8px 26px;list-style:none;padding:0}
+.inside li{font-size:15px;display:grid;grid-template-columns:20px 1fr;gap:6px}
+.inside li::before{content:"+";font-weight:800;color:var(--wine)}
+.next-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px;align-items:center}
+.next .fine{font-size:13px;margin-top:14px}
+
+.share{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding-block:22px}
+.share p{font-family:var(--serif);font-size:19px}
+.safety{font-size:13px;color:var(--faint);max-width:70ch;margin-top:26px;line-height:1.55}
+.safety b{color:var(--dim)}
+
+.foot{margin-top:90px;border-top:1px solid var(--line);padding-block:30px 46px;display:flex;flex-wrap:wrap;gap:10px 26px;align-items:baseline;font-size:13px;color:var(--faint)}
+.foot a{color:var(--dim);text-decoration:none;border-bottom:1px solid var(--line)}
+.foot .sel{user-select:all;color:var(--dim)}
+.foot .r{margin-left:auto}
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);transform:translateX(-50%) translateY(20px);background:var(--paper);color:var(--paper-ink);font-weight:700;font-size:14px;padding:10px 18px;border-radius:30px;opacity:0;transition:all .25s ease;z-index:80;pointer-events:none}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* entrance: one moment, from a visible resting state */
+@keyframes rise{from{transform:translateY(14px)}to{transform:none}}
+.hero h1,.room-hero h1{animation:rise .8s cubic-bezier(.2,.7,.2,1) both}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* responsive */
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr;gap:28px}
+  .pin-note{justify-self:start;transform:rotate(-1.2deg)}
+  .tools{grid-template-columns:1fr 1fr}
+  .about{grid-template-columns:1fr;gap:28px}
+  .decode{grid-template-columns:1fr}
+  .reading{position:static}
+  .drawer{grid-template-columns:1fr}
+  .block-b{grid-template-columns:1fr;padding:4px 20px 24px}
+  .phases{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  :root{--gut:16px}
+  .doors{grid-template-columns:1fr}
+  .clock{grid-template-columns:1fr;justify-items:start;padding:24px 20px}
+  .ring{width:170px;height:170px}
+  .ring-h{font-size:68px}
+  .urge-panel{grid-template-columns:1fr;justify-items:start;padding:26px 20px}
+  .big-red{width:170px;height:170px}
+  .cut{grid-template-columns:1fr}
+  .inside{grid-template-columns:1fr}
+  .passport{grid-template-columns:1fr}
+  .backroom{grid-template-columns:1fr}
+  .gate-peek{grid-template-columns:1fr}
+  .block-h{grid-template-columns:62px 1fr;gap:12px;padding:16px}
+  .block-tag{grid-column:2;justify-self:start}
+  .block-hrs{font-size:20px}
+  .sendopts{grid-template-columns:1fr}
+  .next{padding:30px 20px 32px}
+  .sec{margin-top:70px}
+  .mast .pass-pill .lbl{display:none}
+}
+</style>
+
+<header class="mast">
+  <div class="wrap mast-in">
+    <a class="wordmark" href="#home" aria-label="KP Unfiltered, the reading room home"><span class="kp">KP</span><span class="un">Unfiltered</span></a>
+    <div class="mast-r">
+      <a class="pass-pill" href="#home" id="passPill" title="rooms you've opened"><span class="dots" id="passDots"></span><span class="lbl" id="passLbl">0 of 4 rooms</span></a>
+    </div>
+  </div>
+</header>
+
+<!-- ======================= HOME ======================= -->
+<main id="v-home" class="wrap" data-view>
+  <section class="hero">
+    <div>
+      <p class="eyebrow"><b>KP Unfiltered</b> · free, all of it</p>
+      <h1 class="display">the reading<span class="row2">room</span></h1>
+      <p class="lede">four rooms built by a man telling on his own side. each one is a tool you use on <em>your</em> situation, and it remembers where you left off.</p>
+    </div>
+    <aside class="pin-note paper torn">
+      <p class="hand">no pdfs. no fluff. i made these free on purpose, and i made them the way i'd want someone to help my sister.</p>
+      <p class="sig">· kp</p>
+    </aside>
+  </section>
+
+  <section class="sec" id="doors" style="margin-top:72px">
+    <div class="sec-h">
+      <p class="eyebrow">start here</p>
+      <h2>where are you <em>right now?</em></h2>
+      <p>pick the one that sounds like you tonight. it can change next week. most women move through all four.</p>
+    </div>
+    <div class="doors" id="doorGrid"></div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h">
+      <p class="eyebrow">open now · room 01</p>
+      <h2>what's inside <em>the first 72 hours</em></h2>
+      <p>four tools for the start of no contact, the part where most women break it.</p>
+    </div>
+    <div class="tools">
+      <div class="tool paper torn"><span class="n">72</span><h3>the clock</h3><p class="muted">start it the minute you go no contact. it tells you which hour you're in and what that hour needs from you.</p></div>
+      <div class="tool paper torn"><span class="n">08</span><h3>decode his move</h3><p class="muted">the like on a 2019 photo, the story view, the "hey stranger". what each one means, from the man doing it.</p></div>
+      <div class="tool paper torn"><span class="n">11:47</span><h3>the button</h3><p class="muted">press it when you're about to text him. sixty seconds, then the truth about how he'd read it.</p></div>
+      <div class="tool paper torn"><span class="n">∞</span><h3>the unsent drawer</h3><p class="muted">write the text here instead. it never sends. you read them all on day 21.</p></div>
+    </div>
+    <div style="margin-top:28px"><a class="btn btn-rose" href="#healing">open the room</a></div>
+  </section>
+
+  <section class="sec about" id="about">
+    <div>
+      <p class="eyebrow" style="margin-bottom:14px">who's reading you</p>
+      <p class="about-big">i'm kp. 6'4", los angeles, and i've been the man in the story you're trying to figure out. now i tell women <em>what we don't say out loud.</em> 2000+ women have come to me for help with exactly this.</p>
+    </div>
+    <div class="rules">
+      <div class="rule"><span class="rn">1</span><div><h3>nothing in here blames you</h3><p>the problem is the pattern or his behaviour. you're smart. you just haven't been told the male side.</p></div></div>
+      <div class="rule"><span class="rn">2</span><div><h3>every room is finished</h3><p>free here means complete. each room gets you one real win you can finish tonight.</p></div></div>
+      <div class="rule"><span class="rn">3</span><div><h3>your words stay on your phone</h3><p>your notes and unsent texts never leave your phone. nobody reads them, including me. only your clock is saved to your email, so it follows you.</p></div></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="passport paper torn">
+      <div>
+        <p class="eyebrow" style="color:var(--paper-dim)">your passport</p>
+        <h2 id="passH">one stamp per room you finish</h2>
+        <p class="muted" id="passP">start the first 72 hours to earn your first stamp.</p>
+      </div>
+      <div class="stamps" id="stamps"></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="backroom">
+      <span class="display">the back<br>room</span>
+      <p><b>coming soon.</b> a private room for the women doing the work, where i answer the questions i can't answer in a 30-second video. the women who finish a room here hear about it first.</p>
+    </div>
+  </section>
+</main>
+
+<!-- ======================= HEALING ROOM ======================= -->
+<main id="v-healing" class="wrap" data-view hidden>
+  <section class="room-hero">
+    <a class="back" href="#home">← all rooms</a>
+    <p class="eyebrow" style="margin-top:22px">room 01 · <span class="kw">HEALING</span> · for the woman still in it</p>
+    <h1 class="display">the first<br><span>72 hours</span></h1>
+    <p class="lede">days 1 to 3 of detox from him, free. the hour-by-hour of getting through the start of no contact, from a man who knows exactly what he's doing on the other side of your phone.</p>
+    <div class="room-meta"><span><b>7</b> stages</span><span><b>8</b> of his moves decoded</span><span><b>12</b> things to cut tonight</span><span>your clock follows you to <b>any</b> phone</span></div>
+  </section>
+
+  <!-- clock -->
+  <section class="clock" id="clock">
+    <div class="ring" aria-hidden="true">
+      <svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" fill="none" stroke="#2a2030" stroke-width="7"/><circle id="ringArc" cx="60" cy="60" r="52" fill="none" stroke="#eab861" stroke-width="7" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7"/></svg>
+      <div class="ring-in"><div><div class="ring-h" id="ringH">00</div><div class="ring-l" id="ringL">of 72 hours</div></div></div>
+    </div>
+    <div class="clock-body" id="clockBody"></div>
+  </section>
+
+  <div class="strip-wrap" aria-label="your 72 hours, with each urge you logged"><svg id="strip" viewBox="0 0 740 118" role="img"></svg></div>
+  <div class="strip-cap"><span><i style="background:var(--candle)"></i>where you are</span><span><i style="background:var(--rose)"></i>each urge you logged</span><span>watch the gaps between the dots get longer</span></div>
+
+  <!-- protocol -->
+  <section class="sec" style="margin-top:64px">
+    <div class="sec-h">
+      <p class="eyebrow">the protocol</p>
+      <h2>seven stages. <em>you're only ever in one.</em></h2>
+      <p>you don't need to hold all 72 hours in your head. you need to know what this hour is, and what to do with it.</p>
+    </div>
+    <div class="blocks" id="blocks"></div>
+  </section>
+
+  <!-- decoder -->
+  <section class="sec" id="decode">
+    <div class="sec-h">
+      <p class="eyebrow">decode his move</p>
+      <h2>he did something. <em>here's what it actually was.</em></h2>
+      <p>men make small moves during no contact. every one of them costs him almost nothing. tap what he did.</p>
+    </div>
+    <div class="decode">
+      <div class="moves" id="moves"></div>
+      <article class="reading paper torn" id="reading" aria-live="polite"></article>
+    </div>
+  </section>
+
+  <!-- gated tools -->
+  <section class="sec" id="tools">
+    <div class="sec-h">
+      <p class="eyebrow">the rest of the room</p>
+      <h2>for the moments <em>you're about to break it.</em></h2>
+    </div>
+
+    <div class="gate" id="gate">
+      <div class="gate-peek" aria-hidden="true"><div>the 11:47 button</div><div>the unsent drawer</div><div>the digital divorce</div></div>
+      <div class="gate-card">
+        <div class="gate-in paper torn">
+          <p class="eyebrow" style="color:var(--wine)">free · opens with your clock</p>
+          <h3>these open the moment you start your 72 hours.</h3>
+          <p class="muted">the button, the drawer and the digital divorce are built around your clock, so they unlock together. it takes ten seconds.</p>
+          <div class="gate-form"><a class="btn btn-ink" href="#clock" id="toClock">start my 72 hours</a></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="unlocked" hidden>
+      <!-- 11:47 -->
+      <div class="urge-panel">
+        <button class="big-red" id="bigRed" type="button"><span><span class="t">11:47</span><span class="s">i'm about to<br>text him</span></span></button>
+        <div>
+          <h3>press it before you press send.</h3>
+          <p>sixty seconds of breathing, then i'll tell you exactly how he'd read what you were about to send. every press gets logged on your timeline.</p>
+          <div class="urge-stats">
+            <div><b id="uCount">0</b><span>urges logged</span></div>
+            <div><b id="uSent">0</b><span>texts sent</span></div>
+            <div><b id="uLast">·</b><span>since the last one</span></div>
+          </div>
+          <p class="urge-trend" id="uTrend"></p>
+        </div>
+      </div>
+
+      <!-- drawer -->
+      <div class="sec" style="margin-top:56px">
+        <div class="sec-h">
+          <p class="eyebrow">the unsent drawer</p>
+          <h2>write it here. <em>it never sends.</em></h2>
+          <p>everything you want to say to him goes in the drawer instead of the chat. it seals, it stays on your phone, and on day 21 you read them all back and meet the woman who wrote them.</p>
+        </div>
+        <div class="drawer">
+          <div class="drawer-write paper torn">
+            <label for="drawerText">what you want to send him</label>
+            <textarea id="drawerText" placeholder="say all of it..."></textarea>
+            <div class="row"><span class="muted" style="font-size:13px" id="drawerHint">it seals when you drop it in.</span><button class="btn btn-ink" id="drawerSeal" type="button">drop it in the drawer</button></div>
+          </div>
+          <div class="slips" id="slips"></div>
+        </div>
+      </div>
+
+      <!-- digital divorce -->
+      <div class="sec" style="margin-top:56px">
+        <div class="sec-h">
+          <p class="eyebrow">the digital divorce</p>
+          <h2>twelve ways he still <em>lives in your phone.</em></h2>
+          <p>fifteen minutes, tonight. every one of these is a door he can walk through without trying. close them from your side.</p>
+        </div>
+        <div class="cut-bar"><div class="cut-track"><div class="cut-fill" id="cutFill" style="width:0%"></div></div><span class="cut-n" id="cutN">0 / 12</span></div>
+        <div class="cut" id="cut"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- next page -->
+  <section class="sec" id="next">
+    <div class="next paper torn">
+      <p class="eyebrow" style="color:var(--paper-dim)">hour 72 · the next page</p>
+      <h2 class="display">days 4 to <span>21</span></h2>
+      <p class="next-lede">the free room ends at 72 hours on purpose. three days is one complete win and you've earned it. what comes next is harder, because the shock wears off and the bargaining gets smarter. that's the full program.</p>
+      <div class="phases">
+        <div class="phase did"><span class="d">days 1 to 7</span><h4>separation</h4><p>you just did the first three days of this, here. the program walks you through the other four.</p></div>
+        <div class="phase"><span class="d">days 8 to 14</span><h4>detox</h4><p>the stretch where women tell me the urge comes back the hardest. this is where no contact is won or lost.</p></div>
+        <div class="phase"><span class="d">days 15 to 21</span><h4>rebuild</h4><p>the part where it stops being about him. self-respect, your own routines, and the version of you that walked in.</p></div>
+      </div>
+      <ul class="inside">
+        <li>a mini lesson every day to reframe the day</li>
+        <li>one concrete action per day</li>
+        <li>a five minute practice to settle your body</li>
+        <li>a journal prompt to lock the change in</li>
+        <li>no contact streak, urge log and rumination trackers</li>
+        <li>word-for-word scripts for when he texts</li>
+      </ul>
+      <div class="next-cta">
+        <a class="btn btn-ink" id="ctaDetox" href="#" target="_blank" rel="noopener">get detox from him</a>
+        <a class="btn" style="border:1px solid rgba(42,28,35,.3);color:var(--paper-ink)" id="ctaTalk" href="#" target="_blank" rel="noopener">or have me read your situation</a>
+      </div>
+      <p class="fine muted">talk with me is a personal voice reading from me, delivered in 48 hours.</p>
+    </div>
+  </section>
+
+  <section class="sec" style="margin-top:56px">
+    <div class="share">
+      <p>know someone checking his page right now? send her this room.</p>
+      <button class="btn btn-ghost" id="shareBtn" type="button">copy the link</button>
+    </div>
+    <p class="safety"><b>if you feel unsafe</b> or you're dealing with abuse, this room isn't the tool. put your safety first and make a plan with someone you trust. in the united states you can call the national domestic violence hotline at 1 800 799 7233 or text START to 88788.</p>
+  </section>
+</main>
+
+<div class="wrap">
+  <footer class="foot">
+    <span>KP Unfiltered · the reading room</span>
+    <a id="footIg" href="#" target="_blank" rel="noopener">@kpunfilteredkp</a>
+    <span class="sel">team@unfilteredprojects.com</span>
+    <span class="r">not therapy. a man telling you what we don't say.</span>
+  </footer>
+</div>
+
+<!-- 11:47 overlay -->
+<div class="overlay" id="ov" hidden role="dialog" aria-modal="true" aria-label="the 11:47 button">
+  <div class="ov-in" id="ovIn"></div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ================= CONFIG — edit these before going live ================= */
+var CONFIG = {
+  api: "https://script.google.com/macros/s/AKfycbyyFkxJ-6jMacOrIE5jZsYveGMcpFOkAFBOXhyjmFrBJ8rtGwXS_sALWDv5w7K01m3T/exec", // Google Apps Script web app URL (ends in /exec). empty = nothing leaves the phone (preview mode).
+  room: "healing",
+  detox: "https://stan.store/unfilteredkp",      // Detox From Him product link
+  talk: "https://stan.store/unfilteredkp",       // Talk With Me product link
+  ig: "https://instagram.com/kpunfilteredkp"
+};
+/* track where she came from: link to  kpreadingroom.com/?src=ig#healing  (ig, tiktok, fb, email, bio) */
+
+/* ================= storage ================= */
+var KEY = "kp_reading_room_v1";
+var S = {phase:null,start:null,urges:[],sent:0,notes:[],cut:{},visited:{},done72:false,email:"",name:"",country:"",src:"",synced:true};
+try{var raw=localStorage.getItem(KEY);if(raw){var o=JSON.parse(raw);for(var k in o)S[k]=o[k];}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+
+/* source: ?src= or utm_source, else the referring site */
+(function(){
+  if(S.src)return;
+  try{
+    var q=new URLSearchParams(location.search), src=q.get("src")||q.get("utm_source");
+    if(!src&&document.referrer){var host=new URL(document.referrer).hostname;if(host&&host!==location.hostname)src=host.replace(/^www\./,"");}
+    S.src=(src||"direct").slice(0,60);save();
+  }catch(e){}
+})();
+
+/* sheet sync. text/plain keeps it a simple request, so no CORS preflight */
+function api(payload){
+  if(!CONFIG.api)return Promise.resolve({ok:true,local:true});
+  payload.room=CONFIG.room;
+  return fetch(CONFIG.api,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)})
+    .then(function(r){return r.json();}).catch(function(){return {ok:false};});
+}
+function counts(){return {urges:S.urges.length,texts_sent:S.sent||0,notes_count:S.notes.length,cuts_done:CUTS.filter(function(c){return S.cut[c.id];}).length,done_72:!!S.done72};}
+var evT=null;
+function track(ev,now){
+  if(!S.email||!CONFIG.api)return;
+  clearTimeout(evT);
+  var go=function(){api({action:"event",email:S.email,event:ev,fields:counts()});};
+  if(now)go();else evT=setTimeout(go,2500);
+}
+function syncStart(){
+  if(!S.email)return Promise.resolve();
+  return api({action:"start",email:S.email,name:S.name,country:S.country,clock_start:S.start,source:S.src}).then(function(r){S.synced=!!(r&&r.ok);save();});
+}
+function lookup(email){
+  if(!CONFIG.api)return Promise.resolve({ok:false,error:"offline"});
+  return fetch(CONFIG.api+"?action=lookup&room="+encodeURIComponent(CONFIG.room)+"&email="+encodeURIComponent(email))
+    .then(function(r){return r.json();}).catch(function(){return {ok:false,error:"network"};});
+}
+
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function toast(t){var el=$("toast");el.textContent=t;el.classList.add("on");clearTimeout(toast._t);toast._t=setTimeout(function(){el.classList.remove("on");},1900);}
+function fmtWhen(ms){return new Date(ms).toLocaleString("en-US",{weekday:"short",hour:"numeric",minute:"2-digit"}).toLowerCase();}
+function dur(ms){var m=Math.round(ms/60000);if(m<60)return m+"m";var h=Math.floor(m/60);if(h<48)return h+"h";return Math.floor(h/24)+"d";}
+
+/* torn paper edges */
+function tear(el){
+  var n=26,pts=[],i;
+  for(i=0;i<=n;i++)pts.push((i/n*100).toFixed(2)+"% "+(Math.random()*6).toFixed(1)+"px");
+  for(i=n;i>=0;i--)pts.push((i/n*100).toFixed(2)+"% calc(100% - "+(Math.random()*6).toFixed(1)+"px)");
+  el.style.clipPath="polygon("+pts.join(",")+")";
+}
+document.querySelectorAll(".torn").forEach(tear);
+
+/* ================= content ================= */
+var DOORS = [
+  {id:"pain",c:"var(--rose)",phase:"still in it",quote:"“i know i should stop checking his page.”",room:"the first 72 hours",kw:"HEALING",open:true,more:"the hour-by-hour of the start of no contact. a clock, his moves decoded, and a button for the moment you're about to text him."},
+  {id:"searching",c:"var(--sage)",phase:"on the apps",quote:"“where are the men who actually want something?”",room:"the available man filter",kw:"DATING",open:false,more:"a quiz that tells you which man keeps finding you, a red-flag scanner for the first three dates, and where men actually are."},
+  {id:"rebuilding",c:"var(--slate)",phase:"done repeating it",quote:"“why do i keep ending up with the same man in a different jacket?”",room:"the pattern map",kw:"DONE",open:false,more:"put your last three relationships side by side and watch the pattern draw itself. then write the standards card you'll actually keep."},
+  {id:"inward",c:"var(--amber)",phase:"can't stop thinking",quote:"“it's 2am and i'm replaying it again.”",room:"the 2am mind",kw:"CLARITY",open:false,more:"the loops your mind runs about him, decoded from the male side, and a guided letter you'll never send."}
+];
+
+var BLOCKS = [
+  {from:0,to:6,name:"the cut",short:"cut",sub:"the first six hours",
+   happen:"your brain still thinks he's coming back. for months your phone was where he lived, so your hand is going to keep reaching for it like a reflex. that's not weakness. that's wiring.",
+   dos:["archive the chat so he's off your home screen","tell one person you trust that you're doing this, tonight","do the digital divorce list below, it takes fifteen minutes"],
+   dont:"send the last message. there is no last message that fixes it.",
+   note:"every man knows the last message. we read it, feel good for a second, and don't answer."},
+  {from:6,to:12,name:"the first night",short:"night 1",sub:"hours 6 to 12",
+   happen:"nights are louder because nothing is competing with him. the urge comes in waves. it builds, it peaks, and it passes if you don't feed it.",
+   dos:["charge your phone outside the bedroom","press the 11:47 button when the wave hits","put the text in the drawer instead of the chat"],
+   dont:"check who viewed your story. that's texting him with extra steps.",
+   note:"if he's awake at 2am thinking about you, your text is the relief he didn't earn."},
+  {from:12,to:24,name:"the morning after",short:"morning",sub:"hours 12 to 24",
+   happen:"for the first few seconds after you wake up, you forget. then you remember. that moment is the hardest part of the day, and it's also the shortest.",
+   dos:["get out of bed before you open a single app","eat something real before noon","ten minutes outside, walking, no headphones on his playlist"],
+   dont:"reread your old messages for closure. closure is a thing you write, not a thing you find in his texts.",
+   note:"we never reread the chat. that's the difference in how this feels on each side."},
+  {from:24,to:36,name:"the bargaining",short:"bargaining",sub:"hours 24 to 36",
+   happen:"day two is when your mind starts negotiating. just one text to be friendly. just to give his hoodie back. it sounds mature and it's the urge wearing a nicer outfit.",
+   dos:["write every bargain down in the drawer","anything logistical goes through a friend or one plain email","write down the three moments you felt smallest with him"],
+   dont:"let a logistics text turn into a conversation.",
+   note:"the hoodie is how we get back in. every man knows it."},
+  {from:36,to:48,name:"the second night",short:"night 2",sub:"hours 36 to 48",
+   happen:"a lot of the women i talk to say the second night hits harder than the first. the shock wears off and the quiet gets real. that doesn't mean you're going backwards. it means it's landing.",
+   dos:["plan tonight before it starts","call someone at 9pm, before it gets bad","log every urge, even the small ones"],
+   dont:"drink and hold your phone at the same time.",
+   note:"he's not having your second night. he's distracted. that's why you don't get to hand him the reaction."},
+  {from:48,to:60,name:"the quiet",short:"quiet",sub:"hours 48 to 60",
+   happen:"somewhere in here an hour goes by and you realise you didn't think about him. then you feel guilty about it. that guilt is the old attachment checking it still has a grip.",
+   dos:["do one thing he never liked you doing","change one corner of your room, even a little","message a friend you drifted from while you were with him"],
+   dont:"treat the quiet like proof you're over it and reach out to test yourself.",
+   note:"when a woman goes quiet on us and stays quiet, that's when we finally notice. by then it doesn't matter."},
+  {from:60,to:72,name:"the proof",short:"proof",sub:"hours 60 to 72",
+   happen:"look at the dots on your timeline. the urges are still there, but you can see the gaps between them getting longer. nobody can give you that. you built it.",
+   dos:["open the drawer and read the first note you wrote","write one sentence to the woman you'll be on day 21","decide what you're doing with the next 18 days"],
+   dont:"stop here because it finally feels okay. day 4 is where most women slide.",
+   note:"most women stop around here. not because it's hard, but because nobody handed them the next page."}
+];
+
+var MOVES = [
+  {id:"like",label:"he liked a photo from 2019",
+   hope:"he's thinking about me. he misses me.",
+   real:"a man scrolling that deep is bored, lonely, or checking the door is still unlocked. it cost him one thumb. it's a ping, not a plan. if he wanted you back you'd get a sentence, not a heart.",
+   todo:"nothing. no like back, no story aimed at him. the ping only works if it gets an answer."},
+  {id:"story",label:"he watched my story in the first minute",
+   hope:"he's still invested. he can't stay away.",
+   real:"he's keeping tabs. watching is free and it lets him feel close without being accountable for anything. men can watch you for months and never make a move.",
+   todo:"hide your stories from him for 21 days. not as a punishment. as a door you finally close from your side."},
+  {id:"hey",label:"\"hey stranger\" or \"hope you're good\"",
+   hope:"he's opening the door to talk properly.",
+   real:"that's a low-cost test. he's checking if you're still available at the same price as before. the vagueness is the point. it lets him look like he did something without saying anything.",
+   todo:"don't reply tonight. if you ever do, it's one line with no question at the end."},
+  {id:"cf",label:"i'm on his close friends, but there was never a hard launch",
+   hope:"i'm special to him. he just keeps it private.",
+   real:"he wants you in the audience, not in the photo. close friends is where men keep the options they don't want the world to see.",
+   todo:"take yourself off his list the only way you can. mute him and stop watching."},
+  {id:"gym",label:"he posted a thirst trap right after we ended",
+   hope:"that post is for me. he wants me to see what i'm missing.",
+   real:"that post isn't for you. it's for him. he's checking he still has value. a man who's actually fine doesn't need forty likes to confirm it.",
+   todo:"mute his posts. you're not his audience anymore."},
+  {id:"talk",label:"\"can we talk?\"",
+   hope:"he's realised. he's ready to change.",
+   real:"sometimes it's real. most of the time he wants relief from the guilt, or to see if you'd take him back without him changing anything. the real ones come with a plan, not a question.",
+   todo:"ask yourself one thing. what has he changed? if the answer is nothing, it's the same conversation you already had."},
+  {id:"silence",label:"total silence. nothing at all.",
+   hope:"(if he cared he'd have said something by now.)",
+   real:"his silence feels like he's fine. most men go quiet because it's the easiest option, not because they've healed. his silence is not a verdict on you.",
+   todo:"match it. silence you choose feels completely different from silence you're waiting through."},
+  {id:"new",label:"he's already seeing someone new",
+   hope:"(she must be better than me.)",
+   real:"a man who moves on in days usually isn't over you. he's numbing it. a new person is the fastest way for a man to not feel something. it says nothing about her being better.",
+   todo:"stop checking her page too. it's the same urge in a different account."}
+];
+
+var SENDS = [
+  {id:"miss",label:"\"i miss you\"",read:"he'll feel good for about a minute. you'll feel exposed for about a week. a man who misses you back doesn't need to be told first."},
+  {id:"para",label:"a long paragraph",read:"he won't read it the way you wrote it. he'll skim for one thing. is she still mine. if the answer is yes, he relaxes. that's all the paragraph buys you."},
+  {id:"hey",label:"just \"hey\"",read:"\"hey\" is you asking permission to exist in his day. he'll decide how to answer based on how he feels, not how you feel."},
+  {id:"meme",label:"a meme or something funny",read:"it looks casual. he'll read it as an open door. trust me, men always know what the meme means."},
+  {id:"talk",label:"\"can we talk?\"",read:"you're handing him the time, the mood and the answer. you already know what he'd say. that's exactly why you're scared to send it."},
+  {id:"angry",label:"something angry",read:"to a man, anger is proof you still care. it also hands him the story where you're the crazy ex. silence is the only message he can't twist."}
+];
+
+var CUTS = [
+  {id:"archive",t:"archive the chat",s:"off your home screen. don't delete it tonight."},
+  {id:"mute",t:"mute his stories and posts",s:"you stop being his audience."},
+  {id:"hide",t:"hide your stories from him",s:"close the window he watches you through."},
+  {id:"cf",t:"take him off your close friends",s:"and anyone who'll report back to him."},
+  {id:"loc",t:"stop sharing your location",s:"find my, snap map, life360. all of it."},
+  {id:"stream",t:"log out of his netflix and spotify",s:"and log him out of yours."},
+  {id:"blend",t:"remove the shared playlist",s:"the spotify blend goes too."},
+  {id:"photos",t:"move his photos to a hidden album",s:"don't delete tonight. just out of sight."},
+  {id:"memories",t:"turn off photo memories",s:"so your phone stops ambushing you."},
+  {id:"rename",t:"rename his contact",s:"try: \"don't. open the drawer.\""},
+  {id:"pass",t:"change any password he knows",s:"email, streaming, the wifi."},
+  {id:"pay",t:"remove him from payment apps",s:"venmo favourites, cash app, shared cards."}
+];
+
+/* ================= router ================= */
+function route(){
+  var h=(location.hash||"").replace("#","");
+  if(h==="healing-open")h="healing";
+  var view;
+  if(h==="healing")view="healing";
+  else if(h===""||h==="home")view="home";
+  else view=route.cur||(["doors","about"].indexOf(h)>=0?"home":"healing");
+  route.cur=view;
+  document.querySelectorAll("[data-view]").forEach(function(v){v.hidden=(v.id!=="v-"+view);});
+  if(view==="healing"){if(!S.visited.healing){S.visited.healing=true;save();}renderHealing();}
+  else renderHome();
+  renderPass();
+  if(h==="home"||h==="healing"||h==="")window.scrollTo(0,0);
+  else{var t=$(h);if(t)t.scrollIntoView();}
+}
+window.addEventListener("hashchange",route);
+
+/* ================= passport ================= */
+function stampsEarned(){var n=0;if(S.start)n=1;return n;}
+function renderPass(){
+  var earned=stampsEarned();
+  var d="";for(var i=0;i<4;i++)d+='<i class="'+(i<earned?"on":"")+'"></i>';
+  $("passDots").innerHTML=d;
+  $("passLbl").textContent=earned+" of 4 rooms";
+}
+
+/* ================= home ================= */
+function renderHome(){
+  var g=$("doorGrid");
+  g.innerHTML=DOORS.map(function(d){
+    var sel=S.phase===d.id;
+    return '<button class="door" type="button" style="--c:'+d.c+'" data-door="'+d.id+'" aria-pressed="'+sel+'">'+
+      '<span class="door-top"><span class="door-phase">'+esc(d.phase)+'</span><span class="door-status'+(d.open?" open":"")+'">'+(d.open?"open now":"opening soon")+'</span></span>'+
+      '<span class="door-quote">'+esc(d.quote)+'</span>'+
+      '<span class="door-room">your room: <b>'+esc(d.room)+'</b></span>'+
+      '<span class="door-more"><span>'+esc(d.more)+'</span>'+
+        (d.open?'<a class="btn btn-rose" href="#healing" data-stop>open the first 72 hours</a>'
+               :'<span>want it the day it opens? comment <span class="kw">'+d.kw+'</span> on any of my videos and it comes straight to your dms.</span>')+
+      '</span></button>';
+  }).join("");
+  g.querySelectorAll("[data-door]").forEach(function(b){
+    b.addEventListener("click",function(e){
+      if(e.target.closest("[data-stop]"))return;
+      S.phase=(S.phase===b.dataset.door)?null:b.dataset.door;save();renderHome();
+    });
+  });
+  var earned=stampsEarned();
+  var names=["the first 72 hours","the available man filter","the pattern map","the 2am mind"];
+  $("stamps").innerHTML=names.map(function(n,i){return '<span class="stamp'+(i<earned?" on":"")+'">'+(i<earned?(S.done72?"72 hours done":"72 hours started"):n)+'</span>';}).join("");
+  $("passH").textContent=earned?"first stamp earned":"one stamp per room you finish";
+  $("passP").textContent=earned?(S.done72?"you finished the first 72 hours. three rooms left.":"your clock is running. finish the 72 hours and this stamp turns permanent."):"start the first 72 hours to earn your first stamp.";
+}
+
+/* ================= healing ================= */
+var curHour=null, openBlocks={}, curMove="like";
+function hourNow(){if(!S.start)return null;return Math.max(0,(Date.now()-S.start)/3600000);}
+function blockIndex(h){if(h==null)return 0;for(var i=0;i<BLOCKS.length;i++){if(h<BLOCKS[i].to)return i;}return BLOCKS.length-1;}
+
+function renderHealing(){
+  $("ctaDetox").href=CONFIG.detox;$("ctaTalk").href=CONFIG.talk;
+  renderClock();renderStrip();renderBlocks();renderMoves();renderReading();renderGate();
+}
+
+function renderClock(){
+  var h=hourNow(), body=$("clockBody"), arc=$("ringArc");
+  var C=326.7;
+  if(h==null){
+    $("ringH").textContent="00";$("ringL").textContent="not started";
+    arc.setAttribute("stroke-dashoffset",C);
+    var known=["united states","canada","united kingdom","australia","ireland","new zealand","europe","india"];
+    var isOther=S.country&&known.indexOf(S.country)<0;
+    body.innerHTML='<h2>your clock starts <em>the minute you go no contact.</em></h2>'+
+      '<p>put in your name and email and your clock follows you to any phone. i\'ll only email you when i have something worth reading.</p>'+
+      '<form class="startf" id="startF" novalidate>'+
+        '<div class="row"><input id="sfName" autocomplete="given-name" placeholder="your first name" aria-label="your first name" value="'+esc(S.name)+'">'+
+        '<input id="sfEmail" type="email" autocomplete="email" placeholder="your email" aria-label="your email" value="'+esc(S.email)+'"></div>'+
+        '<select id="sfWhere" aria-label="where you\'re reading from"><option value="">where are you reading from?</option>'+
+          known.map(function(c){return '<option'+(S.country===c?' selected':'')+'>'+c+'</option>';}).join("")+
+          '<option value="__other"'+(isOther?' selected':'')+'>somewhere else, i\'ll type it</option></select>'+
+        '<input id="sfOther" placeholder="type your country" aria-label="type your country" value="'+(isOther?esc(S.country):"")+'"'+(isOther?"":" hidden")+'>'+
+        '<div class="backdate" id="bd" hidden><label for="bdIn">i went no contact at</label><input type="datetime-local" id="bdIn"></div>'+
+        '<div class="err" id="sfErr"></div>'+
+        '<div class="clock-actions"><button class="btn btn-candle" type="submit" id="sfGo">start my 72 hours</button></div>'+
+        '<div class="alt"><button class="linkish" id="bdToggle" type="button">already went no contact? set the time</button><button class="linkish" id="lkToggle" type="button">started on another phone?</button></div>'+
+        '<p class="fine">by starting you agree to get emails from me. one tap to unsubscribe. your notes and unsent texts never leave this phone.</p>'+
+      '</form>'+
+      '<form class="startf" id="lookF" hidden novalidate>'+
+        '<p style="color:var(--text)">put in the email you started with and your clock comes back.</p>'+
+        '<input id="lkEmail" type="email" autocomplete="email" placeholder="your email" aria-label="your email">'+
+        '<div class="err" id="lkErr"></div>'+
+        '<div class="clock-actions"><button class="btn btn-candle" type="submit">bring my clock back</button><button class="linkish" id="lkBack" type="button">start a new one instead</button></div>'+
+      '</form>';
+    $("sfWhere").onchange=function(){var o=$("sfWhere").value==="__other";$("sfOther").hidden=!o;if(o)$("sfOther").focus();};
+    $("bdToggle").onclick=function(){$("bd").hidden=!$("bd").hidden;};
+    $("lkToggle").onclick=function(){$("startF").hidden=true;$("lookF").hidden=false;$("lkEmail").value=$("sfEmail").value;$("lkEmail").focus();};
+    $("lkBack").onclick=function(){$("lookF").hidden=true;$("startF").hidden=false;};
+    $("startF").onsubmit=function(e){
+      e.preventDefault();
+      var name=$("sfName").value.trim(), em=$("sfEmail").value.trim().toLowerCase(), w=$("sfWhere").value, err=$("sfErr");
+      var country=(w==="__other")?$("sfOther").value.trim():w;
+      if(!name){err.textContent="put in your first name so i know who's doing this.";$("sfName").focus();return;}
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){err.textContent="that email doesn't look right. check it and try again.";$("sfEmail").focus();return;}
+      if(!country){err.textContent=(w==="__other")?"type your country so i know where you are.":"pick where you're reading from.";return;}
+      var t=Date.now();
+      if(!$("bd").hidden&&$("bdIn").value){var b=new Date($("bdIn").value).getTime();if(isNaN(b)||b>Date.now()){err.textContent="that time is in the future. pick when you actually went no contact.";return;}t=b;}
+      err.textContent="";
+      S.name=name.slice(0,80);S.email=em;S.country=country.slice(0,60);S.start=t;S.done72=false;save();
+      syncStart();
+      toast("your 72 hours started, "+S.name.split(" ")[0].toLowerCase());
+      renderHealing();renderPass();
+    };
+    $("lookF").onsubmit=function(e){
+      e.preventDefault();
+      var em=$("lkEmail").value.trim().toLowerCase(), err=$("lkErr");
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){err.textContent="that email doesn't look right.";return;}
+      err.textContent="looking for your clock...";
+      lookup(em).then(function(r){
+        if(r&&r.ok&&r.clock_start){S.email=em;S.name=r.name||S.name;S.start=r.clock_start;save();track("device_switch",true);toast("welcome back"+(r.name?", "+String(r.name).toLowerCase():""));renderHealing();renderPass();}
+        else if(r&&r.error==="offline"){err.textContent="this preview can't look clocks up. it works on the live site.";}
+        else{err.textContent="no clock found for that email in this room. check the spelling, or start a new one.";}
+      });
+    };
+    return;
+  }
+  var hr=Math.floor(h), pct=Math.min(1,h/72);
+  $("ringH").textContent=hr>=72?"72":String(hr).padStart(2,"0");
+  $("ringL").textContent=hr>=72?"hours done":"of 72 hours";
+  arc.setAttribute("stroke-dashoffset",(C*(1-pct)).toFixed(1));
+  var b=BLOCKS[blockIndex(h)];
+  if(hr>=72){
+    if(!S.done72){S.done72=true;save();track("done_72",true);}
+    body.innerHTML='<h2>you did the part <em>most women never finish.</em></h2><p>72 hours, started '+esc(fmtWhen(S.start))+'. look at your timeline and the gaps between the dots. that\'s you.</p><div class="clock-actions"><a class="btn btn-candle" href="#next">see what comes next</a><button class="linkish" id="resetBtn" type="button">start a new clock</button></div>';
+  }else{
+    var left=72-h;
+    body.innerHTML='<h2>'+(S.name?esc(S.name.split(" ")[0].toLowerCase())+', ':'')+'hour '+hr+'. you\'re in <em>'+esc(b.name)+'.</em></h2>'+
+      '<p>started '+esc(fmtWhen(S.start))+' · '+Math.floor(left)+' hours to go. your stage is open below.</p>'+
+      '<div class="clock-actions"><a class="btn btn-candle" href="#blocks" id="jumpNow">what this hour needs</a><button class="linkish" id="resetBtn" type="button">reset clock</button></div>';
+  }
+  var rb=$("resetBtn");
+  rb.onclick=function(){
+    if(rb.dataset.arm){S.start=null;S.done72=false;S.urges=[];S.sent=0;save();renderHealing();renderPass();toast("clock reset. start again whenever");return;}
+    rb.dataset.arm="1";rb.textContent="tap again to reset";setTimeout(function(){if(rb){delete rb.dataset.arm;rb.textContent="reset clock";}},3000);
+  };
+  var j=$("jumpNow");if(j)j.onclick=function(e){e.preventDefault();var n=document.querySelector(".block.now");if(n)n.scrollIntoView({block:"center"});};
+}
+
+function renderStrip(){
+  var svg=$("strip"), X0=20, U=10, W=720, h=hourNow();
+  var cur=(h==null)?null:Math.min(72,h);
+  var s="";
+  BLOCKS.forEach(function(b,i){
+    var x=X0+b.from*U, w=(b.to-b.from)*U;
+    var active=cur!=null && cur>=b.from && cur<b.to;
+    s+='<rect x="'+x+'" y="44" width="'+w+'" height="30" fill="'+(active?"#3a2a30":(i%2?"#1d1623":"#221a28"))+'"/>';
+    s+='<text x="'+(x+w/2)+'" y="32" text-anchor="middle" font-family="Manrope,sans-serif" font-size="11" font-weight="700" fill="'+(active?"#eab861":"#85737f")+'">'+b.short+'</text>';
+  });
+  for(var t=0;t<=72;t++){
+    var x=X0+t*U, big=(t%12===0);
+    s+='<line x1="'+x+'" x2="'+x+'" y1="'+(big?74:68)+'" y2="'+(big?84:74)+'" stroke="'+(big?"#85737f":"#3a2c40")+'" stroke-width="1"/>';
+    if(big)s+='<text x="'+x+'" y="100" text-anchor="middle" font-family="Manrope,sans-serif" font-size="11" fill="#85737f">'+t+'h</text>';
+  }
+  if(cur!=null){
+    var cx=X0+cur*U;
+    s+='<rect x="'+X0+'" y="44" width="'+(cur*U)+'" height="30" fill="rgba(234,184,97,.10)"/>';
+    s+='<line x1="'+cx+'" x2="'+cx+'" y1="38" y2="80" stroke="#eab861" stroke-width="2.5"/>';
+    s+='<circle cx="'+cx+'" cy="38" r="5" fill="#eab861"/>';
+  }
+  if(S.start){
+    S.urges.forEach(function(u,i){
+      var uh=(u-S.start)/3600000; if(uh<0||uh>72)return;
+      s+='<circle cx="'+(X0+uh*U)+'" cy="'+(52+(i%3)*7)+'" r="4" fill="#e27592" stroke="#15101a" stroke-width="1.5"/>';
+    });
+  }
+  s+='<text x="'+(X0+W)+'" y="114" text-anchor="end" font-family="Manrope,sans-serif" font-size="10.5" fill="#85737f">'+(h==null?"your timeline fills in once the clock starts":"")+'</text>';
+  svg.innerHTML=s;
+}
+
+function renderBlocks(){
+  var h=hourNow(), ci=blockIndex(h);
+  var html=BLOCKS.map(function(b,i){
+    var state=(h==null)?(i===0?"":"")
+      :(h>=72?"past":(i<ci?"past":(i===ci?"now":"")));
+    var isOpen=(openBlocks[i]!==undefined)?openBlocks[i]:(h==null?i===0:i===ci);
+    var tag=state==="now"?"you are here":(state==="past"?"done":(b.from===0?"start":"ahead"));
+    return '<article class="block '+state+'">'+
+      '<button class="block-h" type="button" data-b="'+i+'" aria-expanded="'+isOpen+'">'+
+        '<span class="block-hrs">'+b.from+'–'+b.to+'h</span>'+
+        '<span class="block-t"><b>'+esc(b.name)+'</b><span>'+esc(b.sub)+'</span></span>'+
+        '<span class="block-tag">'+tag+'</span></button>'+
+      '<div class="block-b"'+(isOpen?"":" hidden")+'>'+
+        '<div><h4>what\'s happening in you</h4><p class="happen">'+esc(b.happen)+'</p>'+
+        '<p class="dont"><b>don\'t</b> '+esc(b.dont)+'</p></div>'+
+        '<div><h4>do this</h4><ul class="do-list">'+b.dos.map(function(d){return "<li>"+esc(d)+"</li>";}).join("")+'</ul></div>'+
+        '<div class="margin paper torn"><p class="from">from the other side</p><p class="hand">'+esc(b.note)+'</p></div>'+
+      '</div></article>';
+  }).join("");
+  var wrap=$("blocks");wrap.innerHTML=html;
+  wrap.querySelectorAll(".torn").forEach(tear);
+  wrap.querySelectorAll("[data-b]").forEach(function(btn){
+    btn.onclick=function(){var i=+btn.dataset.b;var body=btn.nextElementSibling;var open=body.hidden;body.hidden=!open;btn.setAttribute("aria-expanded",open);openBlocks[i]=open;};
+  });
+}
+
+function renderMoves(){
+  $("moves").innerHTML=MOVES.map(function(m){return '<button class="move" type="button" data-m="'+m.id+'" aria-pressed="'+(m.id===curMove)+'">'+esc(m.label)+'</button>';}).join("");
+  $("moves").querySelectorAll("[data-m]").forEach(function(b){b.onclick=function(){curMove=b.dataset.m;renderMoves();renderReading();if(window.innerWidth<860)$("reading").scrollIntoView({behavior:"smooth",block:"start"});};});
+}
+function renderReading(){
+  var m=MOVES.filter(function(x){return x.id===curMove;})[0];
+  $("reading").innerHTML='<p class="eyebrow" style="color:var(--paper-dim)">the reading</p><h3 class="move-name">'+esc(m.label)+'</h3>'+
+    '<div class="rd-part rd-hope"><h4>what you hope it means</h4><p>'+esc(m.hope)+'</p></div>'+
+    '<div class="rd-part rd-real"><h4>what it actually is, from a man</h4><p>'+esc(m.real)+'</p></div>'+
+    '<div class="rd-part rd-do"><h4>what you do</h4><p>'+esc(m.todo)+'</p></div>';
+}
+
+/* gate: the tools open with the clock */
+function renderGate(){
+  var open=!!S.start;
+  $("gate").hidden=open;$("unlocked").hidden=!open;
+  if(open){renderUrges();renderSlips();renderCut();}
+}
+$("toClock").addEventListener("click",function(e){e.preventDefault();$("clock").scrollIntoView({block:"center"});setTimeout(function(){var n=$("sfName");if(n)n.focus();},400);});
+
+/* urges */
+function renderUrges(){
+  $("uCount").textContent=S.urges.length;$("uSent").textContent=S.sent||0;
+  $("uLast").textContent=S.urges.length?dur(Date.now()-S.urges[S.urges.length-1]):"·";
+  var tr="";
+  if(S.urges.length>=4){
+    var g=[];for(var i=1;i<S.urges.length;i++)g.push(S.urges[i]-S.urges[i-1]);
+    var half=Math.floor(g.length/2), a=g.slice(0,half), b=g.slice(half);
+    var avg=function(x){return x.reduce(function(p,c){return p+c;},0)/x.length;};
+    if(a.length&&b.length&&avg(b)>avg(a)*1.15)tr="the gaps between your urges are getting longer. that's the whole thing working.";
+  }
+  $("uTrend").textContent=tr;
+}
+$("bigRed").addEventListener("click",function(){
+  S.urges.push(Date.now());save();renderUrges();renderStrip();track("urge");openOverlay();
+});
+
+var ovTimer=null;
+function openOverlay(){
+  var ov=$("ov");ov.hidden=false;document.body.style.overflow="hidden";
+  stepBreathe();
+}
+function closeOverlay(){clearInterval(ovTimer);clearTimeout(ovTimer);$("ov").hidden=true;document.body.style.overflow="";}
+function ovTop(label){return '<div class="ov-top"><span class="eyebrow">urge #'+S.urges.length+' · logged '+esc(fmtWhen(S.urges[S.urges.length-1]))+'</span><button class="ov-close" type="button" data-close>i\'m okay now</button></div>';}
+function wireClose(){document.querySelectorAll("#ovIn [data-close]").forEach(function(b){b.onclick=closeOverlay;});}
+function stepBreathe(){
+  var ovIn=$("ovIn"), left=60, inhale=true;
+  ovIn.innerHTML=ovTop()+'<p class="ov-say">okay. put the phone face down for one minute. <em>breathe with the light.</em></p>'+
+    '<div class="breath"><div class="breath-c" id="bc"><span id="bw">in</span></div><div class="breath-n" id="bn">60</div></div>'+
+    '<div class="ov-actions"><button class="linkish" type="button" id="skipB">skip to the truth</button></div>';
+  wireClose();
+  var bc=$("bc"),bw=$("bw"),bn=$("bn");
+  function cycle(){
+    if($("ov").hidden)return;
+    bc.style.transitionDuration=(inhale?4:6)+"s";bc.style.transform=inhale?"scale(1)":"scale(.55)";bw.textContent=inhale?"in":"out";
+    var d=inhale?4000:6000;inhale=!inhale;ovTimer=setTimeout(cycle,d);
+  }
+  requestAnimationFrame(function(){requestAnimationFrame(cycle);});
+  var tick=setInterval(function(){left--;if(bn)bn.textContent=left;if(left<=0||$("ov").hidden){clearInterval(tick);if(!$("ov").hidden)stepPick();}},1000);
+  $("skipB").onclick=function(){clearInterval(tick);stepPick();};
+}
+function stepPick(){
+  clearTimeout(ovTimer);
+  $("ovIn").innerHTML=ovTop()+'<p class="ov-say">good. now be honest with me. <em>what were you about to send?</em></p>'+
+    '<div class="sendopts">'+SENDS.map(function(s){return '<button class="sendopt" type="button" data-s="'+s.id+'">'+esc(s.label)+'</button>';}).join("")+'</div>';
+  wireClose();
+  document.querySelectorAll("#ovIn [data-s]").forEach(function(b){b.onclick=function(){stepRead(b.dataset.s);};});
+}
+function stepRead(id){
+  var s=SENDS.filter(function(x){return x.id===id;})[0];
+  $("ovIn").innerHTML=ovTop()+'<p class="ov-say">here\'s how he\'d read <em>'+esc(s.label)+'</em></p>'+
+    '<div class="his-read paper torn"><h4>on his side of the phone</h4><p>'+esc(s.read)+'</p></div>'+
+    '<p class="ov-say" style="font-size:19px">you can still say it. just say it where it can\'t hurt you.</p>'+
+    '<div class="ov-actions"><button class="btn btn-rose" type="button" id="toDrawer">put it in the drawer</button><button class="btn btn-ghost" type="button" data-close>i\'m okay now</button></div>'+
+    '<div class="ov-actions"><button class="linkish" type="button" id="iSent">i sent it anyway</button></div>';
+  document.querySelectorAll("#ovIn .torn").forEach(tear);
+  wireClose();
+  $("toDrawer").onclick=function(){closeOverlay();var d=$("drawerText");d.scrollIntoView({block:"center"});setTimeout(function(){d.focus();},350);};
+  $("iSent").onclick=function(){S.sent=(S.sent||0)+1;save();track("text_sent");renderUrges();closeOverlay();toast("okay. no shame. the clock keeps running.");};
+}
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!$("ov").hidden)closeOverlay();});
+
+/* drawer */
+var openSlip={};
+function renderSlips(){
+  var box=$("slips");
+  if(!S.notes.length){box.innerHTML='<div class="slip-empty">your drawer is empty. the first thing you drop in here is the one you\'ll be proudest of on day 21.</div>';return;}
+  box.innerHTML=S.notes.slice().reverse().map(function(n,ri){
+    var i=S.notes.length-1-ri, o=!!openSlip[i];
+    return '<div><button class="slip'+(o?"":" sealed")+'" type="button" data-slip="'+i+'"><span class="slip-top"><span>unsent · '+esc(fmtWhen(n.t))+'</span><span>'+(o?"tap to seal":"tap to open")+'</span></span><span class="slip-body">'+esc(n.text)+'</span></button>'+
+      (o?'<button class="slip-burn" type="button" data-burn="'+i+'">burn this one</button>':'')+'</div>';
+  }).join("");
+  box.querySelectorAll("[data-slip]").forEach(function(b){b.onclick=function(){var i=+b.dataset.slip;openSlip[i]=!openSlip[i];renderSlips();};});
+  box.querySelectorAll("[data-burn]").forEach(function(b){b.onclick=function(){var i=+b.dataset.burn;S.notes.splice(i,1);openSlip={};save();renderSlips();toast("burned");};});
+}
+$("drawerSeal").addEventListener("click",function(){
+  var t=$("drawerText").value.trim();
+  if(!t){$("drawerHint").textContent="write something first. anything.";return;}
+  S.notes.push({t:Date.now(),text:t});save();track("note");$("drawerText").value="";$("drawerHint").textContent="sealed. he'll never see it. you will.";
+  openSlip={};renderSlips();toast("in the drawer");
+});
+
+/* cut list */
+function renderCut(){
+  $("cut").innerHTML=CUTS.map(function(c){var on=!!S.cut[c.id];return '<label class="cut-item'+(on?" done":"")+'" for="cut-'+c.id+'"><input type="checkbox" id="cut-'+c.id+'" data-c="'+c.id+'"'+(on?" checked":"")+'><span><b>'+esc(c.t)+'</b><span>'+esc(c.s)+'</span></span></label>';}).join("");
+  var n=CUTS.filter(function(c){return S.cut[c.id];}).length;
+  $("cutFill").style.width=(n/CUTS.length*100)+"%";$("cutN").textContent=n+" / "+CUTS.length;
+  $("cut").querySelectorAll("[data-c]").forEach(function(cb){cb.onchange=function(){S.cut[cb.dataset.c]=cb.checked;save();renderCut();track("cut");if(CUTS.every(function(c){return S.cut[c.id];}))toast("all twelve. he's out of your phone.");};});
+}
+
+/* share */
+$("shareBtn").addEventListener("click",function(){
+  var url=location.href.split("#")[0]+"#healing";
+  var done=function(){toast("link copied");};
+  try{navigator.clipboard.writeText(url).then(done,function(){toast(url);});}catch(e){toast(url);}
+});
+$("footIg").href=CONFIG.ig;
+
+/* live clock tick */
+setInterval(function(){if(!$("v-healing").hidden&&S.start){renderClock();renderStrip();renderUrges();}},60000);
+
+route();
+if(S.start&&S.email){ if(S.synced===false)syncStart(); else track("visit",true); }
+})();
+</script>
+
+</body>
+</html>
