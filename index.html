@@ -142,6 +142,17 @@ p{margin:0}
 .backroom .display{font-size:clamp(46px,7vw,72px);color:var(--candle)}
 .backroom p{color:var(--dim);max-width:52ch}
 .backroom p b{color:var(--text)}
+.secret .s-copy{display:flex;flex-direction:column;gap:12px}
+.secret .s-copy p{color:var(--dim);max-width:54ch}
+.secret .s-tag{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--candle)}
+.secret form{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.secret input{flex:1 1 160px;min-width:0;background:var(--night);border:1px solid var(--line);color:var(--text);border-radius:40px;padding:12px 16px;font:inherit;font-size:15px}
+.secret input:focus{outline:none;border-color:var(--candle)}
+.secret .s-err{flex-basis:100%;font-size:13px;color:var(--rose);min-height:0}
+.secret .s-in{font-family:var(--serif);font-size:19px;color:var(--text)}
+.secret .s-in em{color:var(--candle)}
+.secret.compact{padding:26px 24px}
+.secret.compact .display{font-size:clamp(38px,5.5vw,54px)}
 
 /* ============ HEALING ROOM ============ */
 .room-hero{padding-block:40px 8px}
@@ -361,6 +372,7 @@ p{margin:0}
   .inside{grid-template-columns:1fr}
   .passport{grid-template-columns:1fr}
   .backroom{grid-template-columns:1fr}
+  .secret form .btn{flex:1 1 100%}
   .gate-peek{grid-template-columns:1fr}
   .block-h{grid-template-columns:62px 1fr;gap:12px;padding:16px}
   .block-tag{grid-column:2;justify-self:start}
@@ -641,10 +653,7 @@ main[data-view]{--rc:var(--rose)}
   </section>
 
   <section class="sec">
-    <div class="backroom">
-      <span class="display">the back<br>room</span>
-      <p><b>coming soon.</b> a private room for the women doing the work, where i answer the questions i can't answer in a 30-second video. the women who finish a room here hear about it first.</p>
-    </div>
+    <div class="backroom secret" id="secret" data-secret="home"></div>
   </section>
 </main>
 
@@ -792,6 +801,7 @@ main[data-view]{--rc:var(--rose)}
     </div>
     <p class="safety"><b>if you feel unsafe</b> or you're dealing with abuse, this room isn't the tool. put your safety first and make a plan with someone you trust. in the united states you can call the national domestic violence hotline at 1 800 799 7233 or text START to 88788.</p>
   </section>
+  <section class="sec" style="margin-top:56px"><div class="backroom secret compact" data-secret="healing"></div></section>
   <section class="sec" style="margin-top:56px"><p class="eyebrow" style="margin-bottom:14px">the other rooms</p><div class="roomsnav" data-nav="healing"></div></section>
 </main>
 
@@ -861,6 +871,7 @@ main[data-view]{--rc:var(--rose)}
     </div>
   </section>
 
+  <section class="sec" style="margin-top:56px"><div class="backroom secret compact" data-secret="dating"></div></section>
   <section class="sec" style="margin-top:56px"><p class="eyebrow" style="margin-bottom:14px">the other rooms</p><div class="roomsnav" data-nav="dating"></div></section>
 </main>
 
@@ -930,6 +941,7 @@ main[data-view]{--rc:var(--rose)}
     </div>
   </section>
 
+  <section class="sec" style="margin-top:56px"><div class="backroom secret compact" data-secret="done"></div></section>
   <section class="sec" style="margin-top:56px"><p class="eyebrow" style="margin-bottom:14px">the other rooms</p><div class="roomsnav" data-nav="done"></div></section>
 </main>
 
@@ -991,6 +1003,7 @@ main[data-view]{--rc:var(--rose)}
     </div>
   </section>
 
+  <section class="sec" style="margin-top:56px"><div class="backroom secret compact" data-secret="clarity"></div></section>
   <section class="sec" style="margin-top:56px"><p class="eyebrow" style="margin-bottom:14px">the other rooms</p><div class="roomsnav" data-nav="clarity"></div></section>
 </main>
 
@@ -1214,7 +1227,7 @@ function route(){
   else if(view==="clarity")renderClarity();
   else renderHome();
   if(view!=="home"&&view!=="healing"&&R(view).started&&S.email&&!visitPinged[view]){visitPinged[view]=1;trackRoom(view,"visit");}
-  renderPass();
+  renderPass();renderSecret();
   if(VIEWS.indexOf(h)>=0||h==="home"||h==="")window.scrollTo(0,0);
   else{var t=$(h);if(t)t.scrollIntoView();}
 }
@@ -1259,7 +1272,7 @@ function renderHome(){
   var st=stampState(),earned=stampsEarned();
   $("stamps").innerHTML=st.map(function(x){return '<span class="stamp'+(x.on?" on":"")+'">'+esc(x.on?x.label:x.name)+'</span>';}).join("");
   $("passH").textContent=earned===0?"one stamp per room you finish":(earned===4?"all four stamps. you did the whole room.":earned+" of 4 stamps earned");
-  $("passP").textContent=earned===0?"use any room to earn your first stamp.":(earned===4?"that's the work most people never do. the back room is where it goes next.":(4-earned)+" room"+(4-earned>1?"s":"")+" left. each one is a different part of the same story.");
+  $("passP").textContent=earned===0?"use any room to earn your first stamp.":(earned===4?"that's the work most people never do. the secret room is where it goes next.":(4-earned)+" room"+(4-earned>1?"s":"")+" left. each one is a different part of the same story.");
 }
 
 /* ================= healing ================= */
@@ -1981,6 +1994,38 @@ function renderLetter(){
 }
 function renderClarity(){renderLoops();renderLogForm();renderChart();renderLetter();wireLinks($("v-clarity"));}
 
+/* ---------- the secret room (community waitlist) ---------- */
+function renderSecret(){
+  var joined=R("secretroom").joined, first=S.name?esc(S.name.split(" ")[0].toLowerCase()):"";
+  document.querySelectorAll("[data-secret]").forEach(function(box){
+    var from=box.dataset.secret, compact=from!=="home";
+    var head='<span class="display">the secret<br>room</span>';
+    var copy=compact
+      ?'<span class="s-tag">coming soon · invite first</span><p><b>a private community of women helping each other through exactly this, with me in the room.</b> the waitlist gets in first.</p>'
+      :'<span class="s-tag">coming soon · invite first</span><p><b>a private room for the women doing the work.</b> a community of women helping each other through the same things, and the place where i answer what i can\'t in a 30-second video. the waitlist gets in first.</p>';
+    var action;
+    if(joined) action='<p class="s-in">you\'re on the list'+(first?', '+first:'')+'. <em>you\'ll hear first.</em></p>';
+    else if(S.name&&S.email) action='<form data-sform="'+from+'"><button class="btn btn-candle" type="submit">save my spot'+(first?', '+first:'')+'</button></form>';
+    else action='<form data-sform="'+from+'" novalidate><input name="n" autocomplete="given-name" placeholder="first name" aria-label="first name"><input name="e" type="email" autocomplete="email" placeholder="email" aria-label="email"><button class="btn btn-candle" type="submit">save my spot</button><span class="s-err" role="alert"></span></form>';
+    box.innerHTML=head+'<div class="s-copy">'+copy+action+'</div>';
+  });
+  document.querySelectorAll("[data-sform]").forEach(function(f){
+    f.onsubmit=function(e){
+      e.preventDefault();
+      var n=f.querySelector('[name="n"]'), em=f.querySelector('[name="e"]'), err=f.querySelector(".s-err");
+      if(n){
+        var nv=n.value.trim(), ev=em.value.trim().toLowerCase();
+        if(!nv){err.textContent="put in your first name.";n.focus();return;}
+        if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ev)){err.textContent="that email doesn't look right.";em.focus();return;}
+        S.name=nv.slice(0,80);S.email=ev;
+      }
+      var r=R("secretroom");r.joined=Date.now();save();
+      pendingStart.secretroom=api({action:"start",room:"secretroom",email:S.email,name:S.name,country:S.country||"",clock_start:r.joined,source:S.src});
+      trackRoom("secretroom","joined",{result:"waitlist",detail:"joined from "+f.dataset.sform});
+      renderSecret();toast("you're on the list");
+    };
+  });
+}
 renderRoomsNav();
 document.addEventListener("keydown",function(e){if(e.key==="Escape"){if(!$("cap").hidden)closeCap();if(!$("imgov").hidden){$("imgov").hidden=true;document.body.style.overflow="";}}});
 route();
