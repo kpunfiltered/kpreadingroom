@@ -910,10 +910,19 @@ main[data-view]{--rc:var(--rose)}
 
   <section class="sec">
     <div class="bridge paper torn">
-      <p class="eyebrow" style="color:var(--paper-dim)">the next page</p>
+      <p class="eyebrow" style="color:var(--paper-dim)">the next page · HVW™</p>
       <h2 class="display">the map shows the <span>loop.</span><br>this breaks it.</h2>
-      <p class="lede2">high value women is my science-backed program for the woman who's done choosing the same man in a different jacket. the pattern map shows you what repeats. the program is where you become the woman it can't find.</p>
-      <div class="cta"><a class="btn btn-ink" data-link="hvw" href="#" target="_blank" rel="noopener">get high value women</a></div>
+      <p class="lede2">your standards card is the first exercise in module one of high value women. the program takes it from there. it's for the woman who's done chasing and wants to be chosen, pursued and respected without proving her worth. it's not for mind games, and it's not for controlling one specific man.</p>
+      <ul class="inside">
+        <li>6 core modules on rewiring the pattern</li>
+        <li>the inner work workbook, fillable</li>
+        <li>a 21-day roadmap with daily actions</li>
+        <li>high value texts and scripts for when he pulls away</li>
+        <li>guided meditations and affirmations</li>
+        <li>closure, boundary and no-contact templates</li>
+        <li>bonus: the 21-day glow-up tracker</li>
+      </ul>
+      <div class="cta"><a class="btn btn-ink" data-link="hvw" href="#" target="_blank" rel="noopener">get HVW™</a></div>
     </div>
   </section>
 
@@ -1526,9 +1535,10 @@ setInterval(function(){if(!$("v-healing").hidden&&S.start){renderClock();renderS
    ====================================================================== */
 if(!S.rooms)S.rooms={};
 function R(room){if(!S.rooms[room])S.rooms[room]={};return S.rooms[room];}
+var pendingStart={};
 function trackRoom(room,ev,fields){
   if(!S.email||!CONFIG.api)return;
-  api({action:"event",room:room,email:S.email,event:ev,fields:fields||{}});
+  (pendingStart[room]||Promise.resolve()).then(function(){api({action:"event",room:room,email:S.email,event:ev,fields:fields||{}});});
 }
 var LINKS={talk:CONFIG.talk,hvw:CONFIG.hvw,detox:CONFIG.detox,substack:CONFIG.substack};
 function wireLinks(scope){(scope||document).querySelectorAll("[data-link]").forEach(function(a){a.href=LINKS[a.dataset.link]||"#";});}
@@ -1564,7 +1574,7 @@ function needCapture(room,title,sub,cb){
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){err.textContent="that email doesn't look right. check it and try again.";$("cfEmail").focus();return;}
     if(!country){err.textContent=(w==="__other")?"type your country.":"pick where you're reading from.";return;}
     S.name=name.slice(0,80);S.email=em;S.country=country.slice(0,60);r.started=Date.now();save();
-    api({action:"start",room:room,email:S.email,name:S.name,country:S.country,clock_start:r.started,source:S.src});
+    pendingStart[room]=api({action:"start",room:room,email:S.email,name:S.name,country:S.country,clock_start:r.started,source:S.src});
     closeCap();renderPass();cb();
   };
 }
