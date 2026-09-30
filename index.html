@@ -19,7 +19,7 @@
 :root{
   color-scheme: dark;
   --night:#15101a; --night-2:#1d1623; --night-3:#271d2d; --line:#3a2c40; --line-soft:#2a2030;
-  --text:#f0e7dc; --dim:#b9a9b4; --faint:#85737f;
+  --text:#f0e7dc; --dim:#b9a9b4; --faint:#948290;
   --paper:#efe4d3; --paper-2:#e4d5bf; --paper-ink:#2a1c23; --paper-dim:#6e5762;
   --rose:#e27592; --rose-soft:rgba(226,117,146,.14); --wine:#8a2846;
   --candle:#eab861; --candle-soft:rgba(234,184,97,.14);
@@ -97,11 +97,13 @@ p{margin:0}
 .pin-note::before{content:"";position:absolute;top:-11px;left:50%;width:84px;height:24px;margin-left:-42px;background:rgba(234,184,97,.55);transform:rotate(-3deg)}
 
 .doors{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
-.door{display:flex;flex-direction:column;gap:12px;text-align:left;cursor:pointer;border:1px solid var(--line);border-radius:4px;padding:24px 22px 22px;background:var(--night-2);transition:border-color .2s ease,background .2s ease,transform .2s ease;position:relative;overflow:hidden}
+.door{display:flex;flex-direction:column;gap:12px;text-align:left;border:1px solid var(--line);border-radius:4px;padding:24px 22px 22px;background:var(--night-2);transition:border-color .2s ease,background .2s ease,transform .2s ease;position:relative;overflow:hidden}
 .door:hover{border-color:var(--c);transform:translateY(-2px)}
-.door[aria-pressed="true"]{border-color:var(--c);background:var(--night-3)}
+.door.sel{border-color:var(--c);background:var(--night-3)}
+.door-hit{all:unset;display:flex;flex-direction:column;gap:12px;cursor:pointer;text-align:left}
+.door-hit:focus-visible{outline:2px solid var(--candle);outline-offset:6px;border-radius:2px}
 .door::after{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--c);opacity:.0;transition:opacity .2s}
-.door[aria-pressed="true"]::after{opacity:1}
+.door.sel::after{opacity:1}
 .door-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
 .door-phase{font-family:var(--display);font-size:30px;letter-spacing:.03em;line-height:1;color:var(--c)}
 .door-status{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);display:inline-flex;align-items:center;gap:6px}
@@ -111,7 +113,7 @@ p{margin:0}
 .door-room{font-size:13.5px;color:var(--dim)}
 .door-room b{color:var(--text);font-weight:600}
 .door-more{display:none;border-top:1px dashed var(--line);padding-top:14px;margin-top:2px;font-size:14.5px;color:var(--dim);flex-direction:column;gap:14px}
-.door[aria-pressed="true"] .door-more{display:flex}
+.door.sel .door-more{display:flex}
 .door-more .btn{align-self:flex-start}
 
 .tools{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
@@ -142,6 +144,20 @@ p{margin:0}
 .backroom .display{font-size:clamp(46px,7vw,72px);color:var(--candle)}
 .backroom p{color:var(--dim);max-width:52ch}
 .backroom p b{color:var(--text)}
+.voice{display:flex;align-items:center;gap:14px;margin-top:22px;max-width:440px;padding:12px 16px 12px 12px;border:1px solid var(--line);border-radius:60px;background:var(--night-2)}
+.voice[hidden]{display:none}
+.v-play{flex:none;width:44px;height:44px;border-radius:50%;border:none;cursor:pointer;background:var(--rc,var(--rose));color:#1a1216;display:grid;place-items:center}
+.v-play svg{width:16px;height:16px}
+.v-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.v-top{display:flex;justify-content:space-between;gap:10px;font-size:13px}
+.v-top b{font-family:var(--hand);font-size:21px;font-weight:600;line-height:1;color:var(--text)}
+.v-top span{color:var(--faint);font-variant-numeric:tabular-nums}
+.v-bar{height:4px;border-radius:4px;background:var(--night-3);overflow:hidden}
+.v-bar i{display:block;height:100%;width:0;background:var(--rc,var(--rose))}
+.kp-photo{margin:0 0 20px;max-width:260px;transform:rotate(-1.5deg);padding:10px 10px 36px;background:var(--paper);box-shadow:0 18px 40px rgba(0,0,0,.45)}
+.kp-photo[hidden]{display:none}
+.kp-photo img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover}
+.kp-photo figcaption{font-family:var(--hand);font-size:22px;color:var(--wine);text-align:center;margin-top:8px}
 .secret .s-copy{display:flex;flex-direction:column;gap:12px}
 .secret .s-copy p{color:var(--dim);max-width:54ch}
 .secret .s-tag{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--candle)}
@@ -599,6 +615,7 @@ main[data-view]{--rc:var(--rose)}
       <p class="eyebrow"><b>KP Unfiltered</b> · free, all of it</p>
       <h1 class="display">the reading<span class="row2">room</span></h1>
       <p class="lede">four rooms built by a man telling on his own side. each one is a tool you use on <em>your</em> situation, and it remembers where you left off.</p>
+      <div class="voice" data-voice="home" hidden></div>
     </div>
     <aside class="pin-note paper torn">
       <p class="hand">no pdfs. no fluff. i made these free on purpose, and i made them the way i'd want someone to help my sister.</p>
@@ -631,13 +648,14 @@ main[data-view]{--rc:var(--rose)}
 
   <section class="sec about" id="about">
     <div>
+      <figure class="kp-photo" id="kpPhoto" hidden><img src="img/kp.jpg" alt="KP, the man behind KP Unfiltered" id="kpImg"><figcaption>· kp</figcaption></figure>
       <p class="eyebrow" style="margin-bottom:14px">who's reading you</p>
       <p class="about-big">i'm kp. 6'4", los angeles, and i've been the man in the story you're trying to figure out. now i tell women <em>what we don't say out loud.</em> 2000+ women have come to me for help with exactly this.</p>
     </div>
     <div class="rules">
       <div class="rule"><span class="rn">1</span><div><h3>nothing in here blames you</h3><p>the problem is the pattern or his behaviour. you're smart. you just haven't been told the male side.</p></div></div>
       <div class="rule"><span class="rn">2</span><div><h3>every room is finished</h3><p>free here means complete. each room gets you one real win you can finish tonight.</p></div></div>
-      <div class="rule"><span class="rn">3</span><div><h3>your words stay on your phone</h3><p>your notes and unsent texts never leave your phone. nobody reads them, including me. only your clock is saved to your email, so it follows you.</p></div></div>
+      <div class="rule"><span class="rn">3</span><div><h3>your words stay on your phone</h3><p>your notes, unsent texts and letters never leave your phone. nobody reads them, including me. only your name, email and results, like your clock or your quiz type, are saved, so they follow you.</p></div></div>
     </div>
   </section>
 
@@ -664,6 +682,7 @@ main[data-view]{--rc:var(--rose)}
     <p class="eyebrow" style="margin-top:22px">room 01 · <span class="kw">HEALING</span> · for the woman still in it</p>
     <h1 class="display">the first<br><span>72 hours</span></h1>
     <p class="lede">days 1 to 3 of detox from him, free. the hour-by-hour of getting through the start of no contact, from a man who knows exactly what he's doing on the other side of your phone.</p>
+    <div class="voice" data-voice="healing" hidden></div>
     <div class="room-meta"><span><b>7</b> stages</span><span><b>8</b> of his moves decoded</span><span><b>12</b> things to cut tonight</span><span>your clock follows you to <b>any</b> phone</span></div>
   </section>
 
@@ -813,6 +832,7 @@ main[data-view]{--rc:var(--rose)}
     <p class="eyebrow" style="margin-top:22px">room 02 · <span class="kw rc">DATING</span> · for the woman on the apps</p>
     <h1 class="display">the available<br><span>man filter</span></h1>
     <p class="lede">you're not unlucky. you keep meeting the same man with a different name. this room shows you which one, how to spot him by the third date, and where the other kind actually is.</p>
+    <div class="voice" data-voice="dating" hidden></div>
     <div class="room-meta"><span><b>8</b> questions</span><span><b>5</b> men who keep finding women</span><span><b>15</b> first-date tells</span><span><b>8</b> of his texts decoded</span></div>
   </section>
 
@@ -882,6 +902,7 @@ main[data-view]{--rc:var(--rose)}
     <p class="eyebrow" style="margin-top:22px">room 03 · <span class="kw rc">DONE</span> · for the woman done repeating it</p>
     <h1 class="display">the pattern<br><span>map</span></h1>
     <p class="lede">why do you keep ending up with the same man in a different jacket? put your last three side by side and watch the pattern draw itself. then write the standards that break it.</p>
+    <div class="voice" data-voice="done" hidden></div>
     <div class="room-meta"><span><b>3</b> exes, initials only</span><span><b>16</b> behaviours</span><span><b>4</b> patterns</span><span><b>1</b> lock screen you'll keep</span></div>
   </section>
 
@@ -952,6 +973,7 @@ main[data-view]{--rc:var(--rose)}
     <p class="eyebrow" style="margin-top:22px">room 04 · <span class="kw rc">CLARITY</span> · for the woman who can't stop thinking</p>
     <h1 class="display">the 2am<br><span>mind</span></h1>
     <p class="lede">a man explaining the inside of your own head back to you. the thoughts that loop at 2am, what's actually true inside them, and the letter you'll never send.</p>
+    <div class="voice" data-voice="clarity" hidden></div>
     <div class="room-meta"><span><b>10</b> loops decoded</span><span><b>24</b>-hour spiral map</span><span><b>6</b> prompts, one letter</span><span>your words stay on <b>your</b> phone</span></div>
   </section>
 
@@ -977,6 +999,7 @@ main[data-view]{--rc:var(--rose)}
       <div class="panel log-form" id="logForm"></div>
       <div class="panel chart" id="logChart"></div>
     </div>
+    <p class="safety"><b>if the thoughts ever turn to hurting yourself,</b> this room isn't the tool, and you deserve a real person right now. in the united states, call or text 988, any hour. anywhere else, findahelpline.com lists free, confidential lines in your country.</p>
   </section>
 
   <section class="sec" id="letter">
@@ -1082,10 +1105,13 @@ function syncStart(){
   if(!S.email)return Promise.resolve();
   return api({action:"start",email:S.email,name:S.name,country:S.country,clock_start:S.start,source:S.src}).then(function(r){S.synced=!!(r&&r.ok);save();});
 }
-function lookup(email){
+function codeRequest(email){
   if(!CONFIG.api)return Promise.resolve({ok:false,error:"offline"});
-  return fetch(CONFIG.api+"?action=lookup&room="+encodeURIComponent(CONFIG.room)+"&email="+encodeURIComponent(email))
-    .then(function(r){return r.json();}).catch(function(){return {ok:false,error:"network"};});
+  return api({action:"code_request",email:email});
+}
+function codeVerify(email,code){
+  if(!CONFIG.api)return Promise.resolve({ok:false,error:"offline"});
+  return api({action:"code_verify",email:email,code:code});
 }
 
 function $(id){return document.getElementById(id);}
@@ -1255,17 +1281,17 @@ function renderHome(){
   var g=$("doorGrid");
   g.innerHTML=DOORS.map(function(d){
     var sel=S.phase===d.id;
-    return '<button class="door" type="button" style="--c:'+d.c+'" data-door="'+d.id+'" aria-pressed="'+sel+'">'+
+    return '<div class="door'+(sel?' sel':'')+'" style="--c:'+d.c+'">'+
+      '<button class="door-hit" type="button" data-door="'+d.id+'" aria-expanded="'+sel+'">'+
       '<span class="door-top"><span class="door-phase">'+esc(d.phase)+'</span><span class="door-status open">open now</span></span>'+
       '<span class="door-quote">'+esc(d.quote)+'</span>'+
-      '<span class="door-room">your room: <b>'+esc(d.room)+'</b></span>'+
-      '<span class="door-more"><span>'+esc(d.more)+'</span>'+
-        ('<a class="btn btn-rose" style="background:'+d.c+'" href="#'+d.to+'" data-stop>open '+esc(d.room)+'</a>')+
-      '</span></button>';
+      '<span class="door-room">your room: <b>'+esc(d.room)+'</b></span></button>'+
+      '<div class="door-more"><span>'+esc(d.more)+'</span>'+
+        '<a class="btn btn-rose" style="background:'+d.c+'" href="#'+d.to+'">open '+esc(d.room)+'</a>'+
+      '</div></div>';
   }).join("");
   g.querySelectorAll("[data-door]").forEach(function(b){
-    b.addEventListener("click",function(e){
-      if(e.target.closest("[data-stop]"))return;
+    b.addEventListener("click",function(){
       S.phase=(S.phase===b.dataset.door)?null:b.dataset.door;save();renderHome();
     });
   });
@@ -1306,13 +1332,14 @@ function renderClock(){
         '<div class="err" id="sfErr"></div>'+
         '<div class="clock-actions"><button class="btn btn-candle" type="submit" id="sfGo">start my 72 hours</button></div>'+
         '<div class="alt"><button class="linkish" id="bdToggle" type="button">already went no contact? set the time</button><button class="linkish" id="lkToggle" type="button">started on another phone?</button></div>'+
-        '<p class="fine">by starting you agree to get emails from me. one tap to unsubscribe. your notes and unsent texts never leave this phone.</p>'+
+        '<p class="fine">by starting you agree to get emails from me. want off the list? email team@unfilteredprojects.com and you\'re off. your notes and unsent texts never leave this phone.</p>'+
       '</form>'+
       '<form class="startf" id="lookF" hidden novalidate>'+
-        '<p style="color:var(--text)">put in the email you started with and your clock comes back.</p>'+
+        '<p style="color:var(--text)" id="lkSay">put in the email you started with. i\'ll send a 6-digit code to that inbox so only you can bring your clock back.</p>'+
         '<input id="lkEmail" type="email" autocomplete="email" placeholder="your email" aria-label="your email">'+
+        '<input id="lkCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6-digit code" aria-label="6-digit code" hidden>'+
         '<div class="err" id="lkErr"></div>'+
-        '<div class="clock-actions"><button class="btn btn-candle" type="submit">bring my clock back</button><button class="linkish" id="lkBack" type="button">start a new one instead</button></div>'+
+        '<div class="clock-actions"><button class="btn btn-candle" type="submit" id="lkGo">send me a code</button><button class="linkish" id="lkBack" type="button">start a new one instead</button></div>'+
       '</form>';
     $("sfWhere").onchange=function(){var o=$("sfWhere").value==="__other";$("sfOther").hidden=!o;if(o)$("sfOther").focus();};
     $("bdToggle").onclick=function(){$("bd").hidden=!$("bd").hidden;};
@@ -1335,13 +1362,24 @@ function renderClock(){
     };
     $("lookF").onsubmit=function(e){
       e.preventDefault();
-      var em=$("lkEmail").value.trim().toLowerCase(), err=$("lkErr");
+      var em=$("lkEmail").value.trim().toLowerCase(), err=$("lkErr"), codeBox=$("lkCode");
       if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){err.textContent="that email doesn't look right.";return;}
-      err.textContent="looking for your clock...";
-      lookup(em).then(function(r){
+      if(codeBox.hidden){
+        err.textContent="sending...";
+        codeRequest(em).then(function(r){
+          if(r&&r.error==="offline"){err.textContent="this preview can't send codes. it works on the live site.";return;}
+          err.textContent="";codeBox.hidden=false;codeBox.focus();$("lkGo").textContent="bring my clock back";
+          $("lkSay").textContent="if that email started a clock here, a 6-digit code is on its way. check your inbox and your spam folder. it works for 10 minutes.";
+        });
+        return;
+      }
+      var code=codeBox.value.replace(/\D/g,"");
+      if(code.length!==6){err.textContent="the code is 6 digits.";return;}
+      err.textContent="checking...";
+      codeVerify(em,code).then(function(r){
         if(r&&r.ok&&r.clock_start){S.email=em;S.name=r.name||S.name;S.start=r.clock_start;save();track("device_switch",true);toast("welcome back"+(r.name?", "+String(r.name).toLowerCase():""));renderHealing();renderPass();}
-        else if(r&&r.error==="offline"){err.textContent="this preview can't look clocks up. it works on the live site.";}
-        else{err.textContent="no clock found for that email in this room. check the spelling, or start a new one.";}
+        else if(r&&r.error==="too many tries"){err.textContent="too many tries. wait 10 minutes and ask for a new code.";}
+        else{err.textContent="that code didn't match. check the latest email, or ask for a new one.";codeBox.value="";}
       });
     };
     return;
@@ -1576,7 +1614,7 @@ function needCapture(room,title,sub,cb){
       '<input id="cfOther" placeholder="type your country" aria-label="type your country" value="'+(isOther?esc(S.country):"")+'"'+(isOther?"":" hidden")+'>'+
       '<div class="err" id="cfErr"></div>'+
       '<div class="clock-actions"><button class="btn btn-ink" type="submit">show me</button><button class="linkish" type="button" id="cfClose">not now</button></div>'+
-      '<p class="fine">by continuing you agree to get emails from me. one tap to unsubscribe. anything you write in these rooms stays on your phone.</p>'+
+      '<p class="fine">by continuing you agree to get emails from me. want off the list? email team@unfilteredprojects.com and you\'re off. anything you write in these rooms stays on your phone.</p>'+
     '</form>';
   tear(card);
   $("cap").hidden=false;document.body.style.overflow="hidden";
@@ -2026,6 +2064,31 @@ function renderSecret(){
     };
   });
 }
+/* ---------- voice notes + photo: shown only once the files exist on the site ---------- */
+var PLAY='<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg>', PAUSE='<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 2.5h3v11h-3zM9.5 2.5h3v11h-3z" fill="currentColor"/></svg>';
+function mmss(t){t=Math.max(0,Math.round(t||0));return Math.floor(t/60)+":"+String(t%60).padStart(2,"0");}
+function initVoices(){
+  document.querySelectorAll("[data-voice]").forEach(function(box){
+    var name=box.dataset.voice, exts=["m4a","mp3"], i=0, a=new Audio();
+    a.preload="metadata";
+    a.onerror=function(){i++;if(i<exts.length)a.src="audio/"+name+"."+exts[i];};
+    a.onloadedmetadata=function(){
+      box.innerHTML='<button class="v-play" type="button" aria-label="play a note from kp">'+PLAY+'</button><div class="v-body"><div class="v-top"><b>a note from kp</b><span>'+mmss(a.duration)+'</span></div><div class="v-bar"><i></i></div></div>';
+      box.hidden=false;
+      var btn=box.querySelector(".v-play"), bar=box.querySelector(".v-bar i"), tm=box.querySelector(".v-top span");
+      btn.onclick=function(){
+        if(a.paused){document.querySelectorAll("audio").forEach(function(x){x.pause();});window.__kpAudio&&window.__kpAudio!==a&&window.__kpAudio.pause();window.__kpAudio=a;a.play();}
+        else a.pause();
+      };
+      a.onplay=function(){btn.innerHTML=PAUSE;btn.setAttribute("aria-label","pause");trackRoom(name==="home"?"healing":name,"voice_play");};
+      a.onpause=a.onended=function(){btn.innerHTML=PLAY;btn.setAttribute("aria-label","play a note from kp");};
+      a.ontimeupdate=function(){bar.style.width=(a.currentTime/a.duration*100)+"%";tm.textContent=mmss(a.duration-a.currentTime);};
+    };
+    a.src="audio/"+name+"."+exts[0];
+  });
+  var img=$("kpImg");if(img){img.onload=function(){$("kpPhoto").hidden=false;};if(img.complete&&img.naturalWidth)$("kpPhoto").hidden=false;}
+}
+initVoices();
 renderRoomsNav();
 document.addEventListener("keydown",function(e){if(e.key==="Escape"){if(!$("cap").hidden)closeCap();if(!$("imgov").hidden){$("imgov").hidden=true;document.body.style.overflow="";}}});
 route();
