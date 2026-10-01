@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<style>html,body{background:#15101a;color:#f0e7dc;color-scheme:dark;margin:0}</style>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>upstairs · KP Unfiltered</title>
 <meta name="description" content="the paid floor of the reading room. programs you use, not pdfs you forget.">
@@ -15,7 +16,7 @@
 <link rel="apple-touch-icon" href="/upstairs/icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/upstairs/icons/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@500;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400;1,9..144,600&family=Manrope:wght@400;500;600;700;800&display=swap">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@500;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400;1,9..144,600&family=Manrope:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@500;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400;1,9..144,600&family=Manrope:wght@400;500;600;700;800&display=swap"></noscript>
 <style>
 /* KP Unfiltered · upstairs. same world as the reading room: a room at 2am, torn paper on top.
    Candle gold marks the paid floor. Each product has its own accent (detox = rose). */
@@ -72,8 +73,8 @@ p{margin:0}
 .paper .linkish{color:var(--paper-dim)}
 
 /* masthead */
-.mast{position:sticky;top:0;z-index:30;padding-top:var(--safe-t);background:rgba(21,16,26,.86);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line-soft)}
-.mast-in{display:flex;align-items:center;justify-content:space-between;gap:12px;height:54px}
+.mast{position:sticky;top:0;z-index:30;padding-top:calc(var(--safe-t) + 4px);background:var(--night);border-bottom:1px solid var(--line-soft);transform:translateZ(0)}
+.mast-in{display:flex;align-items:center;justify-content:space-between;gap:12px;height:58px}
 .wordmark{display:inline-flex;align-items:baseline;gap:7px;text-decoration:none}
 .wordmark .kp{font-family:var(--display);font-size:23px;letter-spacing:.04em;line-height:1}
 .wordmark .un{font-family:var(--serif);font-style:italic;font-size:16px;color:var(--candle)}
@@ -309,7 +310,7 @@ textarea.field{min-height:110px;resize:vertical;font-family:var(--hand);font-siz
 .done-card .display{font-size:92px;color:var(--wine)}
 .done-card p{font-family:var(--serif);font-size:19px;line-height:1.45;margin-top:10px}
 .install ol{margin:10px 0 0;padding-left:22px;display:flex;flex-direction:column;gap:10px;font-size:15.5px}
-.install svg{width:18px;height:18px;vertical-align:-3px;color:#3b82f6}
+.install svg{width:17px;height:17px;vertical-align:-3px;color:#3b82f6}
 .imgout{width:100%;max-width:300px;border-radius:12px;box-shadow:0 20px 50px rgba(0,0,0,.6);align-self:center}
 .set{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line-soft)}
 .set b{font-weight:600;font-size:15px}
@@ -373,6 +374,8 @@ function save(){ try { localStorage.setItem(KEY, JSON.stringify(L)); } catch(e){
 
 var UA = navigator.userAgent || "";
 var isIOS = /iphone|ipad|ipod/i.test(UA) || (/Macintosh/.test(UA) && navigator.maxTouchPoints > 1);
+var isAndroid = /android/i.test(UA), isSamsung = /SamsungBrowser/i.test(UA);
+var isPhone = isIOS || isAndroid;
 var inApp = /Instagram|FBAN|FBAV|TikTok|musical_ly|Snapchat|Line\//i.test(UA);
 function standalone(){ return (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true; }
 var src = (function(){ try { var q = new URLSearchParams(location.search); return (q.get("src") || q.get("utm_source") || (standalone() ? "app" : "direct")).slice(0,40); } catch(e){ return "direct"; } })();
@@ -539,8 +542,20 @@ function unlockCard(){
       '<div class="err" id="f-err"></div><button class="btn btn-ink btn-block" type="submit">open my shelf</button>' +
       '<button type="button" class="linkish" data-act="code-back">use a different email</button><div class="fine">it can take a minute. the subject starts with the 6 digits. not there? check spam and promotions, or email ' + CONFIG.contact + ' and i\'ll sort it.</div></form></div></section>';
   }
+  /* on phones in the browser: make "app first" impossible to miss. same message on iphone and android. */
+  var tip = (standalone() || inApp || !isPhone) ? '' :
+    '<div style="margin-top:14px;background:rgba(138,40,70,.08);border:1.5px solid var(--wine);border-radius:8px;padding:14px 14px 12px">' +
+      '<div style="font-family:var(--display);font-size:22px;letter-spacing:.06em;color:var(--wine);line-height:1">do this first</div>' +
+      '<div style="font-family:var(--serif);font-size:18px;font-weight:600;line-height:1.25;margin-top:4px">put upstairs on your home screen, then unlock it from there.</div>' +
+      '<ol style="margin:10px 0 0;padding-left:20px;font-size:14px;line-height:1.5;display:flex;flex-direction:column;gap:6px">' +
+        '<li>' + homeShort() + '</li>' +
+        '<li>open <b>upstairs</b> from your home screen</li>' +
+        '<li>enter your email and key there. you\'ll only do it once.</li>' +
+      '</ol>' +
+      (deferredPrompt ? '<div style="margin-top:10px"><button type="button" class="btn btn-ink" style="min-height:42px;padding:9px 18px" data-act="install">add it to my home screen</button></div>' : '<div style="margin-top:8px"><button type="button" class="linkish" data-act="install">show me how, step by step</button></div>') +
+    '</div>';
   return '<section class="sec" id="unlock"><div class="paper keycard torn"><div class="eyebrow" style="color:var(--paper-dim)">bought something?</div><h2>use your key.</h2>' +
-    '<p>it\'s in your purchase email from stan, something like <b style="font-family:var(--display);letter-spacing:.1em">DETOX-XXXX-XXXX</b>. you only do this once per phone.</p>' +
+    '<p>it\'s in your purchase email from stan, something like <b style="font-family:var(--display);letter-spacing:.1em">DETOX-XXXX-XXXX</b>. you only do this once per phone.</p>' + tip +
     '<form class="form" data-form="unlock" autocomplete="on">' +
     '<input type="text" id="f-name" name="given-name" autocomplete="given-name" placeholder="first name" maxlength="40" value="' + esc(s.name||"") + '">' +
     '<input type="email" id="f-email" name="email" autocomplete="email" inputmode="email" placeholder="the email you bought with" maxlength="120" value="' + esc(s.email||"") + '">' +
@@ -991,7 +1006,7 @@ function showWelcome(){
   var c = L.c;
   ov('<div class="paper welcome torn"><div class="eyebrow" style="color:var(--paper-dim)">you\'re upstairs</div><div class="display">' + esc(c.name) + '</div>' +
     '<ol>' + c.welcome.map(function(w){ return '<li>' + esc(w) + '</li>'; }).join("") + '</ol>' +
-    (standalone() ? '' : '<div style="margin-top:16px;border:1px dashed rgba(42,28,35,.3);border-radius:6px;padding:14px 14px 12px"><b style="font-family:var(--serif);font-size:18px">first: put upstairs on your home screen.</b><p style="font-size:14px;margin-top:4px">it opens full screen like an app, works with no signal, and your streak is one tap away when the urge hits at 1am.' + (isIOS ? ' on iphone it\'s also how your 7am notifications work.' : '') + ' it takes two taps.</p><button class="btn btn-line" style="margin-top:10px;min-height:42px;padding:10px 18px" data-act="install">show me how</button></div>') +
+    (standalone() ? '' : '<div style="margin-top:16px;border:1px dashed rgba(42,28,35,.3);border-radius:6px;padding:14px 14px 12px"><b style="font-family:var(--serif);font-size:18px">first: put upstairs on your home screen.</b><p style="font-size:14px;margin-top:4px">it opens full screen like an app, works with no signal, and your streak is one tap away when the urge hits at 1am.' + (isIOS ? ' on iphone it\'s also how your 7am notifications work.' : '') + '</p><p style="font-size:13.5px;margin-top:6px;color:var(--paper-dim)">' + (isPhone ? homeShort() + '.' : 'on your phone, open kpreadingroom.com/upstairs and add it to your home screen.') + '</p><button class="btn btn-line" style="margin-top:10px;min-height:42px;padding:10px 18px" data-act="install">show me how</button></div>') +
     '<p class="safety">' + esc(c.safety) + '</p>' +
     '<div style="margin-top:18px"><button class="btn btn-ink btn-block" data-act="start1" autofocus>open day 1</button></div></div>');
   setTimeout(function(){ document.querySelectorAll(".ov .torn").forEach(tear); }, 10);
@@ -1067,14 +1082,24 @@ function openSettings(){
 }
 
 /* ---- install ---- */
+/* how to add upstairs to the home screen, per phone. iphone menus moved in newer ios (share now sits inside the ≡ / ••• menu by the address bar), so the steps name both. */
+var SHARE_I = '<svg viewBox="0 0 24 24" width="15" height="15" style="vertical-align:-2px" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>';
+function homeSteps(){
+  if (inApp) return ['tap the ••• menu at the top of this screen', 'choose <b>open in ' + (isIOS ? 'safari' : 'browser') + '</b>', 'then come back to this page'];
+  if (isIOS) return ['tap <b>share</b> ' + SHARE_I + '. on newer iphones it\'s inside the <b>≡</b> or <b>•••</b> button next to the address bar: tap that first, then share.', 'scroll down and tap <b>add to home screen</b>', 'tap <b>add</b>. upstairs is now an app on your phone.'];
+  if (isSamsung) return ['tap the <b>≡</b> menu at the bottom right', 'tap <b>add page to</b>, then <b>home screen</b>', 'tap <b>add</b>'];
+  return ['tap the <b>⋮</b> menu at the top right of chrome', 'tap <b>add to home screen</b> or <b>install app</b>', 'tap <b>install</b>'];
+}
+function homeShort(){
+  if (isIOS) return 'tap share ' + SHARE_I + ' (on newer iphones it\'s inside the ≡ or ••• button by the address bar) → add to home screen';
+  if (isSamsung) return 'tap ≡ at the bottom right → add page to → home screen';
+  return 'tap ⋮ at the top right → add to home screen (or install app)';
+}
 var deferredPrompt = null;
-window.addEventListener("beforeinstallprompt", function(e){ e.preventDefault(); deferredPrompt = e; });
+window.addEventListener("beforeinstallprompt", function(e){ e.preventDefault(); deferredPrompt = e; if (!route().p && !$("ov").innerHTML) render(); });
 function openInstall(){
   if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt.userChoice.then(function(){ deferredPrompt = null; }); return; }
-  var shareI = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>';
-  var steps = inApp ? ['tap the ••• menu at the top of this screen', 'choose <b>open in ' + (isIOS ? 'safari' : 'browser') + '</b>', 'then come back to this button']
-    : isIOS ? ['tap the share button ' + shareI + ' at the bottom of safari', 'scroll down, tap <b>add to home screen</b>', 'tap <b>add</b>. upstairs is now an app on your phone.']
-    : ['tap the ⋮ menu in chrome', 'tap <b>install app</b> or <b>add to home screen</b>', 'tap <b>install</b>'];
+  var steps = homeSteps();
   ov(ovTop("home screen") + '<div class="paper welcome install torn"><div class="display" style="font-size:52px">two taps.</div><ol>' + steps.map(function(s){ return '<li>' + s + '</li>'; }).join("") + '</ol>' +
     '<p class="safety">once it\'s on your home screen, open upstairs from there. you stay signed in.</p></div><button class="btn btn-pc btn-block" data-act="close-ov">got it</button>');
   setTimeout(function(){ document.querySelectorAll(".ov .torn").forEach(tear); }, 10);
@@ -1405,7 +1430,7 @@ function handoffUse(){
 }
 
 /* ================= boot ================= */
-if ("serviceWorker" in navigator && location.protocol === "https:" && !CONFIG.onesignalAppId) {
+if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost") && !CONFIG.onesignalAppId) {
   navigator.serviceWorker.register("/upstairs/sw.js", {scope:"/upstairs/"}).catch(function(){});
 }
 pushBoot();
