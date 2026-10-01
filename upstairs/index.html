@@ -73,7 +73,7 @@ p{margin:0}
 .paper .linkish{color:var(--paper-dim)}
 
 /* masthead */
-.mast{position:sticky;top:0;z-index:30;padding-top:calc(var(--safe-t) + 4px);background:var(--night);border-bottom:1px solid var(--line-soft);transform:translateZ(0)}
+.mast{position:sticky;top:0;z-index:30;padding-top:calc(var(--safe-t) + 4px);background:var(--night);border-bottom:1px solid var(--line-soft)}
 .mast-in{display:flex;align-items:center;justify-content:space-between;gap:12px;height:58px}
 .wordmark{display:inline-flex;align-items:baseline;gap:7px;text-decoration:none}
 .wordmark .kp{font-family:var(--display);font-size:23px;letter-spacing:.04em;line-height:1}
@@ -1428,6 +1428,58 @@ function handoffUse(){
     return false;
   });
 }
+
+/* ================= iphone home-screen app: screen repair =================
+   after the app opens a link in apple's little in-app browser (reading room, stan),
+   iOS sometimes comes back with the wrong screen size: top bar above the screen,
+   tab bar in the corners. on every return we check, try a quick reset, and if that
+   doesn't fix it, reload on the same screen (instant from the saved copy). */
+var screenGuard = (function(){
+  var on = isIOS && standalone(), base = null, timers = [], probe = null;
+  function measure(){
+    if (!probe) { probe = document.createElement("div"); probe.style.cssText = "position:fixed;top:0;left:0;width:0;height:0;visibility:hidden;pointer-events:none;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)"; document.body.appendChild(probe); }
+    var cs = getComputedStyle(probe);
+    return {t:parseFloat(cs.paddingTop)||0, b:parseFloat(cs.paddingBottom)||0, h:window.innerHeight, w:window.innerWidth, sh:Math.max(screen.width, screen.height)};
+  }
+  function bad(m){
+    if (Math.max(m.h, m.w) > m.sh + 1) return "taller than the screen";
+    if (base && base.w === m.w) {
+      if (Math.abs(m.h - base.h) > 2) return "height changed";
+      if (m.t < base.t - 1 || m.b < base.b - 1) return "safe edges lost";
+    }
+    return "";
+  }
+  function soft(){
+    try { window.scrollTo(0, 0); } catch(e){}
+    var v = document.querySelector('meta[name="viewport"]');
+    if (v) { var c = v.getAttribute("content"); v.setAttribute("content", c + ",maximum-scale=1"); setTimeout(function(){ v.setAttribute("content", c); }, 60); }
+  }
+  function hard(why){
+    var last = 0; try { last = Number(sessionStorage.getItem("kp_fix_at")) || 0; } catch(e){}
+    if (Date.now() - last < 20000) return;                  // never loop
+    try { sessionStorage.setItem("kp_fix_at", String(Date.now())); sessionStorage.setItem("kp_fix_why", why); } catch(e){}
+    save(); try { flush(); } catch(e){}
+    location.reload();
+  }
+  function check(){
+    if (!on) return;
+    timers.forEach(clearTimeout); timers = [];
+    timers.push(setTimeout(function(){
+      if (document.activeElement && /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) return;   // keyboard up: leave it alone
+      var m = measure(), why = bad(m);
+      if (!why) { if (!base || base.w !== m.w) base = m; return; }   // healthy (or rotated): remember it
+      soft();
+      timers.push(setTimeout(function(){ var w2 = bad(measure()); if (w2 && !(document.activeElement && /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName))) hard(w2); }, 450));
+    }, 350));
+  }
+  if (on) {
+    setTimeout(function(){ var m = measure(); if (!bad(m)) base = m; }, 400);
+    document.addEventListener("visibilitychange", function(){ if (document.visibilityState === "visible") check(); });
+    window.addEventListener("pageshow", check);
+    window.addEventListener("focus", check);
+  }
+  return (window.__screenGuard = {check:check, measure:measure, bad:bad, base:function(){ return base; }});
+})();
 
 /* ================= boot ================= */
 if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost") && !CONFIG.onesignalAppId) {
