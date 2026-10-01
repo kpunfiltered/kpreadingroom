@@ -250,7 +250,8 @@ textarea.field{min-height:110px;resize:vertical;font-family:var(--hand);font-siz
 .rowset .field{background:var(--night-2);padding:10px 12px;font-size:15px}
 .breath{display:flex;flex-direction:column;align-items:center;gap:12px;padding:10px 0 4px}
 .bcirc{width:170px;height:170px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--pc) 60%,transparent),color-mix(in srgb,var(--pc) 8%,transparent) 70%);display:grid;place-items:center;transform:scale(.55);transition-property:transform;transition-timing-function:ease-in-out}
-.bcirc span{font-family:var(--display);font-size:26px;letter-spacing:.06em;color:var(--text)}
+.bcirc span{font-family:var(--display);font-size:30px;line-height:1;letter-spacing:.06em;color:var(--text);display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center}
+.bcirc span small{font-size:18px;letter-spacing:.1em}
 .bsay{font-family:var(--hand);font-size:26px;color:var(--text);text-align:center;min-height:32px;line-height:1.1}
 .bcount{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
 .timer{display:flex;flex-direction:column;align-items:center;gap:10px;padding:6px 0}
@@ -281,6 +282,8 @@ textarea.field{min-height:110px;resize:vertical;font-family:var(--hand);font-siz
 
 /* overlays */
 .ov{position:fixed;inset:0;z-index:70;background:rgba(12,9,15,.96);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);overflow-y:auto;-webkit-overflow-scrolling:touch;padding:calc(var(--safe-t) + 16px) var(--gut) calc(var(--safe-b) + 28px)}
+.ov.ov-tabs{z-index:38;padding-bottom:calc(var(--safe-b) + 92px)}
+.ov.ov-tabs .ov-top{position:sticky;top:calc(-1 * (var(--safe-t) + 16px));z-index:2;margin:calc(-1 * (var(--safe-t) + 16px)) calc(-1 * var(--gut)) 0;padding:calc(var(--safe-t) + 16px) var(--gut) 12px;background:rgba(12,9,15,.97)}
 .ov-in{max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:18px;min-height:100%;justify-content:center}
 .ov-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
 .ov-x{background:none;border:1px solid var(--line);border-radius:30px;padding:8px 15px;cursor:pointer;font-size:13px;color:var(--dim)}
@@ -341,7 +344,8 @@ textarea.field{min-height:110px;resize:vertical;font-family:var(--hand);font-siz
 
 /* ================= CONFIG ================= */
 var CONFIG = {
-  api: "https://script.google.com/macros/s/AKfycbxtcONB1x9Y1PJMGF0tofCc6jiy2OSn45sERu7WUx5VVidjvsOb_L8D0C0J_kcCzHAeFg/exec",               // Apps Script web app URL  onesignalAppId: "",    // OneSignal App ID. Blank = no push, email reminders still work.
+  api: "https://script.google.com/macros/s/AKfycbxtcONB1x9Y1PJMGF0tofCc6jiy2OSn45sERu7WUx5VVidjvsOb_L8D0C0J_kcCzHAeFg/exec",               // Apps Script web app URL (ends in /exec). See the handoff note.
+  onesignalAppId: "",    // OneSignal App ID. Blank = no push, email reminders still work.
   products: [
     {id:"detox", name:"detox from him", line:"21 days to emotionally disconnect from the wrong man.", c:"var(--rose)", app:true,
       buy:"https://stan.store/unfilteredkp/p/detox-from-him"},
@@ -664,6 +668,7 @@ function dayRows(from, count){
     var cls = n <= st.done ? "done" : (n === st.current && st.current_open && !st.graduated) ? "now" : "locked";
     var tag = cls === "done" ? "done" : cls === "now" ? "today" : (n === st.current ? "opens " + clock(st.open_at) : "locked");
     var inner = '<span class="n">' + String(n).padStart(2,"0") + '</span><b>' + esc(t) + '</b><span class="st">' + tag + '</span>';
+    if (cls === "locked" && st.preview) { out += '<a class="dayrow" href="#/detox/day/' + n + '"><span class="n">' + String(n).padStart(2,"0") + '</span><b>' + esc(t) + '</b><span class="st" style="color:var(--candle)">preview</span></a>'; continue; }
     out += cls === "locked" ? '<div class="dayrow locked" aria-label="day ' + n + ', locked">' + inner + '</div>' : '<a class="dayrow ' + cls + '" href="#/detox/day/' + n + '">' + inner + '</a>';
   }
   return out;
@@ -717,7 +722,7 @@ function viewTools(){
   h += '<div class="card"><h3>red flags, green flags</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px;font-size:14px"><div><b style="color:var(--rose)">red</b>' + tb.flags.red.map(function(f){ return '<div class="dim">× ' + esc(f) + '</div>'; }).join("") + '</div><div><b style="color:var(--sage)">green</b>' + tb.flags.green.map(function(f){ return '<div class="dim">✓ ' + esc(f) + '</div>'; }).join("") + '</div></div></div>';
   h += '<div class="card"><h3>your notebook</h3><p>everything you\'ve written, day by day. only on this phone.</p><div class="row"><button class="btn btn-ghost" data-act="notebook">open my notebook</button></div></div>';
   h += '<div class="card"><h3>if you\'re not safe</h3><p>' + esc(L.c.safety) + '</p></div>';
-  h += '<div class="card"><h3>talk to me</h3><p>if you want the male side on your exact situation, one on one.</p><div class="row"><a class="btn btn-ghost" href="' + CONFIG.talk + '" target="_blank" rel="noopener" data-track="talk" data-where="tools">talk with me</a></div></div>';
+  h += '<div class="card"><h3>talk to me</h3><p>if you want my direct help on your exact situation, one on one.</p><div class="row"><a class="btn btn-ghost" href="' + CONFIG.talk + '" target="_blank" rel="noopener" data-track="talk" data-where="tools">talk with me</a></div></div>';
   h += '</main>' + tabbar("tools");
   return h;
 }
@@ -748,6 +753,7 @@ function viewDay(n){
   return h;
 }
 function closeBody(n){
+  if (L.st.preview && n !== L.st.current && n > L.st.done) return '<p><b>preview account.</b> you can open and try everything on this day. closing still goes in order, so the next one to close is day ' + L.st.current + '. buyers never see this.</p><a class="btn btn-ink btn-block" href="#/detox/day/' + L.st.current + '">go to day ' + L.st.current + '</a>';
   var sd = stepsDone(n), all = sd.every(Boolean), leftN = sd.filter(function(x){ return !x; }).length;
   return '<p>' + (all ? 'that\'s all four. close the day and it\'s yours.' : leftN + ' step' + (leftN === 1 ? '' : 's') + ' left before you can close day ' + n + '.') + '</p>' +
     '<button class="btn btn-ink btn-block" data-act="close" data-n="' + n + '"' + (all ? '' : ' disabled') + '>i\'m done with day ' + n + '</button>';
@@ -921,7 +927,7 @@ function breathe(n, id){
   if (breathRun) { clearTimeout(breathRun.t); breathRun = null; }
   var key = n + "-" + id, c = document.querySelector('[data-bc="' + key + '"]'), sayEl = document.querySelector('[data-bs="' + key + '"]'), cnt = document.querySelector('[data-bn="' + key + '"]');
   var btn = document.querySelector('[data-act="breathe"][data-w="' + id + '"]'); if (btn) btn.hidden = true;
-  var phases = [["in", w.pattern[0], 1], ["hold", w.pattern[1], 1], ["out", w.pattern[2], .55], ["hold", w.pattern[3], .55]].filter(function(p){ return p[1] > 0; });
+  var phases = [["breathe in", w.pattern[0], 1], ["hold", w.pattern[1], 1], ["breathe out", w.pattern[2], .55], ["hold", w.pattern[3], .55]].filter(function(p){ return p[1] > 0; });
   var cycle = 0, pi = 0;
   breathRun = {};
   (function step(){
@@ -933,7 +939,7 @@ function breathe(n, id){
     }
     var p = phases[pi];
     c.style.transitionDuration = p[1] + "s"; c.style.transform = "scale(" + p[2] + ")";
-    c.querySelector("span").textContent = p[0] + " " + p[1];
+    c.querySelector("span").innerHTML = '<small>' + p[0] + '</small>' + p[1];
     if (w.sayList) sayEl.textContent = w.sayList[cycle % w.sayList.length];
     cnt.textContent = "breath " + (cycle+1) + " of " + w.cycles;
     pi++;
@@ -966,12 +972,14 @@ function bindRanges(){}
 /* ================= overlays ================= */
 function ov(html, cls){
   var o = $("ov");
+  ovKind = cls || "";
   o.innerHTML = '<div class="ov ' + (cls||"") + '" role="dialog" aria-modal="true"><div class="ov-in">' + html + '</div></div>';
   document.body.style.overflow = "hidden";
   setTimeout(function(){ var f = o.querySelector("[autofocus],.ov-x"); if (f) f.focus(); }, 30);
 }
 function closeOv(silent){
   var o = $("ov"); if (!o.innerHTML) return;
+  document.querySelectorAll('.tab[data-act="texted"]').forEach(function(t){ t.removeAttribute("aria-current"); });
   if (sosRun) { clearInterval(sosRun.i); sosRun = null; }
   o.innerHTML = ""; document.body.style.overflow = "";
 }
@@ -989,14 +997,15 @@ function showWelcome(){
 }
 
 /* ---- SOS ---- */
+var ovKind = "";
 var sosRun = null;
 var SOS_LINES = ["this is a wave. it's not an instruction.","you don't have to do anything with it.","notice where you feel it. chest? stomach? throat?","it's peaking now. peaks don't last.","texting him buys ten minutes of relief and a week of pain.","it's already smaller than when you pressed the button.","almost there. stay with your breath.","you rode it. or you're riding it. both count."];
 function openSOS(practiceDay){
   var total = 90;
-  ov(ovTop("sos · ride the wave") + '<div class="breath"><div class="bcirc" id="sos-c" style="width:210px;height:210px"><span id="sos-p">in</span></div></div><div class="say" id="sos-say">' + SOS_LINES[0] + '</div>' +
+  ov(ovTop("sos · ride the wave") + '<div class="breath"><div class="bcirc" id="sos-c" style="width:210px;height:210px"><span id="sos-p">breathe in</span></div></div><div class="say" id="sos-say">' + SOS_LINES[0] + '</div>' +
     '<div class="center"><div class="bcount" id="sos-n">1:30</div></div><div class="center"><button class="linkish" id="sos-skip" data-act="sos-log" hidden>the wave has passed, log it</button></div>');
   var start = Date.now(), c = $("sos-c"), phase = 0;
-  function breath(){ if (!$("sos-c")) return; var inn = phase % 2 === 0; c.style.transitionDuration = (inn ? 4 : 6) + "s"; c.style.transform = "scale(" + (inn ? 1 : .55) + ")"; $("sos-p").textContent = inn ? "in" : "out"; phase++; sosRun && (sosRun.b = setTimeout(breath, (inn ? 4 : 6)*1000)); }
+  function breath(){ if (!$("sos-c")) return; var inn = phase % 2 === 0; c.style.transitionDuration = (inn ? 4 : 6) + "s"; c.style.transform = "scale(" + (inn ? 1 : .55) + ")"; $("sos-p").textContent = inn ? "breathe in" : "breathe out"; phase++; sosRun && (sosRun.b = setTimeout(breath, (inn ? 4 : 6)*1000)); }
   sosRun = {day:practiceDay || 0};
   breath();
   sosRun.i = setInterval(function(){
@@ -1039,7 +1048,9 @@ function openTexted(){
   var tb = L.c.toolbox;
   ov(ovTop("he texted") + '<h2>before you reply, <em>breathe</em>.</h2><p class="dim">not replying is always an option, and usually the strongest one. if you do reply, send one line. then put the phone down.</p>' +
     '<div class="scripts">' + tb.scripts.map(function(s){ return '<div class="script"><h4>' + esc(s.h) + '</h4><small>' + esc(s.when) + '</small><p>' + esc(s.s) + '</p>' + (/^no reply/.test(s.s) ? '' : '<button class="copy" data-act="copy" data-t="' + esc(s.s) + '">copy</button>') + '</div>'; }).join("") + '</div>' +
-    '<button class="btn btn-pc btn-block" data-act="sos">i want to reply to him. help.</button>');
+    '<button class="btn btn-pc btn-block" data-act="sos">i want to reply to him. help.</button>', "ov-tabs");
+  document.querySelectorAll('a.tab[aria-current]').forEach(function(t){ t.removeAttribute("aria-current"); });
+  document.querySelectorAll('.tab[data-act="texted"]').forEach(function(t){ t.setAttribute("aria-current", "page"); });
 }
 
 /* ---- settings ---- */
@@ -1051,7 +1062,7 @@ function openSettings(){
     '<div class="set"><div><b>home screen</b><small>' + (standalone() ? 'you\'re in the app. nice.' : 'open it like an app, offline too') + '</small></div>' + (standalone() ? '' : '<button class="copy" data-act="install">how</button>') + '</div>' +
     '<div class="set"><div><b>signed in as</b><small>' + esc(L.auth.email) + '</small></div><button class="copy" data-act="signout">sign out here</button></div>' +
     '<div class="set"><div><b>your writing</b><small>stays on this phone only. signing out keeps it here. deleting the app or clearing safari deletes it.</small></div></div>' +
-    '<div class="set"><div><b>help</b><small>' + CONFIG.contact + '</small></div><a class="copy" href="mailto:' + CONFIG.contact + '">email</a></div></div>');
+    '<div class="set"><div><b>help</b><small>' + CONFIG.contact + '</small></div><a class="copy" href="mailto:' + CONFIG.contact + '">email</a></div></div>', "ov-tabs");
 }
 
 /* ---- install ---- */
@@ -1080,15 +1091,15 @@ function openNotebook(){
     h += '<div class="card"><div class="eyebrow" style="color:var(--pc)">day ' + n + ' · ' + esc(d.t) + '</div>' + parts.join("") + '</div>';
   }
   if (!any) h += '<div class="card"><p>nothing yet. your journal from each day lands here.</p></div>';
-  ov(h);
+  ov(h, "ov-tabs");
 }
 
 /* ---- day closed ---- */
 function dayClosed(n){
   var st = L.st, next = n < st.total ? dayContent(n+1) : null;
-  var line = st.graduated ? "twenty-one days. you did the whole thing." : "day " + (n+1) + (L.c.titles[n] ? ', “' + L.c.titles[n].t + '”,' : '') + " opens " + when(st.open_at) + ".";
+  var line = st.graduated ? "twenty-one days. you did the whole thing." : "day " + (n+1) + (L.c.titles[n] ? ', “' + L.c.titles[n].t + '”,' : '') + (st.current_open ? " is open now." : " opens " + when(st.open_at) + ".");
   ov('<div class="paper done-card torn"><div class="eyebrow" style="color:var(--paper-dim)">day ' + n + ' of ' + st.total + '</div><div class="display">closed.</div><p>' + esc(line) + '</p>' +
-    (st.preview && !st.graduated ? '<p class="muted" style="font-size:13px">preview account: the next day is open now.</p>' : '') + '</div>' +
+    (st.preview && !st.graduated ? '<p class="muted" style="font-size:13px">preview account. buyers wait until 7am.</p>' : '') + '</div>' +
     '<button class="btn btn-pc btn-block" data-act="close-ov-home" autofocus>' + (st.graduated ? 'see your card' : 'back to today') + '</button>');
   setTimeout(function(){ document.querySelectorAll(".ov .torn").forEach(tear); }, 10);
 }
@@ -1229,7 +1240,7 @@ var ACT = {
     $("sos-save").disabled = !(sosState.i != null && sosState.out);
   },
   "sos-save": sosSave,
-  "texted": openTexted,
+  "texted": function(){ if (ovKind === "ov-tabs" && $("ov").innerHTML && document.querySelector(".scripts")) { closeOv(); return; } openTexted(); },
   "copy": function(b){ copy(b.getAttribute("data-t")); },
   "slip": function(){
     ov(ovTop("i slipped") + '<h2>okay. <em>no shame</em>. what happened?</h2><div class="choice">' +
@@ -1318,6 +1329,8 @@ function rerenderStep(n, i){
 function scrollToStep(i){ var el = document.querySelector('#steps .step[data-step="' + i + '"]'); if (el) setTimeout(function(){ el.scrollIntoView({behavior:"smooth", block:"start"}); window.scrollBy(0,-70); }, 60); }
 
 document.addEventListener("click", function(e){
+  var tb = e.target.closest && e.target.closest("a.tab");
+  if (tb && $("ov").innerHTML) { closeOv(); if (tb.getAttribute("href") === location.hash) render(); }
   var b = e.target.closest("[data-act]");
   if (!b || b.disabled) return;
   var a = b.getAttribute("data-act");
