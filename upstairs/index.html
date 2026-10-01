@@ -35,10 +35,12 @@
   --hand:"Caveat","Bradley Hand","Segoe Print",cursive;
   --gut:18px;--appw:600px;
   --safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px);
+  --edge:0px; /* iphone home-screen app: iOS blurs a band under the clock, so tops sit below it */
   --grain:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .35 0 0 0 0 .24 0 0 0 0 .18 0 0 0 .10 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
 *,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scroll-padding-top:80px;scroll-padding-bottom:120px}
+html.ios-app{--edge:22px}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(80px + var(--edge));scroll-padding-bottom:120px}
 body{margin:0;min-height:100vh;background-color:var(--night);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
   background-image:radial-gradient(ellipse 80% 40% at 10% -10%,rgba(234,184,97,.12),transparent 70%),radial-gradient(ellipse 60% 40% at 100% 0%,rgba(226,117,146,.08),transparent 70%);background-repeat:no-repeat;
   -webkit-tap-highlight-color:transparent;overscroll-behavior-y:none}
@@ -73,7 +75,7 @@ p{margin:0}
 .paper .linkish{color:var(--paper-dim)}
 
 /* masthead */
-.mast{position:sticky;top:0;z-index:30;padding-top:calc(var(--safe-t) + 4px);background:var(--night);border-bottom:1px solid var(--line-soft)}
+.mast{position:sticky;top:0;z-index:30;padding-top:calc(var(--safe-t) + 4px + var(--edge));background:var(--night);border-bottom:1px solid var(--line-soft)}
 .mast-in{display:flex;align-items:center;justify-content:space-between;gap:12px;height:58px}
 .wordmark{display:inline-flex;align-items:baseline;gap:7px;text-decoration:none}
 .wordmark .kp{font-family:var(--display);font-size:23px;letter-spacing:.04em;line-height:1}
@@ -282,9 +284,10 @@ textarea.field{min-height:110px;resize:vertical;font-family:var(--hand);font-siz
 .closebar p{font-size:14px;margin-bottom:12px}
 
 /* overlays */
-.ov{position:fixed;inset:0;z-index:70;background:rgba(12,9,15,.96);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);overflow-y:auto;-webkit-overflow-scrolling:touch;padding:calc(var(--safe-t) + 16px) var(--gut) calc(var(--safe-b) + 28px)}
+.ov{--ovt:calc(var(--safe-t) + 16px + var(--edge));position:fixed;inset:0;z-index:70;background:rgba(12,9,15,.96);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);overflow-y:auto;-webkit-overflow-scrolling:touch;padding:var(--ovt) var(--gut) calc(var(--safe-b) + 28px)}
+.ov.ov-sos{--ovt:calc(var(--safe-t) + 16px)}
 .ov.ov-tabs{z-index:38;padding-bottom:calc(var(--safe-b) + 92px)}
-.ov.ov-tabs .ov-top{position:sticky;top:calc(-1 * (var(--safe-t) + 16px));z-index:2;margin:calc(-1 * (var(--safe-t) + 16px)) calc(-1 * var(--gut)) 0;padding:calc(var(--safe-t) + 16px) var(--gut) 12px;background:rgba(12,9,15,.97)}
+.ov.ov-tabs .ov-top{position:sticky;top:calc(-1 * var(--ovt));z-index:2;margin:calc(-1 * var(--ovt)) calc(-1 * var(--gut)) 0;padding:var(--ovt) var(--gut) 12px;background:rgba(12,9,15,.97)}
 .ov-in{max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:18px;min-height:100%;justify-content:center}
 .ov-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
 .ov-x{background:none;border:1px solid var(--line);border-radius:30px;padding:8px 15px;cursor:pointer;font-size:13px;color:var(--dim)}
@@ -378,6 +381,7 @@ var isAndroid = /android/i.test(UA), isSamsung = /SamsungBrowser/i.test(UA);
 var isPhone = isIOS || isAndroid;
 var inApp = /Instagram|FBAN|FBAV|TikTok|musical_ly|Snapchat|Line\//i.test(UA);
 function standalone(){ return (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true; }
+if (isIOS && standalone()) document.documentElement.classList.add("ios-app");
 var src = (function(){ try { var q = new URLSearchParams(location.search); return (q.get("src") || q.get("utm_source") || (standalone() ? "app" : "direct")).slice(0,40); } catch(e){ return "direct"; } })();
 var TZ = (function(){ try { return Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch(e){ return ""; } })();
 
@@ -481,6 +485,7 @@ function render(){
     if (r.sub === "day" && r.n) app.innerHTML = viewDay(r.n);
     else if (r.sub === "journey") app.innerHTML = viewJourney();
     else if (r.sub === "tools") app.innerHTML = viewTools();
+    else if (r.sub === "texted") app.innerHTML = viewTexted();
     else app.innerHTML = viewToday();
     after();
     return;
@@ -616,11 +621,11 @@ function appMast(){
   return mast('<div style="display:flex;gap:8px;align-items:center"><a class="pill" href="#/">shelf</a><button class="iconbtn" data-act="settings" aria-label="settings">' + I.gear + '</button></div>');
 }
 function tabbar(active){
-  function t(id, label, href){ return '<a class="tab" href="' + href + '"' + (active === id ? ' aria-current="page"' : '') + '>' + I[id] + '<span>' + label + '</span></a>'; }
+  function t(id, label, href, icon){ return '<a class="tab" href="' + href + '"' + (active === id ? ' aria-current="page"' : '') + '>' + I[icon || id] + '<span>' + label + '</span></a>'; }
   return '<nav class="tabbar" aria-label="detox from him"><div class="tabbar-in">' +
     t("today","today","#/detox") + t("journey","journey","#/detox/journey") +
     '<button class="sosbtn" data-act="sos" aria-label="sos: ride an urge">sos</button>' +
-    '<button class="tab" data-act="texted">' + I.text + '<span>he texted</span></button>' +
+    t("texted","he texted","#/detox/texted","text") +
     t("tools","tools","#/detox/tools") + '</div></nav>';
 }
 function stepsDone(n){
@@ -995,7 +1000,6 @@ function ov(html, cls){
 }
 function closeOv(silent){
   var o = $("ov"); if (!o.innerHTML) return;
-  document.querySelectorAll('.tab[data-act="texted"]').forEach(function(t){ t.removeAttribute("aria-current"); });
   if (sosRun) { clearInterval(sosRun.i); sosRun = null; }
   o.innerHTML = ""; document.body.style.overflow = "";
 }
@@ -1019,7 +1023,7 @@ var SOS_LINES = ["this is a wave. it's not an instruction.","you don't have to d
 function openSOS(practiceDay){
   var total = 90;
   ov(ovTop("sos · ride the wave") + '<div class="breath"><div class="bcirc" id="sos-c" style="width:210px;height:210px"><span id="sos-p">breathe in</span></div></div><div class="say" id="sos-say">' + SOS_LINES[0] + '</div>' +
-    '<div class="center"><div class="bcount" id="sos-n">1:30</div></div><div class="center"><button class="linkish" id="sos-skip" data-act="sos-log" hidden>the wave has passed, log it</button></div>');
+    '<div class="center"><div class="bcount" id="sos-n">1:30</div></div><div class="center"><button class="linkish" id="sos-skip" data-act="sos-log" hidden>the wave has passed, log it</button></div>', "ov-sos");
   var start = Date.now(), c = $("sos-c"), phase = 0;
   function breath(){ if (!$("sos-c")) return; var inn = phase % 2 === 0; c.style.transitionDuration = (inn ? 4 : 6) + "s"; c.style.transform = "scale(" + (inn ? 1 : .55) + ")"; $("sos-p").textContent = inn ? "breathe in" : "breathe out"; phase++; sosRun && (sosRun.b = setTimeout(breath, (inn ? 4 : 6)*1000)); }
   sosRun = {day:practiceDay || 0};
@@ -1059,15 +1063,16 @@ function sosSave(){
   setTimeout(function(){ document.querySelectorAll(".ov .torn").forEach(tear); }, 10);
 }
 
-/* ---- he texted ---- */
-function openTexted(){
+/* ---- he texted (a page, like tools) ---- */
+function viewTexted(){
   var tb = L.c.toolbox;
-  ov(ovTop("he texted") + '<h2>before you reply, <em>breathe</em>.</h2><p class="dim">not replying is always an option, and usually the strongest one. if you do reply, send one line. then put the phone down.</p>' +
-    '<div class="scripts">' + tb.scripts.map(function(s){ return '<div class="script"><h4>' + esc(s.h) + '</h4><small>' + esc(s.when) + '</small><p>' + esc(s.s) + '</p>' + (/^no reply/.test(s.s) ? '' : '<button class="copy" data-act="copy" data-t="' + esc(s.s) + '">copy</button>') + '</div>'; }).join("") + '</div>' +
-    '<button class="btn btn-pc btn-block" data-act="sos">i want to reply to him. help.</button>', "ov-tabs");
-  document.querySelectorAll('a.tab[aria-current]').forEach(function(t){ t.removeAttribute("aria-current"); });
-  document.querySelectorAll('.tab[data-act="texted"]').forEach(function(t){ t.setAttribute("aria-current", "page"); });
+  return appMast() + '<main class="wrap app texted"><section class="greet"><div class="eyebrow">he texted</div><h1>before you reply, <em>breathe</em>.</h1></section>' +
+    '<p class="dim" style="margin-top:10px">not replying is always an option, and usually the strongest one. if you do reply, send one line. then put the phone down.</p>' +
+    '<div class="scripts" style="margin-top:16px">' + tb.scripts.map(function(s){ return '<div class="script"><h4>' + esc(s.h) + '</h4><small>' + esc(s.when) + '</small><p>' + esc(s.s) + '</p>' + (/^no reply/.test(s.s) ? '' : '<button class="copy" data-act="copy" data-t="' + esc(s.s) + '">copy</button>') + '</div>'; }).join("") + '</div>' +
+    '<button class="btn btn-pc btn-block" style="margin-top:18px" data-act="sos">i want to reply to him. help.</button>' +
+    '</main>' + tabbar("texted");
 }
+function openTexted(){ closeOv(true); go("#/" + PRODUCT + "/texted"); }
 
 /* ---- settings ---- */
 function openSettings(){
@@ -1266,7 +1271,7 @@ var ACT = {
     $("sos-save").disabled = !(sosState.i != null && sosState.out);
   },
   "sos-save": sosSave,
-  "texted": function(){ if (ovKind === "ov-tabs" && $("ov").innerHTML && document.querySelector(".scripts")) { closeOv(); return; } openTexted(); },
+  "texted": openTexted,
   "copy": function(b){ copy(b.getAttribute("data-t")); },
   "slip": function(){
     ov(ovTop("i slipped") + '<h2>okay. <em>no shame</em>. what happened?</h2><div class="choice">' +
