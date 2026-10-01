@@ -1,14 +1,15 @@
 /* upstairs service worker: instant start + offline + OneSignal push (same file, one scope).
    The app page is served from the phone instantly and refreshed in the background,
-   so a new upload shows up the next time she opens the app. Bump VERSION when this file changes. */
-var VERSION = "upstairs-v2";
+   so a new upload shows up the next time she opens the app. Bump VERSION when this file changes.
+   Saves always skip the browser's own cache (GitHub keeps files ~10 min), so a new upload is what gets saved. */
+var VERSION = "upstairs-v3";
 try { importScripts("https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js"); } catch (e) {}
 
 var PAGE = "/upstairs/";
 var SHELL = [PAGE, "/upstairs/manifest.webmanifest", "/upstairs/icons/icon-192.png", "/upstairs/icons/apple-touch-icon.png"];
 
 self.addEventListener("install", function (e) {
-  e.waitUntil(caches.open(VERSION).then(function (c) { return c.addAll(SHELL); }).then(function () { return self.skipWaiting(); }));
+  e.waitUntil(caches.open(VERSION).then(function (c) { return c.addAll(SHELL.map(function (u) { return new Request(u, {cache: "reload"}); })); }).then(function () { return self.skipWaiting(); }));
 });
 self.addEventListener("activate", function (e) {
   e.waitUntil(caches.keys().then(function (keys) {
