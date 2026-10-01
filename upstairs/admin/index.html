@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>upstairs · admin</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#15101a">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Manrope:wght@400;600;700;800&display=swap">
+<style>
+:root{color-scheme:dark;--night:#15101a;--night-2:#1d1623;--night-3:#271d2d;--line:#3a2c40;--line-soft:#2a2030;--text:#f0e7dc;--dim:#b9a9b4;--faint:#948290;
+  --paper:#efe4d3;--paper-ink:#2a1c23;--rose:#e27592;--candle:#eab861;--sage:#8fc1a0;--wine:#8a2846;
+  --display:"Bebas Neue",Impact,sans-serif;--serif:"Fraunces",Georgia,serif;--body:"Manrope",-apple-system,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--night);color:var(--text);font-family:var(--body);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1100px;margin:0 auto;padding:0 16px 60px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:calc(env(safe-area-inset-top,0px) + 18px) 0 14px;border-bottom:1px solid var(--line-soft);flex-wrap:wrap}
+h1{margin:0;font-family:var(--display);font-weight:400;font-size:40px;line-height:.9;letter-spacing:.02em}
+h1 em{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--candle);letter-spacing:0;margin-left:6px}
+h2{margin:0 0 4px;font-family:var(--serif);font-size:21px;font-weight:600}
+.sub{color:var(--faint);font-size:13px;margin:0 0 14px}
+.eyebrow{font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+.btn{border:1px solid var(--line);background:none;color:var(--text);border-radius:30px;padding:8px 14px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.btn.pc{background:var(--candle);color:#241808;border-color:var(--candle)}
+.grid{display:grid;gap:14px;margin-top:16px}
+.g4{grid-template-columns:repeat(4,1fr)}.g2{grid-template-columns:1fr 1fr}
+.card{border:1px solid var(--line);border-radius:6px;background:var(--night-2);padding:18px}
+.tile b{display:block;font-family:var(--display);font-size:52px;line-height:.9;font-weight:400;font-variant-numeric:tabular-nums}
+.tile span{font-size:12px;color:var(--faint);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.tile small{display:block;color:var(--dim);font-size:12.5px;margin-top:4px}
+svg{display:block;width:100%;height:auto;overflow:visible}
+svg text{font-family:var(--body);fill:var(--faint);font-size:12px}
+.hb{display:grid;grid-template-columns:minmax(120px,40%) 1fr 36px;gap:8px;align-items:center;font-size:13px;margin:5px 0}
+.hb .l{color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hb .t{height:12px;background:var(--night-3);border-radius:4px;overflow:hidden}
+.hb .t i{display:block;height:100%;background:var(--candle);border-radius:0 4px 4px 0}
+.hb .n{text-align:right;font-variant-numeric:tabular-nums;color:var(--text);font-weight:700}
+.insight{font-family:var(--serif);font-size:16px;line-height:1.45;margin-top:10px;color:var(--text)}
+.insight em{color:var(--candle);font-style:normal}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:8px 8px;border-bottom:1px solid var(--line-soft);white-space:nowrap}
+th{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);cursor:pointer;position:sticky;top:0;background:var(--night-2)}
+.tablewrap{overflow:auto;max-height:520px;border:1px solid var(--line-soft);border-radius:6px}
+.flag{color:var(--rose);font-weight:700}
+.ok{color:var(--sage)}
+#tip{position:fixed;pointer-events:none;background:var(--paper);color:var(--paper-ink);font-size:12.5px;font-weight:700;padding:6px 10px;border-radius:6px;opacity:0;transition:opacity .1s;z-index:9;max-width:240px}
+.login{max-width:380px;margin:12vh auto 0;padding:0 16px}
+.login input{width:100%;background:var(--night-2);border:1px solid var(--line);color:var(--text);border-radius:30px;padding:13px 16px;font:inherit;font-size:16px;margin:14px 0 10px}
+.err{color:var(--rose);font-size:13px;min-height:18px}
+.hit{fill:transparent}
+.picks{columns:2;column-gap:14px}.picks .card{break-inside:avoid;margin-bottom:14px}
+@media (max-width:760px){.g4{grid-template-columns:1fr 1fr}.g2{grid-template-columns:1fr}.picks{columns:1}}
+</style>
+</head>
+<body>
+<div id="root"></div><div id="tip"></div>
+<script>
+(function(){
+"use strict";
+var CONFIG = { api: "" };   // same Apps Script /exec URL as upstairs/index.html
+var KEY = "kp_upstairs_admin";
+var pw = ""; try { pw = localStorage.getItem(KEY) || ""; } catch(e){}
+var root = document.getElementById("root"), tip = document.getElementById("tip"), DATA = null, sortK = "last_active", sortDir = -1;
+function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function call(p){
+  if (CONFIG.api.indexOf("mock:") === 0 && window.__upstairsMock) return window.__upstairsMock(p);
+  if (!CONFIG.api) return Promise.resolve({ok:false, error:"not_configured"});
+  return fetch(CONFIG.api,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(p)}).then(function(r){return r.json();}).catch(function(){return {ok:false,error:"offline"};});
+}
+function login(err){
+  root.innerHTML = '<div class="login"><div class="eyebrow">upstairs</div><h1>admin</h1><form id="lf"><input type="password" id="pw" placeholder="admin password (from setup)" autocomplete="current-password" autofocus><div class="err">' + esc(err||"") + '</div><button class="btn pc" type="submit">open</button></form></div>';
+  document.getElementById("lf").onsubmit = function(e){ e.preventDefault(); pw = document.getElementById("pw").value.trim(); load(); };
+}
+function load(){
+  root.innerHTML = '<div class="login"><p class="eyebrow">loading…</p></div>';
+  call({action:"admin", secret:pw, include_preview:location.hash === "#preview"}).then(function(r){
+    if (!r.ok) { try { localStorage.removeItem(KEY); } catch(e){} return login(r.error === "auth" ? "wrong password" : r.error === "not_configured" ? "paste the api url into CONFIG first" : "couldn't load (" + r.error + ")"); }
+    try { localStorage.setItem(KEY, pw); } catch(e){}
+    DATA = r; draw();
+  });
+}
+function hbars(obj, limit){
+  var arr = Object.keys(obj||{}).map(function(k){ return [k, obj[k]]; }).sort(function(a,b){ return b[1]-a[1]; }).slice(0, limit||12);
+  if (!arr.length) return '<p class="sub">no data yet</p>';
+  var max = arr[0][1], tot = arr.reduce(function(s,x){ return s + x[1]; }, 0);
+  return arr.map(function(x){ return '<div class="hb" data-tip="' + esc(x[0]) + ': ' + x[1] + ' (' + Math.round(x[1]/tot*100) + '%)"><span class="l" title="' + esc(x[0]) + '">' + esc(x[0]) + '</span><span class="t"><i style="width:' + (x[1]/max*100).toFixed(1) + '%"></i></span><span class="n">' + x[1] + '</span></div>'; }).join("");
+}
+/* vertical bars, single series, 4px rounded tops anchored to baseline */
+function vbars(vals, labels, opts){
+  opts = opts || {};
+  var W = 640, H = 190, pl = 28, pb = 22, pt = 8, n = vals.length, max = Math.max(1, Math.max.apply(null, vals.map(function(v){ return v||0; })));
+  var bw = (W - pl) / n, g = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(opts.label||"") + '">';
+  var y = function(v){ return pt + (H - pt - pb) * (1 - v/max); };
+  [0, Math.round(max/2), max].forEach(function(t){ g += '<line x1="' + pl + '" x2="' + W + '" y1="' + y(t) + '" y2="' + y(t) + '" stroke="#2a2030"/><text x="' + (pl-6) + '" y="' + (y(t)+3) + '" text-anchor="end">' + t + '</text>'; });
+  vals.forEach(function(v, i){
+    var x = pl + i*bw + 1, w = Math.max(2, bw - 2), h = (H - pt - pb) - (y(v||0) - pt), yy = y(v||0), r = Math.min(4, w/2, h);
+    var hi = opts.hi && opts.hi(i, v);
+    if (h > 0) g += '<path d="M' + x + ',' + (H-pb) + 'V' + (yy + r) + 'Q' + x + ',' + yy + ' ' + (x+r) + ',' + yy + 'H' + (x+w-r) + 'Q' + (x+w) + ',' + yy + ' ' + (x+w) + ',' + (yy+r) + 'V' + (H-pb) + 'Z" fill="' + (hi ? 'var(--rose)' : 'var(--candle)') + '"/>';
+    g += '<rect class="hit" x="' + (pl + i*bw) + '" y="' + pt + '" width="' + bw + '" height="' + (H-pt-pb) + '" data-tip="' + esc(labels[i] + ': ' + (v==null?'–':v) + (opts.unit||'')) + '"/>';
+    if (opts.every ? i % opts.every === 0 : true) g += '<text x="' + (pl + i*bw + bw/2) + '" y="' + (H-6) + '" text-anchor="middle">' + esc(opts.tick ? opts.tick(i) : labels[i]) + '</text>';
+  });
+  return g + '</svg>';
+}
+function line(vals, labels){
+  var W = 640, H = 190, pl = 28, pb = 22, pt = 10, n = vals.length;
+  var x = function(i){ return pl + 8 + i*(W-pl-16)/(n-1); }, y = function(v){ return pt + (H-pt-pb)*(1 - v/10); };
+  var g = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="average check-in by day">';
+  [0,5,10].forEach(function(t){ g += '<line x1="' + pl + '" x2="' + W + '" y1="' + y(t) + '" y2="' + y(t) + '" stroke="#2a2030"/><text x="' + (pl-6) + '" y="' + (y(t)+3) + '" text-anchor="end">' + t + '</text>'; });
+  var pts = []; vals.forEach(function(v,i){ if (v != null) pts.push([x(i), y(v), i, v]); });
+  if (pts.length > 1) g += '<polyline fill="none" stroke="var(--rose)" stroke-width="2" stroke-linejoin="round" points="' + pts.map(function(p){ return p[0].toFixed(1)+','+p[1].toFixed(1); }).join(' ') + '"/>';
+  pts.forEach(function(p){ g += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="4.5" fill="var(--rose)" stroke="var(--night-2)" stroke-width="2"/>'; });
+  for (var i=0;i<n;i++){ g += '<rect class="hit" x="' + (x(i) - (W-pl)/n/2) + '" y="0" width="' + ((W-pl)/n) + '" height="' + H + '" data-tip="' + esc(labels[i] + ': ' + (vals[i]==null ? 'no check-ins' : vals[i] + '/10 avg (' + DATA.space_n[i] + ' women)')) + '"/>'; if (i % 2 === 0 || i === n-1) g += '<text x="' + x(i) + '" y="' + (H-6) + '" text-anchor="middle">' + (i+1) + '</text>'; }
+  return g + '</svg>';
+}
+var PICK_NAMES = {triggers:"triggers (day 4)", pattern:"his repeating pattern (day 5)", comeback:"comeback that would get her (day 8)", yesno:"where she says yes but means no (day 11)", anchors:"body non-negotiables (day 13)", morning:"morning routine (day 15)", evening:"evening routine (day 15)", red:"red flags (day 16)", green:"green flags (day 16)", hardest:"hardest phrase to say (day 17)", dating:"where she is with dating (day 18)", gaveup:"what she gave up (day 19)"};
+function draw(){
+  var d = DATA, t = d.totals, titles = d.titles;
+  var comp = t.members ? Math.round(t.graduated / t.members * 100) : 0;
+  /* where women stall = open day, 3+ quiet days (not just "hasn't got there yet") */
+  var maxDrop = 0, dropDay = 0;
+  Object.keys(d.stuck).forEach(function(k){ if (d.stuck[k] > maxDrop) { maxDrop = d.stuck[k]; dropDay = Number(k) - 1; } });
+  var peakH = d.urge_hours.indexOf(Math.max.apply(null, d.urge_hours));
+  var h = '<div class="wrap"><header><h1>UPSTAIRS<em>admin</em></h1><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="csv">download members csv</button><button class="btn" id="rl">refresh</button><button class="btn" id="lo">log out</button></div></header>';
+  h += '<p class="sub" style="margin-top:10px">detox from him · updated ' + new Date(d.generated).toLocaleString() + (location.hash === '#preview' ? ' · including preview accounts' : ' · your own preview accounts are excluded') + '</p>';
+  h += '<div class="grid g4">' +
+    tile(t.members, "members", "unlocked detox upstairs") + tile(t.active7, "active 7 days", t.members ? Math.round(t.active7/t.members*100) + "% of members" : "") +
+    tile(t.graduated, "graduated", comp + "% finished all 21") + tile(Object.keys(d.stuck).reduce(function(s,k){ return s + d.stuck[k]; },0), "stuck 3+ days", "day open, no activity") + '</div>';
+  h += '<div class="grid g2"><div class="card"><h2>how far they get</h2><p class="sub">women who reached each day</p>' + vbars(d.reached, titles.map(function(x,i){ return "day " + (i+1) + " · " + x; }), {label:"women reaching each day", tick:function(i){ return i+1; }, every:2, unit:" women", hi:function(i){ return i === dropDay && maxDrop > 0; }}) +
+    (maxDrop > 0 ? '<p class="insight">most women stall on <em>day ' + (dropDay+1) + '</em>, “' + esc(titles[dropDay]) + '” (' + maxDrop + (maxDrop === 1 ? ' woman' : ' women') + '). that\'s the day to tighten or record a voice note for.</p>' : '<p class="sub" style="margin-top:8px">stalled days get highlighted here once women go quiet for 3+ days.</p>') + '</div>';
+  h += '<div class="card"><h2>where they\'re stuck</h2><p class="sub">day is open, no activity for 3+ days</p>' + hbars(Object.keys(d.stuck).reduce(function(o,k){ o["day " + k + " · " + titles[k-1]] = d.stuck[k]; return o; }, {})) + '</div></div>';
+  h += '<div class="grid g2"><div class="card"><h2>how much space he takes up</h2><p class="sub">average daily check-in, 0 to 10, by program day</p>' + line(d.space_avg, titles.map(function(x,i){ return "day " + (i+1); })) + spaceInsight(d.space_avg) + '</div>';
+  h += '<div class="card"><h2>when the urges hit</h2><p class="sub">sos presses by her local hour</p>' + vbars(d.urge_hours, d.urge_hours.map(function(_,i){ return hr(i); }), {label:"urges by hour", tick:function(i){ return hr(i); }, every:3, unit:" urges", hi:function(i,v){ return v > 0 && i === peakH; }}) +
+    (d.urge_hours[peakH] ? '<p class="insight">peak: <em>' + hr(peakH) + '</em>. post content that meets her there, or schedule an ig story for that hour.</p>' : '') + '</div></div>';
+  h += '<div class="grid g2"><div class="card"><h2>what happens in the wave</h2><p class="sub">outcome she logged after sos</p>' + hbars(rename(d.urge_outcomes, {rode:"rode it out", checked:"checked his page", texted:"texted him"})) + '<h2 style="margin-top:16px">what set it off</h2>' + hbars(d.urge_triggers) + '</div>';
+  h += '<div class="card"><h2>time lost to replaying him</h2><p class="sub">daily check-ins</p>' + hbars(d.rumination) + '<h2 style="margin-top:16px">slips</h2>' + hbars(rename(d.slips, {texted:"texted him", replied:"replied to him", called:"called or met", checked:"checked his page", contact:"contact"})) + '</div></div>';
+  h += '<h2 style="margin-top:30px">what they told you</h2><p class="sub">their picks inside the program. this is your content and product research, written by your buyers.</p><div class="picks">';
+  Object.keys(PICK_NAMES).forEach(function(k){ if (d.picks[k]) h += '<div class="card"><div class="eyebrow">' + esc(PICK_NAMES[k]) + '</div>' + hbars(d.picks[k], 10) + '</div>'; });
+  if (!Object.keys(d.picks).length) h += '<div class="card"><p class="sub">shows up once women pass day 4.</p></div>';
+  h += '</div>';
+  h += '<div class="grid g2"><div class="card"><h2>where they are</h2><p class="sub">by timezone</p>' + hbars(d.tz, 10) + '</div><div class="card"><h2>how they arrived</h2><p class="sub">first link they used</p>' + hbars(d.src, 8) + '</div></div>';
+  h += salesBlock(d);
+  var F = d.flags;
+  h += '<div class="card" style="margin-top:14px"><h2>purchase check</h2>' +
+    (F.zap_live ? '<p class="sub">stan → zapier is feeding the buyers tab. a key only counts as verified when its email bought detox.</p>' +
+        '<p style="font-size:14px">' + (F.not_verified.length ? '<span class="flag">not matched to a purchase after 48h: ' + F.not_verified.map(function(x){ return esc(x.email); }).join(", ") + '</span><br><span class="sub">could be a shared key, or a buyer who unlocked with a different email. they still have access unless you switch on LOCK_UNVERIFIED.</span>' : '<span class="ok">every account is matched to a purchase (or still inside its 48h window).</span>') + '</p>' +
+        (F.pending.length ? '<p class="sub" style="margin-top:6px">waiting for stan (under 48h): ' + F.pending.map(function(x){ return esc(x.email) + ' (' + x.hours + 'h)'; }).join(", ") + '</p>' : '')
+      : '<p class="sub">not switched on yet. connect stan → zapier → the <b>buyers</b> tab (steps in the handoff note) and every unlock gets checked against a real purchase.</p>') +
+    '<p class="sub" style="margin-top:10px">accounts opened on 4+ devices: ' + (F.devices.length ? '<span class="flag">' + F.devices.map(function(x){ return esc(x.email) + ' (' + x.devices + ')'; }).join(", ") + '</span>' : '<span class="ok">none</span>') + '</p></div>';
+  h += '<div class="card" style="margin-top:14px"><h2>members</h2><p class="sub">tap a column to sort</p><div class="tablewrap"><table id="mt"></table></div></div></div>';
+  root.innerHTML = h;
+  table();
+  document.getElementById("rl").onclick = load;
+  document.getElementById("lo").onclick = function(){ try { localStorage.removeItem(KEY); } catch(e){} pw = ""; login(); };
+  document.getElementById("csv").onclick = csv;
+}
+var TNAME = {talk:"talk with me", hvw:"high value women", stopguessing:"stop guessing method", lovespell:"love spell", detox:"detox from him"};
+var WNAME = {shelf:"the shelf", tools:"tools tab", graduation:"graduation screen"};
+function salesBlock(d){
+  var f = (d.funnel || []).slice().sort(function(a,b){ return b.taps - a.taps; });
+  var h = '<h2 style="margin-top:30px">from the app to stan</h2><p class="sub">taps on your stan buttons inside upstairs, and who actually bought after tapping' + (d.flags.zap_live ? '' : ' (purchases show once the stan → zapier link is on)') + '.</p><div class="grid g2" style="margin-top:0">';
+  if (!f.length) return h + '<div class="card"><p class="sub">no taps yet. they show up as soon as members tap talk with me, high value women or a locked product.</p></div></div>';
+  f.forEach(function(x){
+    var rate = x.women ? Math.round(x.bought / x.women * 100) : 0;
+    h += '<div class="card"><div class="eyebrow">' + esc(TNAME[x.target] || x.target) + '</div>' +
+      '<div class="grid" style="grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px">' + tile(x.taps, "taps", "") + tile(x.women, "women", "who tapped") + tile(x.bought, "bought", d.flags.zap_live ? rate + "% of tappers" : "needs zapier") + '</div>' +
+      '<p class="sub" style="margin:12px 0 4px">taps by screen</p>' + hbars(rename(x.where, WNAME)) +
+      (x.bought ? '<p class="sub" style="margin:12px 0 4px">sales by the screen she first tapped</p>' + hbars(rename(x.bought_where, WNAME)) + '<p class="sub" style="margin-top:8px">' + x.buyers.map(esc).join(", ") + '</p>' : '') +
+      (d.flags.zap_live ? '<p class="sub" style="margin-top:8px">all stan sales of this product (any source): ' + (x.stan_sales||0) + '</p>' : '') + '</div>';
+  });
+  return h + '</div>';
+}
+function tile(n, l, s){ return '<div class="card tile"><b>' + n + '</b><span>' + esc(l) + '</span><small>' + esc(s||"") + '</small></div>'; }
+function hr(i){ return i === 0 ? "12am" : i < 12 ? i + "am" : i === 12 ? "12pm" : (i-12) + "pm"; }
+function rename(o, m){ var r = {}; Object.keys(o||{}).forEach(function(k){ r[m[k]||k] = o[k]; }); return r; }
+function spaceInsight(v){
+  var a = v.slice(0,3).filter(function(x){ return x != null; }), b = v.slice(-3).filter(function(x){ return x != null; });
+  if (!a.length || !b.length) return "";
+  var av = function(x){ return Math.round(x.reduce(function(s,q){ return s+q; },0)/x.length*10)/10; };
+  return '<p class="insight">days 1–3 average <em>' + av(a) + '</em>. days 19–21 average <em>' + av(b) + '</em>. that drop is your proof line for the sales page.</p>';
+}
+var COLS = [["email","email"],["name","name"],["verified","purchase"],["day","day"],["idle_days","idle days"],["streak","nc streak"],["resets","restarts"],["email_opt","emails"],["push_opt","push"],["tz","timezone"],["created","joined"]];
+function table(){
+  var rows = DATA.members.slice().sort(function(a,b){ var x = a[sortK], y = b[sortK]; if (x === y) return 0; if (x == null) return 1; if (y == null) return -1; return (x > y ? 1 : -1) * sortDir; });
+  var t = '<thead><tr>' + COLS.map(function(c){ return '<th data-k="' + c[0] + '">' + c[1] + (sortK === c[0] ? (sortDir > 0 ? ' ↑' : ' ↓') : '') + '</th>'; }).join("") + '</tr></thead><tbody>';
+  rows.forEach(function(m){ t += '<tr>' + COLS.map(function(c){ var v = m[c[0]]; if (c[0] === "created") v = String(v||"").slice(0,10); if (typeof v === "boolean") v = v ? "on" : "off"; return '<td' + (c[0] === "idle_days" && m.idle_days >= 3 && m.day !== "done" ? ' class="flag"' : '') + '>' + esc(v==null?"–":v) + '</td>'; }).join("") + '</tr>'; });
+  document.getElementById("mt").innerHTML = t + '</tbody>';
+  document.querySelectorAll("#mt th").forEach(function(th){ th.onclick = function(){ var k = th.getAttribute("data-k"); if (sortK === k) sortDir *= -1; else { sortK = k; sortDir = -1; } table(); }; });
+}
+function csv(){
+  var lines = [COLS.map(function(c){ return c[1]; }).join(",")].concat(DATA.members.map(function(m){ return COLS.map(function(c){ return '"' + String(m[c[0]]==null?"":m[c[0]]).replace(/"/g,'""') + '"'; }).join(","); }));
+  var a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([lines.join("\n")], {type:"text/csv"})); a.download = "upstairs-members.csv"; document.body.appendChild(a); a.click(); a.remove();
+}
+document.addEventListener("mousemove", function(e){ var t = e.target.closest && e.target.closest("[data-tip]"); if (!t) { tip.style.opacity = 0; return; } tip.textContent = t.getAttribute("data-tip"); tip.style.opacity = 1; tip.style.left = Math.min(innerWidth - 250, e.clientX + 12) + "px"; tip.style.top = (e.clientY + 14) + "px"; });
+document.addEventListener("touchstart", function(e){ var t = e.target.closest && e.target.closest("[data-tip]"); if (!t) { tip.style.opacity = 0; return; } var r = t.getBoundingClientRect(); tip.textContent = t.getAttribute("data-tip"); tip.style.opacity = 1; tip.style.left = Math.max(8, Math.min(innerWidth - 250, r.left)) + "px"; tip.style.top = (r.top - 36) + "px"; }, {passive:true});
+if (pw) load(); else login();
+})();
+</script>
+</body>
+</html>

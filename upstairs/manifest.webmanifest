@@ -1,0 +1,17 @@
+{
+  "name": "upstairs · KP Unfiltered",
+  "short_name": "upstairs",
+  "description": "detox from him and every kp unfiltered program, in one app.",
+  "id": "/upstairs/",
+  "start_url": "/upstairs/?src=app",
+  "scope": "/upstairs/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#15101a",
+  "theme_color": "#15101a",
+  "icons": [
+    {"src": "/upstairs/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "/upstairs/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "/upstairs/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
