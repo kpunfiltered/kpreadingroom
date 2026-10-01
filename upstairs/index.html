@@ -537,7 +537,7 @@ function unlockCard(){
       '<p>you\'ve already opened upstairs on another device, so i sent a 6-digit code to <b>' + esc(s.hint) + '</b>. it keeps your progress safe.</p>' +
       '<form class="form" data-form="verify"><input type="tel" inputmode="numeric" autocomplete="one-time-code" maxlength="6" class="codebox" id="f-code" placeholder="••••••" aria-label="6-digit code">' +
       '<div class="err" id="f-err"></div><button class="btn btn-ink btn-block" type="submit">open my shelf</button>' +
-      '<button type="button" class="linkish" data-act="code-back">use a different email</button><div class="fine">no email? check spam or promotions. it comes from kp unfiltered.</div></form></div></section>';
+      '<button type="button" class="linkish" data-act="code-back">use a different email</button><div class="fine">it can take a minute. the subject starts with the 6 digits. not there? check spam and promotions, or email ' + CONFIG.contact + ' and i\'ll sort it.</div></form></div></section>';
   }
   return '<section class="sec" id="unlock"><div class="paper keycard torn"><div class="eyebrow" style="color:var(--paper-dim)">bought something?</div><h2>use your key.</h2>' +
     '<p>it\'s in your purchase email from stan, something like <b style="font-family:var(--display);letter-spacing:.1em">DETOX-XXXX-XXXX</b>. you only do this once per phone.</p>' +
@@ -588,10 +588,11 @@ function onVerify(form){
 }
 function signedIn(email, r){
   L.auth = {email:email.trim().toLowerCase(), token:r.token};
+  L.handoff = null;
   if (r.state) L.st = r.state;
   save(); unlockCard.s = {};
   pushLogin();
-  refresh(true).then(function(){ go("#/" + PRODUCT); if (!L.welcomed) setTimeout(showWelcome, 250); else toast(r.restored ? "welcome back. your place is saved." : "unlocked"); });
+  refresh(true).then(function(){ go("#/" + PRODUCT); handoffPrep(); if (!L.welcomed) setTimeout(showWelcome, 250); else toast(r.restored ? "welcome back. your place is saved." : "unlocked"); });
 }
 function signOutLocal(){ L.auth = null; L.st = null; L.c = null; L.weekly = null; save(); }
 
@@ -1382,14 +1383,38 @@ document.addEventListener("visibilitychange", function(){
   }
 });
 
+/* ================= home-screen handoff (iphone) =================
+   the home-screen app can't see safari's storage, so while she's signed in here,
+   safari's address carries a one-time link. "add to home screen" saves that address. */
+function handoffPrep(){
+  if (!L.auth || !isIOS || standalone() || inApp) return;
+  var h = L.handoff;
+  var put = function(code){ try { history.replaceState(null, "", "/upstairs/?h=" + code + location.hash); } catch(e){} };
+  if (h && Date.now() - h.at < 25*DAY) { put(h.h); return; }
+  api("handoff_new", {}).then(function(r){ if (r.ok && r.h) { L.handoff = {h:r.h, at:Date.now()}; save(); put(r.h); } });
+}
+function handoffUse(){
+  var h = ""; try { h = new URLSearchParams(location.search).get("h") || ""; } catch(e){}
+  if (!h) return Promise.resolve(false);
+  if (L.auth) return Promise.resolve(false);
+  return call({action:"handoff", product:PRODUCT, h:h, tz:TZ, ua:UA.slice(0,60)}).then(function(r){
+    try { history.replaceState(null, "", "/upstairs/" + (location.hash || "#/" + PRODUCT)); } catch(e){}
+    if (r.ok && r.token) { L.auth = {email:r.email, token:r.token}; if (r.state) L.st = r.state; L.welcomed = true; save(); return true; }
+    return false;
+  });
+}
+
 /* ================= boot ================= */
 if ("serviceWorker" in navigator && location.protocol === "https:" && !CONFIG.onesignalAppId) {
   navigator.serviceWorker.register("/upstairs/sw.js", {scope:"/upstairs/"}).catch(function(){});
 }
 pushBoot();
-if (L.auth && !location.hash) location.replace("#/" + PRODUCT);
-render();
-if (L.auth) { refresh().then(function(r){ if (r && r.ok && !$("ov").innerHTML && document.activeElement && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) render(); }); flush(); }
+handoffUse().then(function(used){
+  if (used) { location.hash = "#/" + PRODUCT; toast("you're in. this is your app now."); }
+  if (L.auth && !location.hash) location.replace("#/" + PRODUCT);
+  render();
+  if (L.auth) { refresh().then(function(r){ if (r && r.ok && !$("ov").innerHTML && document.activeElement && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) render(); handoffPrep(); }); flush(); }
+});
 })();
 </script>
 </body>

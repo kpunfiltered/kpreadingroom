@@ -3,7 +3,6 @@
   "short_name": "upstairs",
   "description": "detox from him and every kp unfiltered program, in one app.",
   "id": "/upstairs/",
-  "start_url": "/upstairs/?src=app",
   "scope": "/upstairs/",
   "display": "standalone",
   "orientation": "portrait",
