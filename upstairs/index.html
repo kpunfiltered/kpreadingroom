@@ -85,7 +85,7 @@ p{margin:0}
 .pill{font-size:11.5px;font-weight:700;letter-spacing:.06em;color:var(--dim);border:1px solid var(--line);border-radius:30px;padding:5px 11px;text-decoration:none;white-space:nowrap}
 
 /* ============ SHELF ============ */
-.shelf-hero{padding:34px 0 8px}
+.shelf-hero{padding:34px 0 8px;overflow-x:clip}
 .shelf-hero h1{font-size:clamp(84px,24vw,150px);color:var(--candle);margin-top:10px}
 .shelf-hero .lede{font-family:var(--serif);font-size:20px;line-height:1.45;margin-top:14px;max-width:32ch}
 .shelf-hero .lede em{color:var(--candle)}
@@ -129,6 +129,9 @@ p{margin:0}
 .secret-tease{margin-top:40px;border:1px dashed var(--line);border-radius:6px;padding:22px 18px}
 .secret-tease .display{font-size:40px;color:var(--candle)}
 .secret-tease p{color:var(--dim);font-size:14.5px;margin-top:6px}
+.secret-tease .s-note{font-size:13px;color:var(--faint);font-style:italic}
+.secret-tease .s-in{color:var(--text);font-weight:600;margin-top:12px}
+.secret-tease .s-in em{color:var(--candle);font-weight:400}
 
 /* ============ APP ============ */
 .app{padding-bottom:calc(var(--safe-b) + 96px)}
@@ -365,6 +368,7 @@ var CONFIG = {
   hvw: "https://stan.store/unfilteredkp/p/high-value-women-science-backed",
   talk: "https://stan.store/unfilteredkp/p/clarity-session-jka79riv",
   readingRoom: "/",
+  rrApi: "https://script.google.com/macros/s/AKfycbyyFkxJ-6jMacOrIE5jZsYveGMcpFOkAFBOXhyjmFrBJ8rtGwXS_sALWDv5w7K01m3T/exec",   // the reading room's sheet: the secret room waitlist lives there
   ig: "https://instagram.com/kpunfilteredkp",
   contact: "team@unfilteredprojects.com"
 };
@@ -523,9 +527,33 @@ function viewShelf(){
   h += '<section class="sec"><div class="sec-h"><h2>' + (mine ? 'your shelf' : 'on the shelf') + '</h2><p>' + (mine ? 'what\'s open is yours. the rest unlocks with a key from its purchase email.' : 'each one unlocks with the key in its purchase email.') + '</p></div>';
   CONFIG.products.forEach(function(p){ h += prodCard(p, mine); });
   h += '</section>';
-  h += '<section class="secret-tease"><div class="eyebrow">one floor further</div><div class="display">the secret room</div><p>a private community of women helping each other through exactly this, with me in the room. the waitlist lives in the reading room.</p><div style="margin-top:12px"><a class="btn btn-ghost" href="' + CONFIG.readingRoom + '">join the waitlist</a></div></section>';
+  h += secretCard(mine);
   h += foot() + '</main>';
   return h;
+}
+function secretCard(mine){
+  var name = mine ? first(L.st.name) : "", act;
+  if (!mine) act = '<p class="s-note">once you\'re in, saving your spot is one tap.</p>';
+  else if (L.secret && L.secret === L.auth.email) act = '<p class="s-in">you\'re on the list' + (name ? ', ' + esc(name) : '') + '. <em>you\'ll hear first.</em></p>';
+  else act = '<div style="margin-top:12px"><button class="btn btn-candle" data-act="secret-join">save my spot' + (name ? ', ' + esc(name) : '') + '</button></div>';
+  return '<section class="secret-tease" id="secret"><div class="eyebrow">one floor further</div><div class="display">the secret room</div><p>a private community of women helping each other through exactly this, with me in the room. the waitlist gets in first.</p>' + act + '</section>';
+}
+function secretJoin(b){
+  if (!L.auth || !L.st || L.secret === L.auth.email) return;
+  b.disabled = true;
+  var email = L.auth.email, name = L.st.name || "", t = Date.now();
+  function rr(payload){
+    if (!CONFIG.rrApi) return Promise.resolve({ok:true, local:true});
+    return fetch(CONFIG.rrApi, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify(payload)}).then(function(r){ return r.json(); });
+  }
+  rr({action:"start", room:"secretroom", email:email, name:name, country:"", clock_start:t, source:"upstairs"})
+    .then(function(r){
+      if (!r || !r.ok) throw new Error("no");
+      L.secret = email; save(); render(); toast("you're on the list");
+      queue("click", {target:"secretroom", where:"shelf", day:L.st.current || 0});
+      rr({action:"event", room:"secretroom", email:email, event:"joined", fields:{result:"waitlist", detail:"joined from upstairs"}}).catch(function(){});
+    })
+    .catch(function(){ b.disabled = false; toast("couldn't save your spot. check your connection and tap again."); });
 }
 function prodCard(p, mine){
   var style = ' style="--c:' + p.c + '"';
@@ -1272,6 +1300,7 @@ var ACT = {
   },
   "sos-save": sosSave,
   "texted": openTexted,
+  "secret-join": secretJoin,
   "copy": function(b){ copy(b.getAttribute("data-t")); },
   "slip": function(){
     ov(ovTop("i slipped") + '<h2>okay. <em>no shame</em>. what happened?</h2><div class="choice">' +
