@@ -106,6 +106,8 @@ p{margin:0}
 .form input.key{font-family:var(--display);font-size:22px;letter-spacing:.14em;text-transform:uppercase;padding:12px 18px}
 .form .err{font-size:13.5px;color:var(--wine);min-height:0;font-weight:600}
 .form .fine{font-size:12px;color:var(--paper-dim);line-height:1.5}
+.junkhint{margin:14px 0 4px;padding:12px 14px;border-radius:6px;background:rgba(138,40,70,.09);border-left:3px solid var(--wine,#8a2846);font-size:14px;line-height:1.5;color:var(--paper-ink)}
+.junkhint b{font-weight:800}
 .tick{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--paper-ink);cursor:pointer;line-height:1.4}
 .tick input{appearance:none;-webkit-appearance:none;flex:none;width:20px;height:20px;border:1.5px solid var(--paper-dim);border-radius:5px;margin:0;display:grid;place-items:center;cursor:pointer;background:#fbf6ee}
 .tick input:checked{background:var(--paper-ink);border-color:var(--paper-ink)}
@@ -572,9 +574,10 @@ function unlockCard(){
   if (s.code) {
     return '<section class="sec"><div class="paper keycard torn"><div class="eyebrow" style="color:var(--paper-dim)">welcome back</div><h2>check your email.</h2>' +
       '<p>you\'ve already opened upstairs on another device, so i sent a 6-digit code to <b>' + esc(s.hint) + '</b>. it keeps your progress safe.</p>' +
+      '<div class="junkhint"><b>not in your inbox? check junk / spam.</b> it comes from <b>KP Unfiltered</b>. if it\'s there, tap <b>"not junk"</b> so my day emails reach you too.</div>' +
       '<form class="form" data-form="verify"><input type="tel" inputmode="numeric" autocomplete="one-time-code" maxlength="6" class="codebox" id="f-code" placeholder="••••••" aria-label="6-digit code">' +
       '<div class="err" id="f-err"></div><button class="btn btn-ink btn-block" type="submit">open my shelf</button>' +
-      '<button type="button" class="linkish" data-act="code-back">use a different email</button><div class="fine">it can take a minute. the subject starts with the 6 digits. not there? check spam and promotions, or email ' + CONFIG.contact + ' and i\'ll sort it.</div></form></div></section>';
+      '<button type="button" class="linkish" data-act="code-back">use a different email</button><div class="fine">it can take a minute. the subject starts with the 6 digits. still nothing after 2 minutes? check promotions too, or email ' + CONFIG.contact + ' and i\'ll sort it.</div></form></div></section>';
   }
   /* on phones in the browser: make "app first" impossible to miss. same message on iphone and android. */
   var tip = (standalone() || inApp || !isPhone) ? '' :
