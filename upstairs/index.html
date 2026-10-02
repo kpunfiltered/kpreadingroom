@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <style>html,body{background:#15101a;color:#f0e7dc;color-scheme:dark;margin:0}</style>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>upstairs · KP Unfiltered</title>
+<title>KP Upstairs</title>
 <meta name="description" content="the paid floor of the reading room. programs you use, not pdfs you forget.">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#15101a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="upstairs">
+<meta name="apple-mobile-web-app-title" content="KP Upstairs">
 <link rel="manifest" href="/upstairs/manifest.webmanifest">
 <link rel="apple-touch-icon" href="/upstairs/icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/upstairs/icons/icon-192.png">
@@ -409,6 +409,7 @@ function api(action, data){
 }
 /* small fire-and-forget calls survive going offline */
 function queue(action, data){
+  data.qid = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);   // one-time id: a re-send after a lost reply is ignored by the server
   L.outbox.push({a:action, d:data, t:Date.now()}); save(); flush();
 }
 var flushing = false;
@@ -582,7 +583,7 @@ function unlockCard(){
       '<div style="font-family:var(--serif);font-size:18px;font-weight:600;line-height:1.25;margin-top:4px">put upstairs on your home screen, then unlock it from there.</div>' +
       '<ol style="margin:10px 0 0;padding-left:20px;font-size:14px;line-height:1.5;display:flex;flex-direction:column;gap:6px">' +
         '<li>' + homeShort() + '</li>' +
-        '<li>open <b>upstairs</b> from your home screen</li>' +
+        '<li>open <b>KP Upstairs</b> from your home screen</li>' +
         '<li>enter your email and key there. you\'ll only do it once.</li>' +
       '</ol>' +
       (deferredPrompt ? '<div style="margin-top:10px"><button type="button" class="btn btn-ink" style="min-height:42px;padding:9px 18px" data-act="install">add it to my home screen</button></div>' : '<div style="margin-top:8px"><button type="button" class="linkish" data-act="install">show me how, step by step</button></div>') +
@@ -1134,7 +1135,7 @@ function openInstall(){
   if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt.userChoice.then(function(){ deferredPrompt = null; }); return; }
   var steps = homeSteps();
   ov(ovTop("home screen") + '<div class="paper welcome install torn"><div class="display" style="font-size:52px">two taps.</div><ol>' + steps.map(function(s){ return '<li>' + s + '</li>'; }).join("") + '</ol>' +
-    '<p class="safety">once it\'s on your home screen, open upstairs from there. you stay signed in.</p></div><button class="btn btn-pc btn-block" data-act="close-ov">got it</button>');
+    '<p class="safety">once it\'s on your home screen, open KP Upstairs from there. you stay signed in.</p></div><button class="btn btn-pc btn-block" data-act="close-ov">got it</button>');
   setTimeout(function(){ document.querySelectorAll(".ov .torn").forEach(tear); }, 10);
 }
 
