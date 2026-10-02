@@ -1,12 +1,13 @@
 /* upstairs service worker: instant start + offline + OneSignal push (same file, one scope).
    The app page is served from the phone instantly and refreshed in the background,
    so a new upload shows up the next time she opens the app. Bump VERSION when this file changes.
-   Saves always skip the browser's own cache (GitHub keeps files ~10 min), so a new upload is what gets saved. */
-var VERSION = "upstairs-v3";
+   Saves always skip the browser's own cache (GitHub keeps files ~10 min), so a new upload is what gets saved.
+   Never intercept /upstairs/icons/ (breaks the iPhone home-screen icon). */
+var VERSION = "upstairs-v4";
 try { importScripts("https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js"); } catch (e) {}
 
 var PAGE = "/upstairs/";
-var SHELL = [PAGE, "/upstairs/manifest.webmanifest", "/upstairs/icons/icon-192.png", "/upstairs/icons/apple-touch-icon.png"];
+var SHELL = [PAGE, "/upstairs/manifest.webmanifest"];
 
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(VERSION).then(function (c) { return c.addAll(SHELL.map(function (u) { return new Request(u, {cache: "reload"}); })); }).then(function () { return self.skipWaiting(); }));
@@ -39,8 +40,9 @@ self.addEventListener("fetch", function (e) {
     }));
     return;
   }
-  // fonts + icons: saved copy first, refreshed in the background
-  if (/fonts\.(googleapis|gstatic)\.com/.test(url.hostname) || url.pathname.indexOf("/upstairs/icons/") === 0) {
+  // fonts: saved copy first, refreshed in the background.
+  // icons are NOT touched: iPhone fetches the home-screen icon itself, and intercepting it gave a plain "U" icon.
+  if (/fonts\.(googleapis|gstatic)\.com/.test(url.hostname)) {
     e.respondWith(caches.open(VERSION).then(function (c) {
       return c.match(req).then(function (hit) {
         var net = fetch(req).then(function (res) { if (res && (res.ok || res.type === "opaque")) c.put(req, res.clone()); return res; }).catch(function () { return hit; });
