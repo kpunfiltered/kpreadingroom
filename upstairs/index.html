@@ -358,16 +358,15 @@ var CONFIG = {
   products: [
     {id:"detox", name:"detox from him", line:"21 days to emotionally disconnect from the wrong man.", c:"var(--rose)", app:true,
       buy:"https://stan.store/unfilteredkp/p/detox-from-him"},
-    {id:"stopguessing", name:"the stop guessing method", line:"the fast way to stop decoding his every move.", c:"var(--sage)", status:"unlock",
-      buy:"https://stan.store/unfilteredkp"},
-    {id:"hvw", name:"high value women", line:"six modules on why you keep choosing the same man, and how to stop.", c:"var(--slate)", status:"moving upstairs soon",
-      buy:"https://stan.store/unfilteredkp/p/high-value-women-science-backed"},
-    {id:"lovespell", name:"love spell", line:"the video and guide.", c:"var(--amber)", status:"moving upstairs soon",
-      buy:"https://stan.store/unfilteredkp"},
+    {id:"dating", name:"high value dating", line:"28 days to stop auditioning and start choosing. on the apps and off them.", c:"var(--slate)", app:true,
+      buy:"https://stan.store/unfilteredkp"},   // <- swap for the high value dating stan link once the product exists
     {id:"talk", name:"talk with me", line:"one on one. you tell me the situation, i tell you the male side.", c:"var(--candle)", status:"book",
-      buy:"https://stan.store/unfilteredkp/p/clarity-session-jka79riv"}
+      buy:"https://stan.store/unfilteredkp/p/clarity-session-jka79riv"},
+    {id:"lovespell", name:"love spell", line:"the video and guide.", c:"var(--amber)", status:"moving upstairs soon",
+      buy:"https://stan.store/unfilteredkp"}
   ],
   hvw: "https://stan.store/unfilteredkp/p/high-value-women-science-backed",
+  dating: "https://stan.store/unfilteredkp",   // <- high value dating on stan (same link as in products above)
   talk: "https://stan.store/unfilteredkp/p/clarity-session-jka79riv",
   readingRoom: "/",
   rrApi: "https://script.google.com/macros/s/AKfycbyyFkxJ-6jMacOrIE5jZsYveGMcpFOkAFBOXhyjmFrBJ8rtGwXS_sALWDv5w7K01m3T/exec",   // the reading room's sheet: the secret room waitlist lives there
@@ -375,11 +374,39 @@ var CONFIG = {
   contact: "team@unfilteredprojects.com"
 };
 
+/* every app product keeps its own saved state on the phone (its own sign-in, days, writing).
+   detox keeps the original storage name, so nobody already using it notices a thing. */
 var DAY = 86400000, PRODUCT = "detox";
 var KEY = "kp_upstairs_v1";
-var L = {auth:null, st:null, c:null, weekly:null, days:{}, urges:[], outbox:[], welcomed:false, pushAsked:false, installHidden:false, v:1};
-try { var raw = localStorage.getItem(KEY); if (raw) { var o = JSON.parse(raw); for (var k in o) L[k] = o[k]; } } catch(e){}
-function save(){ try { localStorage.setItem(KEY, JSON.stringify(L)); } catch(e){} }
+var APPS = CONFIG.products.filter(function(p){ return p.app; }).map(function(p){ return p.id; });
+function keyFor(p){ return p === "detox" ? KEY : KEY + "_" + p; }
+function blankL(){ return {auth:null, st:null, c:null, weekly:null, days:{}, urges:[], outbox:[], welcomed:false, pushAsked:false, installHidden:false, v:1}; }
+function loadL(p){ var o = blankL(); try { var raw = localStorage.getItem(keyFor(p)); if (raw) { var j = JSON.parse(raw); for (var k in j) o[k] = j[k]; } } catch(e){} return o; }
+function peek(p){ return p === PRODUCT ? L : loadL(p); }
+function owned(p){ var s = peek(p); return !!(s.auth && s.st); }
+function firstOwned(){ for (var i=0;i<APPS.length;i++) if (owned(APPS[i])) return APPS[i]; return ""; }
+function prodInfo(p){ return CONFIG.products.filter(function(x){ return x.id === p; })[0] || {}; }
+var L = null;
+function useProduct(p){
+  if (APPS.indexOf(p) < 0 || (L && p === PRODUCT)) return;
+  if (L && (L.auth || L.st)) save();   // never write an empty state for a product she doesn't own
+  PRODUCT = p; L = loadL(p);
+  try { localStorage.setItem("kp_upstairs_last", p); } catch(e){}
+  document.documentElement.style.setProperty("--pc", prodInfo(p).c || "var(--rose)");
+}
+(function(){
+  var h = location.hash.replace(/^#\/?/, "").split("/")[0], last = "";
+  try { last = localStorage.getItem("kp_upstairs_last") || ""; } catch(e){}
+  var start = APPS.indexOf(h) >= 0 ? h : (APPS.indexOf(last) >= 0 ? last : "detox");
+  PRODUCT = start; L = loadL(start);
+  if (!L.auth && APPS.indexOf(h) < 0) { var o = firstOwned(); if (o) { PRODUCT = o; L = loadL(o); } }
+  if (L.auth) try { localStorage.setItem("kp_upstairs_last", PRODUCT); } catch(e){}
+  document.documentElement.style.setProperty("--pc", prodInfo(PRODUCT).c || "var(--rose)");
+})();
+function save(){ try { localStorage.setItem(keyFor(PRODUCT), JSON.stringify(L)); } catch(e){} }
+function U(){ return (L && L.c && L.c.ui) || {}; }
+function stdRef(){ var t = U().tools; return t && t.std ? t.std : {day:16, id:"std"}; }
+function keyProduct(k){ var x = String(k||"").toUpperCase().replace(/[^A-Z0-9]/g,""); if (/^DETOX/.test(x)) return "detox"; if (/^DATE/.test(x)) return "dating"; return "auto"; }
 
 var UA = navigator.userAgent || "";
 var isIOS = /iphone|ipad|ipod/i.test(UA) || (/Macintosh/.test(UA) && navigator.maxTouchPoints > 1);
@@ -488,6 +515,8 @@ function route(){
 function render(){
   closeOv(true);
   var r = route(), app = $("app");
+  if (APPS.indexOf(r.p) >= 0 && r.p !== PRODUCT) useProduct(r.p);
+  if (APPS.indexOf(r.p) < 0 && !L.auth) { var o = firstOwned(); if (o) useProduct(o); }
   if (r.p === PRODUCT && L.auth && L.st && L.c) {
     if (r.sub === "day" && r.n) app.innerHTML = viewDay(r.n);
     else if (r.sub === "journey") app.innerHTML = viewJourney();
@@ -527,6 +556,7 @@ function viewShelf(){
   if (inApp && !mine) h += '<div class="banner"><b>tip:</b> you\'re inside an app browser. unlock here if you like, but to keep upstairs on your home screen, open this page in ' + (isIOS ? 'safari' : 'chrome') + ' (tap ••• then “open in browser”).</div>';
   if (L.notVerified) h += '<div class="banner" style="margin-top:20px"><b>i couldn\'t match ' + esc(L.auth ? L.auth.email : 'your email') + ' to a purchase.</b> if you bought with a different email, sign in with that one. if you think this is a mistake, email ' + CONFIG.contact + ' with your stan receipt and i\'ll sort it.<div style="margin-top:10px"><button class="linkish" data-act="signout">use a different email</button></div></div>';
   if (!mine) h += unlockCard();
+  else if (APPS.some(function(p){ return !owned(p); })) h += addKeyCard();
   h += '<section class="sec"><div class="sec-h"><h2>' + (mine ? 'your shelf' : 'on the shelf') + '</h2><p>' + (mine ? 'what\'s open is yours. the rest unlocks with a key from its purchase email.' : 'each one unlocks with the key in its purchase email.') + '</p></div>';
   CONFIG.products.forEach(function(p){ h += prodCard(p, mine); });
   h += '</section>';
@@ -558,19 +588,24 @@ function secretJoin(b){
     })
     .catch(function(){ b.disabled = false; toast("couldn't save your spot. check your connection and tap again."); });
 }
+function addKeyCard(){
+  if (!addKeyCard.open) return '<section class="sec"><div class="card"><h3>bought another program?</h3><p>add its key here. it sits on your shelf next to what you already have.</p><div class="row"><button class="btn btn-ghost" data-act="addkey">add a key</button></div></div></section>';
+  return unlockCard();
+}
 function prodCard(p, mine){
   var style = ' style="--c:' + p.c + '"';
-  if (p.app && mine && p.id === PRODUCT) {
-    var st = L.st, pct = Math.round(st.done / st.total * 100);
+  if (p.app && owned(p.id)) {
+    var st = peek(p.id).st, pct = Math.round(st.done / st.total * 100);
     return '<a class="prod mine" href="#/' + p.id + '"' + style + '><div class="top"><span class="status open">yours</span><span class="faint" style="font-size:12px;font-weight:700">' + (st.graduated ? 'finished' : 'day ' + st.current + ' of ' + st.total) + '</span></div>' +
       '<h3>' + esc(p.name) + '</h3><p>' + esc(p.line) + '</p><div class="bar"><i style="width:' + pct + '%"></i></div><div class="row"><span class="btn btn-pc" style="--pc:' + p.c + '">open</span></div></a>';
   }
-  var label = p.app ? "have a key? unlock above" : (p.status || "unlock");
+  var label = p.app ? (mine ? "the full app" : "have a key? unlock above") : (p.status || "unlock");
   return '<div class="prod locked"' + style + '><div class="top"><span class="status">' + (p.app ? 'the full app' : esc(label)) + '</span></div><h3>' + esc(p.name) + '</h3><p>' + esc(p.line) + '</p>' +
     '<div class="row"><a class="btn btn-ghost" href="' + p.buy + '" target="_blank" rel="noopener" data-track="' + p.id + '" data-where="shelf">' + (p.id === "talk" ? "book on stan" : "get it on stan") + '</a>' + (p.app ? '<span class="faint" style="font-size:12.5px">your key arrives in the purchase email</span>' : '') + '</div></div>';
 }
 function unlockCard(){
   var s = unlockCard.s || {};
+  if (!s.email && L && L.auth) { s.email = L.auth.email; s.name = s.name || (L.st && L.st.name) || ""; }
   if (s.code) {
     return '<section class="sec"><div class="paper keycard torn"><div class="eyebrow" style="color:var(--paper-dim)">welcome back</div><h2>check your email.</h2>' +
       '<p>you\'ve already opened upstairs on another device, so i sent a 6-digit code to <b>' + esc(s.hint) + '</b>. it keeps your progress safe.</p>' +
@@ -592,7 +627,7 @@ function unlockCard(){
       (deferredPrompt ? '<div style="margin-top:10px"><button type="button" class="btn btn-ink" style="min-height:42px;padding:9px 18px" data-act="install">add it to my home screen</button></div>' : '<div style="margin-top:8px"><button type="button" class="linkish" data-act="install">show me how, step by step</button></div>') +
     '</div>';
   return '<section class="sec" id="unlock"><div class="paper keycard torn"><div class="eyebrow" style="color:var(--paper-dim)">bought something?</div><h2>use your key.</h2>' +
-    '<p>it\'s in your purchase email from stan, something like <b style="font-family:var(--display);letter-spacing:.1em">DETOX-XXXX-XXXX</b>. you only do this once per phone.</p>' + tip +
+    '<p>it\'s in your purchase email from stan, something like <b style="font-family:var(--display);letter-spacing:.1em">DETOX-XXXX-XXXX</b> or <b style="font-family:var(--display);letter-spacing:.1em">DATE-XXXX-XXXX</b>. you only do this once per phone.</p>' + tip +
     '<form class="form" data-form="unlock" autocomplete="on">' +
     '<input type="text" id="f-name" name="given-name" autocomplete="given-name" placeholder="first name" maxlength="40" value="' + esc(s.name||"") + '">' +
     '<input type="email" id="f-email" name="email" autocomplete="email" inputmode="email" placeholder="the email you bought with" maxlength="120" value="' + esc(s.email||"") + '">' +
@@ -621,10 +656,12 @@ function onUnlock(form){
   if (!s.email || s.email.indexOf("@") < 1) { err.textContent = ERR.email; return; }
   if (s.key.replace(/[^a-z0-9]/gi,"").length < 6) { err.textContent = "type the key from your purchase email."; return; }
   var b = form.querySelector("button[type=submit]"); b.disabled = true; b.innerHTML = '<span class="spinner"></span>';
-  call({action:"unlock", product:PRODUCT, name:s.name, email:s.email, key:s.key, tz:TZ, src:src, ua:UA.slice(0,60)}).then(function(r){
+  var kp = keyProduct(s.key);
+  call({action:"unlock", product:kp, name:s.name, email:s.email, key:s.key, tz:TZ, src:src, ua:UA.slice(0,60)}).then(function(r){
     b.disabled = false; b.textContent = "unlock";
-    if (r.ok && r.need_code) { unlockCard.s.code = true; unlockCard.s.hint = r.hint; render(); setTimeout(function(){ var c = $("f-code"); if (c) c.focus(); }, 50); return; }
-    if (r.ok && r.token) return signedIn(s.email, r);
+    var rp = r.product || (kp === "auto" ? PRODUCT : kp);
+    if (r.ok && r.need_code) { unlockCard.s.code = true; unlockCard.s.hint = r.hint; unlockCard.s.product = rp; render(); setTimeout(function(){ var c = $("f-code"); if (c) c.focus(); }, 50); return; }
+    if (r.ok && r.token) { useProduct(rp); addKeyCard.open = false; return signedIn(s.email, r); }
     err.textContent = ERR[r.error] || ERR.server;
   });
 }
@@ -632,9 +669,10 @@ function onVerify(form){
   var code = $("f-code").value.replace(/\D/g,""), err = $("f-err"); err.textContent = "";
   if (code.length !== 6) { err.textContent = "the code is 6 digits."; return; }
   var b = form.querySelector("button[type=submit]"); b.disabled = true; b.innerHTML = '<span class="spinner"></span>';
-  call({action:"verify", product:PRODUCT, email:unlockCard.s.email, code:code, tz:TZ, ua:UA.slice(0,60)}).then(function(r){
+  var vp = unlockCard.s.product || PRODUCT;
+  call({action:"verify", product:vp, email:unlockCard.s.email, code:code, tz:TZ, ua:UA.slice(0,60)}).then(function(r){
     b.disabled = false; b.textContent = "open my shelf";
-    if (r.ok && r.token) return signedIn(unlockCard.s.email, r);
+    if (r.ok && r.token) { useProduct(r.product || vp); addKeyCard.open = false; return signedIn(unlockCard.s.email, r); }
     err.textContent = ERR[r.error] || ERR.server;
   });
 }
@@ -654,11 +692,12 @@ function appMast(){
 }
 function tabbar(active){
   function t(id, label, href, icon){ return '<a class="tab" href="' + href + '"' + (active === id ? ' aria-current="page"' : '') + '>' + I[icon || id] + '<span>' + label + '</span></a>'; }
-  return '<nav class="tabbar" aria-label="detox from him"><div class="tabbar-in">' +
-    t("today","today","#/detox") + t("journey","journey","#/detox/journey") +
+  var P = "#/" + PRODUCT, tx = U().texted;
+  return '<nav class="tabbar" aria-label="' + esc(L.c ? L.c.name : PRODUCT) + '"><div class="tabbar-in">' +
+    t("today","today",P) + t("journey","journey",P + "/journey") +
     '<button class="sosbtn" data-act="sos" aria-label="sos: ride an urge">sos</button>' +
-    t("texted","he texted","#/detox/texted","text") +
-    t("tools","tools","#/detox/tools") + '</div></nav>';
+    t("texted",tx ? tx.tab : "he texted",P + "/texted","text") +
+    t("tools","tools",P + "/tools") + '</div></nav>';
 }
 function stepsDone(n){
   var d = dayContent(n); if (!d) return [false,false,false,false];
@@ -675,11 +714,11 @@ function viewToday(){
   var st = L.st, n = st.current, d = dayContent(n), name = first(st.name);
   var h = appMast() + '<main class="wrap app">';
   h += '<section class="greet"><div class="eyebrow">' + esc(L.c.name) + (st.preview ? '<span class="badge">preview</span>' : '') + '</div><h1>' + greet() + (name ? ', <em>' + esc(name) + '</em>.' : '.') + '</h1></section>';
-  h += streakCard();
+  h += U().streak === false ? progressCard() : streakCard();
   if (st.graduated) h += gradCard();
   else if (st.current_open && d) {
     var sd = stepsDone(n), cnt = sd.filter(Boolean).length;
-    h += '<a href="#/detox/day/' + n + '" class="paper today torn" style="display:block;text-decoration:none"><div class="eyebrow"><b>day ' + n + '</b> of ' + st.total + ' · phase ' + phaseOf(n).n + ' · ' + esc(phaseOf(n).name) + '</div>' +
+    h += '<a href="#/' + PRODUCT + '/day/' + n + '" class="paper today torn" style="display:block;text-decoration:none"><div class="eyebrow"><b>day ' + n + '</b> of ' + st.total + ' · phase ' + phaseOf(n).n + ' · ' + esc(phaseOf(n).name) + '</div>' +
       '<h2>' + esc(d.t) + '</h2><p class="sub">' + esc(d.s) + '</p><div class="stepdots">' + sd.map(function(x){ return '<i class="' + (x ? 'on' : '') + '"></i>'; }).join("") + '</div>' +
       '<span class="btn btn-ink">' + (cnt === 0 ? 'start day ' + n : cnt === 4 ? 'close day ' + n : 'continue · ' + cnt + ' of 4 done') + '</span></a>';
   } else {
@@ -690,7 +729,7 @@ function viewToday(){
       '<p class="note muted" style="font-size:13px">if the urge hits before then, the red button is right there.</p></div>';
   }
   h += '<div class="stack">' + pushCard() + installCard() + '</div>';
-  h += '<section class="sec"><div class="sec-h"><h2>the next few days</h2></div><div class="daylist">' + dayRows(Math.max(1, Math.min(st.current - 1, st.total - 3)), 4) + '</div><div style="margin-top:10px"><a class="linkish" href="#/detox/journey">see all 21 days</a></div></section>';
+  h += '<section class="sec"><div class="sec-h"><h2>the next few days</h2></div><div class="daylist">' + dayRows(Math.max(1, Math.min(st.current - 1, st.total - 3)), 4) + '</div><div style="margin-top:10px"><a class="linkish" href="#/' + PRODUCT + '/journey">see all ' + st.total + ' days</a></div></section>';
   h += '</main>' + tabbar("today");
   return h;
 }
@@ -698,10 +737,16 @@ function phaseOf(n){ var ph = L.c.phases; for (var i=0;i<ph.length;i++) if (n >=
 function streakCard(){
   var st = L.st, d = ncDays();
   if (d == null) return '<div class="streak"><div class="ring"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" fill="none" stroke="var(--night-3)" stroke-width="9"/></svg><div class="ring-in"><div><div class="ring-n">0</div><div class="ring-l">days</div></div></div></div><div><h3>your no-contact streak starts on day 1.</h3><p>it lives here from then on.</p></div></div>';
-  var pct = Math.min(1, d / 21), C = 2*Math.PI*52;
+  var pct = Math.min(1, d / (st.total || 21)), C = 2*Math.PI*52;
   return '<div class="streak"><div class="ring"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" fill="none" stroke="var(--night-3)" stroke-width="9"/>' + (d > 0 ? '<circle cx="60" cy="60" r="52" fill="none" stroke="var(--candle)" stroke-width="9" stroke-linecap="round" stroke-dasharray="' + (C*pct).toFixed(1) + ' ' + C.toFixed(1) + '"/>' : '') + '</svg><div class="ring-in"><div><div class="ring-n">' + d + '</div><div class="ring-l">' + (d === 1 ? 'day' : 'days') + '</div></div></div></div>' +
     '<div><h3>' + (d === 0 ? 'day zero. the hardest one.' : d < 7 ? 'no contact. keep going.' : d < 21 ? 'no contact. this is you choosing you.' : 'three weeks. you did this.') + '</h3><p>' + (st.nc_resets ? 'restarted ' + st.nc_resets + (st.nc_resets === 1 ? ' time' : ' times') + '. restarting isn\'t failing.' : 'every day you don\'t reach out, the pull gets weaker.') + '</p>' +
     '<div class="row"><button class="linkish" data-act="slip">i slipped</button></div></div></div>';
+}
+/* products without a no-contact streak show progress through the program instead */
+function progressCard(){
+  var st = L.st, d = st.done, pct = Math.min(1, d / st.total), C = 2*Math.PI*52, ph = phaseOf(Math.min(st.total, st.current));
+  return '<div class="streak"><div class="ring"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" fill="none" stroke="var(--night-3)" stroke-width="9"/>' + (d > 0 ? '<circle cx="60" cy="60" r="52" fill="none" stroke="var(--candle)" stroke-width="9" stroke-linecap="round" stroke-dasharray="' + (C*pct).toFixed(1) + ' ' + C.toFixed(1) + '"/>' : '') + '</svg><div class="ring-in"><div><div class="ring-n">' + d + '</div><div class="ring-l">of ' + st.total + '</div></div></div></div>' +
+    '<div><h3>' + (st.graduated ? 'all ' + st.total + ' days. you did this.' : d === 0 ? 'day one starts today.' : 'phase ' + ph.n + ' · ' + esc(ph.name) + '.') + '</h3><p>' + esc(st.graduated ? 'your code lives in tools.' : ph.line) + '</p></div></div>';
 }
 function pushCard(){
   if (!CONFIG.onesignalAppId || L.st.push_opt || L.pushAsked || L.st.graduated) return "";
@@ -712,7 +757,7 @@ function installCard(){
   if (standalone()) return "";
   var h = L.installHide;   // {n: times dismissed, done: days closed when dismissed}. comes back once after she closes another day
   if (h && (h.n >= 2 || L.st.done <= h.done)) return "";
-  return '<div class="card"><h3>put upstairs on your home screen.</h3><p>one tap to your streak when the urge hits, full screen like an app, works with no signal.' + (isIOS ? ' on iphone it\'s also how 7am reminders work.' : '') + ' two taps, thirty seconds.</p><div class="row"><button class="btn btn-candle" data-act="install">show me how</button><button class="linkish" data-act="install-hide">later</button></div></div>';
+  return '<div class="card"><h3>put upstairs on your home screen.</h3><p>' + (U().streak === false ? 'one tap to the sos button when your chest gets tight' : 'one tap to your streak when the urge hits') + ', full screen like an app, works with no signal.' + (isIOS ? ' on iphone it\'s also how 7am reminders work.' : '') + ' two taps, thirty seconds.</p><div class="row"><button class="btn btn-candle" data-act="install">show me how</button><button class="linkish" data-act="install-hide">later</button></div></div>';
 }
 function dayRows(from, count){
   var st = L.st, out = "";
@@ -721,8 +766,8 @@ function dayRows(from, count){
     var cls = n <= st.done ? "done" : (n === st.current && st.current_open && !st.graduated) ? "now" : "locked";
     var tag = cls === "done" ? "done" : cls === "now" ? "today" : (n === st.current ? "opens " + clock(st.open_at) : "locked");
     var inner = '<span class="n">' + String(n).padStart(2,"0") + '</span><b>' + esc(t) + '</b><span class="st">' + tag + '</span>';
-    if (cls === "locked" && st.preview) { out += '<a class="dayrow" href="#/detox/day/' + n + '"><span class="n">' + String(n).padStart(2,"0") + '</span><b>' + esc(t) + '</b><span class="st" style="color:var(--candle)">preview</span></a>'; continue; }
-    out += cls === "locked" ? '<div class="dayrow locked" aria-label="day ' + n + ', locked">' + inner + '</div>' : '<a class="dayrow ' + cls + '" href="#/detox/day/' + n + '">' + inner + '</a>';
+    if (cls === "locked" && st.preview) { out += '<a class="dayrow" href="#/' + PRODUCT + '/day/' + n + '"><span class="n">' + String(n).padStart(2,"0") + '</span><b>' + esc(t) + '</b><span class="st" style="color:var(--candle)">preview</span></a>'; continue; }
+    out += cls === "locked" ? '<div class="dayrow locked" aria-label="day ' + n + ', locked">' + inner + '</div>' : '<a class="dayrow ' + cls + '" href="#/' + PRODUCT + '/day/' + n + '">' + inner + '</a>';
   }
   return out;
 }
@@ -731,9 +776,9 @@ function dayRows(from, count){
 function viewJourney(){
   var st = L.st, h = appMast() + '<main class="wrap app"><section class="greet"><div class="eyebrow">your journey</div><h1>' + st.done + ' of ' + st.total + ' days <em>done</em>.</h1></section>';
   if (!L.weekly) refresh(true).then(function(){ if (route().sub === "journey") render(); });
-  var u = urgeStats();
-  h += '<div class="stats"><div class="stat"><b>' + (ncDays() == null ? '–' : ncDays()) + '</b><span>no contact</span></div><div class="stat"><b>' + u.total + '</b><span>urges logged</span></div><div class="stat"><b>' + u.rode + '</b><span>ridden out</span></div></div>';
-  h += '<div class="card chart" style="margin-top:12px"><div class="eyebrow">how much space he took up · 0 to 10</div>' + spaceChart() + '</div>';
+  var u = urgeStats(), nos = U().streak === false;
+  h += '<div class="stats"><div class="stat"><b>' + (nos ? st.done : (ncDays() == null ? '–' : ncDays())) + '</b><span>' + (nos ? 'days closed' : 'no contact') + '</span></div><div class="stat"><b>' + u.total + '</b><span>' + (nos ? 'sos moments' : 'urges logged') + '</span></div><div class="stat"><b>' + u.rode + '</b><span>' + (nos ? 'held calm' : 'ridden out') + '</span></div></div>';
+  h += '<div class="card chart" style="margin-top:12px"><div class="eyebrow">' + esc(U().chart || "how much space he took up · 0 to 10") + '</div>' + spaceChart() + '</div>';
   L.c.phases.forEach(function(p){
     h += '<section class="phase"><h3>phase ' + p.n + ' · ' + esc(p.name) + '</h3><p class="l">' + esc(p.line) + '</p><div class="daylist">' + dayRows(p.days[0], p.days[1] - p.days[0] + 1) + '</div></section>';
   });
@@ -742,15 +787,16 @@ function viewJourney(){
 }
 function spaceVals(){
   var out = [], w = (L.weekly && L.weekly.checkins) || {};
-  for (var n=1;n<=21;n++){ var loc = L.days[n] && L.days[n].ci && L.days[n].ci.space; var v = w[n] != null ? w[n] : (n <= L.st.done && loc != null ? loc : null); out.push(v == null ? null : Number(v)); }
+  var T = (L.st && L.st.total) || 21;
+  for (var n=1;n<=T;n++){ var loc = L.days[n] && L.days[n].ci && L.days[n].ci.space; var v = w[n] != null ? w[n] : (n <= L.st.done && loc != null ? loc : null); out.push(v == null ? null : Number(v)); }
   return out;
 }
 function spaceChart(){
-  var v = spaceVals(), W = 320, H = 150, px = 22, py = 14, pts = [];
-  var x = function(i){ return px + i*(W-px-10)/20; }, y = function(val){ return py + (10-val)*(H-py-22)/10; };
+  var v = spaceVals(), W = 320, H = 150, px = 22, py = 14, pts = [], T = v.length;
+  var x = function(i){ return px + i*(W-px-10)/(T-1); }, y = function(val){ return py + (10-val)*(H-py-22)/10; };
   var g = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="daily check-in chart">';
   [0,5,10].forEach(function(t){ g += '<line x1="' + px + '" x2="' + (W-10) + '" y1="' + y(t) + '" y2="' + y(t) + '" stroke="var(--line-soft)"/><text x="4" y="' + (y(t)+4) + '" font-size="10" fill="var(--faint)">' + t + '</text>'; });
-  [1,7,14,21].forEach(function(d){ g += '<text x="' + x(d-1) + '" y="' + (H-4) + '" font-size="10" fill="var(--faint)" text-anchor="middle">' + d + '</text>'; });
+  [1,7,14,21,28].filter(function(d){ return d <= T; }).forEach(function(d){ g += '<text x="' + x(d-1) + '" y="' + (H-4) + '" font-size="10" fill="var(--faint)" text-anchor="middle">' + d + '</text>'; });
   v.forEach(function(val,i){ if (val != null) pts.push([x(i), y(val)]); });
   if (pts.length > 1) g += '<polyline fill="none" stroke="var(--pc)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" points="' + pts.map(function(p){ return p[0].toFixed(1)+","+p[1].toFixed(1); }).join(" ") + '"/>';
   pts.forEach(function(p){ g += '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="3.5" fill="var(--pc)"/>'; });
@@ -765,13 +811,16 @@ function urgeStats(){
 
 /* ================= tools ================= */
 function viewTools(){
-  var tb = L.c.toolbox, h = appMast() + '<main class="wrap app"><section class="greet"><div class="eyebrow">your tools</div><h1>for the <em>hard minutes</em>.</h1></section>';
-  h += '<div class="card" style="margin-top:14px"><h3>rumination breaker</h3><p>when the replay starts, do these three. in order.</p><div class="checks" style="margin-top:12px">' +
+  var tb = L.c.toolbox, ut = U().tools || {}, h = appMast() + '<main class="wrap app"><section class="greet"><div class="eyebrow">your tools</div><h1>for the <em>hard minutes</em>.</h1></section>';
+  var bk = ut.breaker || {title:"rumination breaker", line:"when the replay starts, do these three. in order."};
+  h += '<div class="card" style="margin-top:14px"><h3>' + esc(bk.title) + '</h3><p>' + esc(bk.line) + '</p><div class="checks" style="margin-top:12px">' +
     tb.breaker.map(function(b,i){ return '<button class="chk" data-act="breaker" data-i="' + i + '" aria-pressed="false"><i></i><span>' + esc(b) + '</span></button>'; }).join("") + '</div></div>';
-  var plan = (D(21).w.ifthen || []).filter(Boolean);
-  h += '<div class="card"><h3>your if/then plan</h3>' + (plan.length ? '<div style="margin-top:10px">' + plan.map(function(p){ return '<p class="hand" style="font-size:24px;color:var(--text);margin-top:6px">' + esc(p) + '</p>'; }).join("") + '</div>' : '<p>you write this on day 21. it lands here so it\'s there when you need it.</p>') + '</div>';
-  var std = (D(16).w.std || []).filter(Boolean);
-  h += '<div class="card"><h3>your standards</h3>' + (std.length ? '<ol style="margin:10px 0 0;padding-left:20px">' + std.map(function(p){ return '<li class="hand" style="font-size:24px">' + esc(p) + '</li>'; }).join("") + '</ol><div class="row"><button class="btn btn-ghost" data-act="lockscreen">make it my lock screen</button></div>' : '<p>you write these on day 16.</p>') + '</div>';
+  var pr = ut.plan || {day:21, id:"ifthen", title:"your if/then plan", empty:"you write this on day 21. it lands here so it's there when you need it."};
+  var plan = (D(pr.day).w[pr.id] || []).filter(Boolean);
+  h += '<div class="card"><h3>' + esc(pr.title) + '</h3>' + (plan.length ? '<div style="margin-top:10px">' + plan.map(function(p){ return '<p class="hand" style="font-size:24px;color:var(--text);margin-top:6px">' + esc(p) + '</p>'; }).join("") + '</div>' : '<p>' + esc(pr.empty) + '</p>') + '</div>';
+  var sr = stdRef(), std = (D(sr.day).w[sr.id] || []).filter(Boolean);
+  h += '<div class="card"><h3>your standards</h3>' + (std.length ? '<ol style="margin:10px 0 0;padding-left:20px">' + std.map(function(p){ return '<li class="hand" style="font-size:24px">' + esc(p) + '</li>'; }).join("") + '</ol><div class="row"><button class="btn btn-ghost" data-act="lockscreen">make it my lock screen</button></div>' : '<p>' + esc(sr.empty || "you write these on day 16.") + '</p>') + '</div>';
+  if (ut.scanner) h += '<div class="card"><h3>' + esc(ut.scanner.title) + '</h3><p>' + esc(ut.scanner.line) + '</p><ol style="margin:10px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:15px">' + ut.scanner.items.map(function(q){ return '<li>' + esc(q) + '</li>'; }).join("") + '</ol></div>';
   h += '<div class="card"><h3>red flags, green flags</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px;font-size:14px"><div><b style="color:var(--rose)">red</b>' + tb.flags.red.map(function(f){ return '<div class="dim">× ' + esc(f) + '</div>'; }).join("") + '</div><div><b style="color:var(--sage)">green</b>' + tb.flags.green.map(function(f){ return '<div class="dim">✓ ' + esc(f) + '</div>'; }).join("") + '</div></div></div>';
   h += '<div class="card"><h3>your notebook</h3><p>everything you\'ve written, day by day. only on this phone.</p><div class="row"><button class="btn btn-ghost" data-act="notebook">open my notebook</button></div></div>';
   h += '<div class="card"><h3>if you\'re not safe</h3><p>' + esc(L.c.safety) + '</p></div>';
@@ -785,13 +834,13 @@ function viewDay(n){
   var st = L.st, d = dayContent(n);
   var h = appMast() + '<main class="wrap app">';
   if (!d) {
-    h += '<section class="dayhead"><a class="back" href="#/detox">← today</a><div class="eyebrow">day ' + n + '</div><h1 class="display">locked</h1><p class="sub">' +
+    h += '<section class="dayhead"><a class="back" href="#/' + PRODUCT + '">← today</a><div class="eyebrow">day ' + n + '</div><h1 class="display">locked</h1><p class="sub">' +
       (n === st.current ? 'this one opens ' + esc(when(st.open_at)) + '.' : 'finish day ' + st.current + ' first. one day at a time.') + '</p></section></main>' + tabbar("");
     return h;
   }
   var ro = n <= st.done, s = D(n), sd = stepsDone(n);
   var cur = ro ? -1 : sd.indexOf(false);
-  h += '<section class="dayhead"><a class="back" href="#/detox">← today</a><div class="eyebrow">day ' + n + ' of ' + st.total + ' · ' + esc(phaseOf(n).name) + '</div><h1 class="display rise">' + esc(d.t) + '</h1><p class="sub">' + esc(d.s) + '</p>' +
+  h += '<section class="dayhead"><a class="back" href="#/' + PRODUCT + '">← today</a><div class="eyebrow">day ' + n + ' of ' + st.total + ' · ' + esc(phaseOf(n).name) + '</div><h1 class="display rise">' + esc(d.t) + '</h1><p class="sub">' + esc(d.s) + '</p>' +
     (ro ? '<div class="ro">✓ you closed this day. you can re-read it anytime.</div>' : '') + '</section>';
   h += '<div class="steps" id="steps">';
   var names = [["read","the lesson and his side"],["do","today's action and practice"],["write","your journal, private"],["check in","ten seconds"]];
@@ -806,7 +855,7 @@ function viewDay(n){
   return h;
 }
 function closeBody(n){
-  if (L.st.preview && n !== L.st.current && n > L.st.done) return '<p><b>preview account.</b> you can open and try everything on this day. closing still goes in order, so the next one to close is day ' + L.st.current + '. buyers never see this.</p><a class="btn btn-ink btn-block" href="#/detox/day/' + L.st.current + '">go to day ' + L.st.current + '</a>';
+  if (L.st.preview && n !== L.st.current && n > L.st.done) return '<p><b>preview account.</b> you can open and try everything on this day. closing still goes in order, so the next one to close is day ' + L.st.current + '. buyers never see this.</p><a class="btn btn-ink btn-block" href="#/' + PRODUCT + '/day/' + L.st.current + '">go to day ' + L.st.current + '</a>';
   var sd = stepsDone(n), all = sd.every(Boolean), leftN = sd.filter(function(x){ return !x; }).length;
   return '<p>' + (all ? 'that\'s all four. close the day and it\'s yours.' : leftN + ' step' + (leftN === 1 ? '' : 's') + ' left before you can close day ' + n + '.') + '</p>' +
     '<button class="btn btn-ink btn-block" data-act="close" data-n="' + n + '"' + (all ? '' : ' disabled') + '>i\'m done with day ' + n + '</button>';
@@ -841,17 +890,19 @@ function stepBody(n, i, d, s, ro){
     if (!ro) h2 += '<div class="w-need" data-need="j">' + (stepsDone(n)[2] ? '<span class="w-done">✓ written</span>' : 'a sentence or more for each one.') + '</div>';
     return h2;
   }
-  var ci = s.ci || {};
-  var h3 = '<p class="ci-q">how much space did he take up in your head today?</p><div class="slider"><div class="val' + (ci.space == null ? ' unset' : '') + '" id="ci-val-' + n + '">' + (ci.space == null ? 'slide to answer' : ci.space) + '</div>' +
-    '<input type="range" min="0" max="10" step="1" value="' + (ci.space == null ? 5 : ci.space) + '" data-in="space" data-n="' + n + '" aria-label="space he took up, 0 to 10"' + (ro ? ' disabled' : '') + '><div class="ends"><span>0 · barely</span><span>10 · all day</span></div></div>';
-  h3 += '<p class="ci-q">time lost to replaying it today?</p><div class="opts">' + ["none","under 15 min","15 to 60 min","1 to 3 hours","3+ hours"].map(function(o){ return '<button class="opt" data-act="ci" data-f="rum" data-v="' + o + '" data-n="' + n + '" aria-pressed="' + (ci.rum === o) + '"' + (ro ? ' disabled' : '') + '>' + o + '</button>'; }).join("") + '</div>';
-  h3 += '<p class="ci-q">no contact today?</p><div class="opts">' + [["yes","yes, none"],["slipped","i slipped"]].map(function(o){ return '<button class="opt" data-act="ci" data-f="nc" data-v="' + o[0] + '" data-n="' + n + '" aria-pressed="' + (ci.nc === o[0]) + '"' + (ro ? ' disabled' : '') + '>' + o[1] + '</button>'; }).join("") + '</div>';
-  if (ci.nc === "slipped") h3 += '<p class="ci-q">what happened? no judgement, it just helps.</p><div class="opts">' + [["texted","i texted him"],["replied","i replied to him"],["called","we called or met"],["checked","i checked his page"]].map(function(o){ return '<button class="opt" data-act="ci" data-f="slip" data-v="' + o[0] + '" data-n="' + n + '" aria-pressed="' + (ci.slip === o[0]) + '"' + (ro ? ' disabled' : '') + '>' + o[1] + '</button>'; }).join("") + '</div>' +
-    '<p class="faint" style="font-size:13px;margin-top:8px">' + (ci.slip === "checked" ? 'checking his page doesn\'t reset your streak. it does keep the wound open. tomorrow, try the sos button first.' : ci.slip ? 'your streak restarts when you close today. your days don\'t. you keep your place.' : '') + '</p>';
+  var ci = s.ci || {}, Q = U().checkin || {}, qs = Q.space || {q:"how much space did he take up in your head today?", lo:"0 · barely", hi:"10 · all day"};
+  var qnc = Q.nc || {q:"no contact today?", opts:[["yes","yes, none"],["slipped","i slipped"]]};
+  var qsl = Q.slip || {q:"what happened? no judgement, it just helps.", opts:[["texted","i texted him"],["replied","i replied to him"],["called","we called or met"],["checked","i checked his page"]]};
+  var h3 = '<p class="ci-q">' + esc(qs.q) + '</p><div class="slider"><div class="val' + (ci.space == null ? ' unset' : '') + '" id="ci-val-' + n + '">' + (ci.space == null ? 'slide to answer' : ci.space) + '</div>' +
+    '<input type="range" min="0" max="10" step="1" value="' + (ci.space == null ? 5 : ci.space) + '" data-in="space" data-n="' + n + '" aria-label="' + (Q.space ? esc(qs.q) + ' 0 to 10' : 'space he took up, 0 to 10') + '"' + (ro ? ' disabled' : '') + '><div class="ends"><span>' + esc(qs.lo) + '</span><span>' + esc(qs.hi) + '</span></div></div>';
+  h3 += '<p class="ci-q">' + esc((Q.rum && Q.rum.q) || "time lost to replaying it today?") + '</p><div class="opts">' + ["none","under 15 min","15 to 60 min","1 to 3 hours","3+ hours"].map(function(o){ return '<button class="opt" data-act="ci" data-f="rum" data-v="' + o + '" data-n="' + n + '" aria-pressed="' + (ci.rum === o) + '"' + (ro ? ' disabled' : '') + '>' + o + '</button>'; }).join("") + '</div>';
+  h3 += '<p class="ci-q">' + esc(qnc.q) + '</p><div class="opts">' + qnc.opts.map(function(o){ return '<button class="opt" data-act="ci" data-f="nc" data-v="' + o[0] + '" data-n="' + n + '" aria-pressed="' + (ci.nc === o[0]) + '"' + (ro ? ' disabled' : '') + '>' + o[1] + '</button>'; }).join("") + '</div>';
+  if (ci.nc === "slipped") h3 += '<p class="ci-q">' + esc(qsl.q) + '</p><div class="opts">' + qsl.opts.map(function(o){ return '<button class="opt" data-act="ci" data-f="slip" data-v="' + o[0] + '" data-n="' + n + '" aria-pressed="' + (ci.slip === o[0]) + '"' + (ro ? ' disabled' : '') + '>' + o[1] + '</button>'; }).join("") + '</div>' +
+    '<p class="faint" style="font-size:13px;margin-top:8px">' + (qsl.note ? (ci.slip ? esc(qsl.note) : '') : ci.slip === "checked" ? 'checking his page doesn\'t reset your streak. it does keep the wound open. tomorrow, try the sos button first.' : ci.slip ? 'your streak restarts when you close today. your days don\'t. you keep your place.' : '') + '</p>';
   return h3;
 }
 function textBack(d){
-  return '<div class="textback"><h4>if he texts today</h4><p>“' + esc(d.text) + '”</p><button class="copy" data-act="copy" data-t="' + esc(d.text) + '">copy</button></div>';
+  return '<div class="textback"><h4>' + esc(U().textLabel || "if he texts today") + '</h4><p>“' + esc(d.text) + '”</p><button class="copy" data-act="copy" data-t="' + esc(d.text) + '">copy</button></div>';
 }
 
 /* ---------- widgets ---------- */
@@ -926,8 +977,8 @@ function widget(n, w, ro){
       h += (ro ? '' : '<button class="btn btn-pc" data-act="sos" data-practice="' + n + '">run the sos now</button>');
       break;
     case "review":
-      var rv2 = weekReview();
-      h += '<div class="stats"><div class="stat"><b>' + rv2.days + '</b><span>days closed</span></div><div class="stat"><b>' + (rv2.avg == null ? '–' : rv2.avg) + '</b><span>avg space /10</span></div><div class="stat"><b>' + rv2.urges + '</b><span>urges logged</span></div></div>' +
+      var rv2 = weekReview(w), RL = U().review || {a:"days closed", b:"avg space /10", c:"urges logged"};
+      h += '<div class="stats"><div class="stat"><b>' + rv2.days + '</b><span>' + esc(RL.a) + '</span></div><div class="stat"><b>' + (rv2.avg == null ? '–' : rv2.avg) + '</b><span>' + esc(RL.b) + '</span></div><div class="stat"><b>' + rv2.urges + '</b><span>' + esc(RL.c) + '</span></div></div>' +
         '<p class="dim" style="font-size:14px;margin-top:10px">' + (rv2.trend || '') + '</p>' + (ro ? '' : '<div style="margin-top:12px">' + (done ? '' : '<button class="btn btn-pc" data-act="confirm" data-n="' + n + '" data-w="' + w.id + '">i\'ve seen my week</button>') + '</div>');
       break;
     case "ncstart":
@@ -946,12 +997,15 @@ function widget(n, w, ro){
   return h;
 }
 function fmtT(ms){ var s = Math.ceil(ms/1000); return Math.floor(s/60) + ":" + String(s%60).padStart(2,"0"); }
-function weekReview(){
-  var sp = spaceVals().slice(0,7).filter(function(x){ return x != null; });
+function weekReview(w){
+  var from = (w && w.from) || 1, ui = !!L.c.ui;
+  var sp = spaceVals().slice(from-1, from+6).filter(function(x){ return x != null; });
   var avg = sp.length ? Math.round(sp.reduce(function(a,b){ return a+b; },0)/sp.length*10)/10 : null;
   var trend = "";
-  if (sp.length >= 3) { var d = sp[sp.length-1] - sp[0]; trend = d < 0 ? "from " + sp[0] + " on day 1 to " + sp[sp.length-1] + " now. that line is going the right way." : d > 0 ? "it went up this week. that's normal in week one. the pull fights hardest right before it breaks." : "holding steady. steady is progress in week one."; }
-  return {days: Math.min(L.st.done, 7), avg: avg, urges: urgeStats().total, trend: trend};
+  if (sp.length >= 3) { var d = sp[sp.length-1] - sp[0];
+    trend = !ui ? (d < 0 ? "from " + sp[0] + " on day 1 to " + sp[sp.length-1] + " now. that line is going the right way." : d > 0 ? "it went up this week. that's normal in week one. the pull fights hardest right before it breaks." : "holding steady. steady is progress in week one.")
+      : (d < 0 ? "from " + sp[0] + " to " + sp[sp.length-1] + " this week. dating is taking up less of you." : d > 0 ? "it went up this week. that's normal when you're putting yourself out there. your code is what steadies it." : "holding steady. steady is the goal."); }
+  return {days: Math.max(0, Math.min(L.st.done - from + 1, 7)), avg: avg, urges: urgeStats().total, trend: trend};
 }
 function refreshW(n, id){
   var d = dayContent(n); if (!d) return;
@@ -1052,9 +1106,10 @@ function showWelcome(){
 var ovKind = "";
 var sosRun = null;
 var SOS_LINES = ["this is a wave. it's not an instruction.","you don't have to do anything with it.","notice where you feel it. chest? stomach? throat?","it's peaking now. peaks don't last.","texting him buys ten minutes of relief and a week of pain.","it's already smaller than when you pressed the button.","almost there. stay with your breath.","you rode it. or you're riding it. both count."];
+function sosLines(){ return (U().sos && U().sos.lines) || SOS_LINES; }
 function openSOS(practiceDay){
-  var total = 90;
-  ov(ovTop("sos · ride the wave") + '<div class="breath"><div class="bcirc" id="sos-c" style="width:210px;height:210px"><span id="sos-p">breathe in</span></div></div><div class="say" id="sos-say">' + SOS_LINES[0] + '</div>' +
+  var total = 90, LINES = sosLines();
+  ov(ovTop(esc((U().sos && U().sos.title) || "sos · ride the wave")) + '<div class="breath"><div class="bcirc" id="sos-c" style="width:210px;height:210px"><span id="sos-p">breathe in</span></div></div><div class="say" id="sos-say">' + LINES[0] + '</div>' +
     '<div class="center"><div class="bcount" id="sos-n">1:30</div></div><div class="center"><button class="linkish" id="sos-skip" data-act="sos-log" hidden>the wave has passed, log it</button></div>', "ov-sos");
   var start = Date.now(), c = $("sos-c"), phase = 0;
   function breath(){ if (!$("sos-c")) return; var inn = phase % 2 === 0; c.style.transitionDuration = (inn ? 4 : 6) + "s"; c.style.transform = "scale(" + (inn ? 1 : .55) + ")"; $("sos-p").textContent = inn ? "breathe in" : "breathe out"; phase++; sosRun && (sosRun.b = setTimeout(breath, (inn ? 4 : 6)*1000)); }
@@ -1064,7 +1119,7 @@ function openSOS(practiceDay){
     if (!$("sos-n")) return;
     var el = (Date.now() - start)/1000, rem = Math.max(0, total - el);
     $("sos-n").textContent = fmtT(rem*1000);
-    $("sos-say").textContent = SOS_LINES[Math.min(SOS_LINES.length-1, Math.floor(el / (total/SOS_LINES.length)))];
+    $("sos-say").textContent = LINES[Math.min(LINES.length-1, Math.floor(el / (total/LINES.length)))];
     if (el > 45) $("sos-skip").hidden = false;
     if (rem <= 0) { clearInterval(sosRun.i); clearTimeout(sosRun.b); sosLog(); }
   }, 250);
@@ -1075,20 +1130,22 @@ function sosLog(){
   if (sosRun) { clearInterval(sosRun.i); clearTimeout(sosRun.b); }
   sosRun = null;
   sosState = {day:day, i:null, trig:"", out:""};
-  var trig = ["silence from him","late at night","his posts or stories","seeing him with someone new","a song or a place","being alone","after drinking","something else"];
+  var S = U().sos || {};
+  var trig = S.triggers || ["silence from him","late at night","his posts or stories","seeing him with someone new","a song or a place","being alone","after drinking","something else"];
   ov(ovTop("log the wave") + '<h2>you stayed. now tell me about it.</h2>' +
     '<p class="ci-q">how strong was it at the peak?</p><div class="slider"><div class="val unset" id="sos-v">slide to answer</div><input type="range" min="0" max="10" value="5" data-in="sosi" aria-label="urge strength 0 to 10"><div class="ends"><span>0 · mild</span><span>10 · unbearable</span></div></div>' +
     '<p class="ci-q">what set it off?</p><div class="opts">' + trig.map(function(t){ return '<button class="opt" data-act="sos-f" data-f="trig" data-v="' + t + '" aria-pressed="false">' + t + '</button>'; }).join("") + '</div>' +
-    '<p class="ci-q">what happened?</p><div class="choice">' + [["rode","i rode it out"],["checked","i checked his page"],["texted","i texted him"]].map(function(o){ return '<button data-act="sos-f" data-f="out" data-v="' + o[0] + '" aria-pressed="false">' + o[1] + '</button>'; }).join("") + '</div>' +
+    '<p class="ci-q">what happened?</p><div class="choice">' + (S.outs || [["rode","i rode it out"],["checked","i checked his page"],["texted","i texted him"]]).map(function(o){ return '<button data-act="sos-f" data-f="out" data-v="' + o[0] + '" aria-pressed="false">' + o[1] + '</button>'; }).join("") + '</div>' +
     '<button class="btn btn-pc btn-block" data-act="sos-save" id="sos-save" disabled>save</button>');
 }
 function sosSave(){
   var s = sosState, rec = {ts:Date.now(), i:s.i, trig:s.trig, out:s.out, day:L.st.current};
   L.urges.push(rec); if (L.urges.length > 400) L.urges = L.urges.slice(-400); save();
   queue("urge", {intensity:s.i, trigger:s.trig, outcome:s.out, local_hour:hourNow(), day:L.st.current});
-  if (s.out === "texted") { queue("slip", {type:"texted", day:L.st.current}); L.st.nc_start = Date.now(); L.st.nc_resets = (L.st.nc_resets||0) + 1; save(); }
+  var S = U().sos || {};
+  if (s.out === "texted" && U().streak !== false) { queue("slip", {type:"texted", day:L.st.current}); L.st.nc_start = Date.now(); L.st.nc_resets = (L.st.nc_resets||0) + 1; save(); }
   if (s.day) { setW(s.day, "sos", {done:true}); }
-  var msg = s.out === "rode" ? ["that's one.", "every wave you ride makes the next one smaller. that's not a quote, that's how your brain rewires."]
+  var msg = S.msgs && S.msgs[s.out] ? S.msgs[s.out] : s.out === "rode" ? ["that's one.", "every wave you ride makes the next one smaller. that's not a quote, that's how your brain rewires."]
     : s.out === "checked" ? ["okay. no shame.", "checking doesn't reset your streak. next time, press the button before you open the app. you'll get there."]
     : ["okay. breathe.", "your streak restarts. your days don't. you keep your place in the program and you keep going tomorrow. don't send a second one."];
   ov(ovTop("logged") + '<div class="paper done-card torn"><div class="display" style="font-size:64px">' + esc(msg[0]) + '</div><p>' + esc(msg[1]) + '</p></div><button class="btn btn-pc btn-block" data-act="close-ov" autofocus>back</button>');
@@ -1097,11 +1154,11 @@ function sosSave(){
 
 /* ---- he texted (a page, like tools) ---- */
 function viewTexted(){
-  var tb = L.c.toolbox;
-  return appMast() + '<main class="wrap app texted"><section class="greet"><div class="eyebrow">he texted</div><h1>before you reply, <em>breathe</em>.</h1></section>' +
-    '<p class="dim" style="margin-top:10px">not replying is always an option, and usually the strongest one. if you do reply, send one line. then put the phone down.</p>' +
+  var tb = L.c.toolbox, tx = U().texted;
+  return appMast() + '<main class="wrap app texted"><section class="greet"><div class="eyebrow">' + esc(tx ? tx.eyebrow : "he texted") + '</div><h1>' + (tx ? tx.title : 'before you reply, <em>breathe</em>.') + '</h1></section>' +
+    '<p class="dim" style="margin-top:10px">' + esc(tx ? tx.line : "not replying is always an option, and usually the strongest one. if you do reply, send one line. then put the phone down.") + '</p>' +
     '<div class="scripts" style="margin-top:16px">' + tb.scripts.map(function(s){ return '<div class="script"><h4>' + esc(s.h) + '</h4><small>' + esc(s.when) + '</small><p>' + esc(s.s) + '</p>' + (/^no reply/.test(s.s) ? '' : '<button class="copy" data-act="copy" data-t="' + esc(s.s) + '">copy</button>') + '</div>'; }).join("") + '</div>' +
-    '<button class="btn btn-pc btn-block" style="margin-top:18px" data-act="sos">i want to reply to him. help.</button>' +
+    '<button class="btn btn-pc btn-block" style="margin-top:18px" data-act="sos">' + esc(tx ? tx.sos : "i want to reply to him. help.") + '</button>' +
     '</main>' + tabbar("texted");
 }
 function openTexted(){ closeOv(true); go("#/" + PRODUCT + "/texted"); }
@@ -1145,7 +1202,7 @@ function openInstall(){
 /* ---- notebook ---- */
 function openNotebook(){
   var h = ovTop("your notebook") + '<h2>everything you\'ve written.</h2><p class="dim" style="font-size:13.5px">only on this phone.</p>', any = false;
-  for (var n=1;n<=21;n++){
+  for (var n=1;n<=L.st.total;n++){
     var d = dayContent(n), s = L.days[n]; if (!d || !s) continue;
     var parts = [];
     (d.prompts||[]).forEach(function(p, k){ if (d.burn && k === 0 && s.burned) parts.push('<p class="faint" style="font-style:italic">(the letter you burned)</p>'); else if ((s.j||[])[k]) parts.push('<p class="faint" style="font-size:13px;margin-top:8px">' + esc(p) + '</p><p class="hand" style="font-size:23px;white-space:pre-wrap">' + esc(s.j[k]) + '</p>'); });
@@ -1160,7 +1217,7 @@ function openNotebook(){
 /* ---- day closed ---- */
 function dayClosed(n){
   var st = L.st, next = n < st.total ? dayContent(n+1) : null;
-  var line = st.graduated ? "twenty-one days. you did the whole thing." : "day " + (n+1) + (L.c.titles[n] ? ', “' + L.c.titles[n].t + '”,' : '') + (st.current_open ? " is open now." : " opens " + when(st.open_at) + ".");
+  var line = st.graduated ? ((U().grad && U().grad.closed) || "twenty-one days. you did the whole thing.") : "day " + (n+1) + (L.c.titles[n] ? ', “' + L.c.titles[n].t + '”,' : '') + (st.current_open ? " is open now." : " opens " + when(st.open_at) + ".");
   ov('<div class="paper done-card torn"><div class="eyebrow" style="color:var(--paper-dim)">day ' + n + ' of ' + st.total + '</div><div class="display">closed.</div><p>' + esc(line) + '</p>' +
     (st.preview && !st.graduated ? '<p class="muted" style="font-size:13px">preview account. buyers wait until 7am.</p>' : '') + '</div>' +
     '<button class="btn btn-pc btn-block" data-act="close-ov-home" autofocus>' + (st.graduated ? 'see your card' : 'back to today') + '</button>');
@@ -1169,17 +1226,20 @@ function dayClosed(n){
 
 /* ================= graduation + image cards ================= */
 function gradStats(){
-  var v = spaceVals(), a = v.slice(0,7).filter(function(x){ return x != null; }), b = v.slice(14,21).filter(function(x){ return x != null; });
+  var v = spaceVals(), a = v.slice(0,7).filter(function(x){ return x != null; }), b = v.slice(v.length-7).filter(function(x){ return x != null; });
   var avg = function(x){ return x.length ? Math.round(x.reduce(function(p,q){ return p+q; },0)/x.length) : null; };
   var u = urgeStats();
   return {from:avg(a), to:avg(b), rode:u.rode, urges:u.total, nc:ncDays()};
 }
 function gradCard(){
-  var g = gradStats();
+  var g = gradStats(), G = U().grad;
+  if (G) return '<div class="paper today torn"><div class="eyebrow"><b>graduated</b> · ' + esc(G.done) + '</div><h2>you did it.</h2><p class="sub">' + esc(G.line) + '</p>' +
+    '<div class="row" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px"><button class="btn btn-ink" data-act="gradcard">save my card</button><a class="btn btn-line" href="#/' + PRODUCT + '/tools">' + esc(((U().tools || {}).plan || {}).title || "my tools") + '</a></div></div>' +
+    '<div class="card" style="margin-top:12px"><h3>what\'s next</h3><p>' + esc(G.next) + '</p><div class="row">' + G.links.map(function(l, i){ return '<a class="btn ' + (i ? 'btn-ghost' : 'btn-pc') + '" href="' + (CONFIG[l[0]] || "#") + '" target="_blank" rel="noopener" data-track="' + l[0] + '" data-where="graduation">' + esc(l[1]) + '</a>'; }).join("") + '</div></div>';
   return '<div class="paper today torn"><div class="eyebrow"><b>graduated</b> · all 21 days</div><h2>you did it.</h2>' +
     '<p class="sub">' + (g.from != null && g.to != null ? 'he took up ' + g.from + '/10 of your head in week one. by week three, ' + g.to + '/10.' : 'twenty-one days of choosing yourself.') + '</p>' +
     '<div class="row" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px"><button class="btn btn-ink" data-act="gradcard">save my card</button><a class="btn btn-line" href="#/detox/tools">my if/then plan</a></div></div>' +
-    '<div class="card" style="margin-top:12px"><h3>what\'s next</h3><p>you stopped going back to him. the next step is to stop choosing the next version of him. that\'s high value women.</p><div class="row"><a class="btn btn-pc" href="' + CONFIG.hvw + '" target="_blank" rel="noopener" data-track="hvw" data-where="graduation">high value women</a><a class="btn btn-ghost" href="' + CONFIG.talk + '" target="_blank" rel="noopener" data-track="talk" data-where="graduation">talk with me</a></div></div>';
+    '<div class="card" style="margin-top:12px"><h3>what\'s next</h3><p>you stopped going back to him. the next step is to stop choosing the next version of him. that\'s high value dating.</p><div class="row">' + (owned("dating") ? '<a class="btn btn-pc" href="#/dating">open high value dating</a>' : '<a class="btn btn-pc" href="' + CONFIG.dating + '" target="_blank" rel="noopener" data-track="dating" data-where="graduation">high value dating</a>') + '<a class="btn btn-ghost" href="' + CONFIG.talk + '" target="_blank" rel="noopener" data-track="talk" data-where="graduation">talk with me</a></div></div>';
 }
 function canvasCard(kind){
   var W = kind === "lock" ? 1170 : 1080, H = kind === "lock" ? 2532 : 1920;
@@ -1204,7 +1264,7 @@ function canvasCard(kind){
     x.font = "600 44px Manrope, sans-serif"; x.fillStyle = "#6e5762"; x.textAlign = "left"; x.fillText("MY STANDARDS", 130, cardY + 130);
     fit("NON-NEGOTIABLE", 150, "'Bebas Neue', Impact, sans-serif", W - 280); x.fillStyle = "#2a1c23"; x.fillText("NON-NEGOTIABLE", 124, cardY + 280);
     y = cardY + 420;
-    (D(16).w.std || []).filter(Boolean).forEach(function(s, i){
+    (D(stdRef().day).w[stdRef().id] || []).filter(Boolean).forEach(function(s, i){
       x.font = "400 70px 'Bebas Neue', Impact, sans-serif"; x.fillStyle = "#8a2846"; x.textAlign = "left"; x.fillText(String(i+1), 130, y);
       y = wrap(s, W - 420, 82, y, "600 76px Caveat, cursive", "#2a1c23", "left", 210) + 30;
       x.textAlign = "left";
@@ -1212,20 +1272,24 @@ function canvasCard(kind){
     x.font = "600 70px Caveat, cursive"; x.fillStyle = "#8a2846"; x.textAlign = "right"; x.fillText("signed, " + (first(L.st.name) || "me"), W - 140, cardY + cardH - 90);
   } else {
     var gs = gradStats();
-    x.font = "700 34px Manrope, sans-serif"; x.fillStyle = "#6e5762"; x.textAlign = "left"; x.fillText("DETOX FROM HIM · GRADUATED", 130, cardY + 120);
-    fit("21 DAYS", 300, "'Bebas Neue', Impact, sans-serif", W - 280); x.fillStyle = "#2a1c23"; x.fillText("21 DAYS", 120, cardY + 400);
-    fit("DONE.", 300, "'Bebas Neue', Impact, sans-serif", W - 280); x.fillStyle = "#8a2846"; x.fillText("DONE.", 120, cardY + 660);
+    var GG = U().grad || {eyebrow:"DETOX FROM HIM · GRADUATED", big:"21 DAYS", word:"DONE.", sign:"i chose me."};
+    x.font = "700 34px Manrope, sans-serif"; x.fillStyle = "#6e5762"; x.textAlign = "left"; x.fillText(GG.eyebrow, 130, cardY + 120);
+    fit(GG.big, 300, "'Bebas Neue', Impact, sans-serif", W - 280); x.fillStyle = "#2a1c23"; x.fillText(GG.big, 120, cardY + 400);
+    fit(GG.word, 300, "'Bebas Neue', Impact, sans-serif", W - 280); x.fillStyle = "#8a2846"; x.fillText(GG.word, 120, cardY + 660);
     y = cardY + 800;
     var rows = [];
+    if (U().grad) { if (gs.from != null && gs.to != null) rows.push(["mood pull", gs.from + "/10 → " + gs.to + "/10"]); rows.push(["days closed", L.st.done + "/" + L.st.total]); if (gs.rode) rows.push(["waves held", String(gs.rode)]); }
+    else {
     if (gs.from != null && gs.to != null) rows.push(["he took up", gs.from + "/10 → " + gs.to + "/10"]);
     if (gs.nc) rows.push(["no contact", gs.nc + (gs.nc === 1 ? " day" : " days")]);
     rows.push(["urges ridden", String(gs.rode)]);
+    }
     rows.forEach(function(r){
       x.font = "600 44px Manrope, sans-serif"; x.fillStyle = "#6e5762"; x.textAlign = "left"; x.fillText(r[0], 130, y);
       fit(r[1], 96, "'Bebas Neue', Impact, sans-serif", W - 560); x.fillStyle = "#2a1c23"; x.textAlign = "right"; x.fillText(r[1], W - 130, y + 6);
       y += 130;
     });
-    x.font = "600 64px Caveat, cursive"; x.fillStyle = "#8a2846"; x.textAlign = "left"; x.fillText("i chose me.", 130, cardY + cardH - 80);
+    x.font = "600 64px Caveat, cursive"; x.fillStyle = "#8a2846"; x.textAlign = "left"; x.fillText(GG.sign, 130, cardY + cardH - 80);
   }
   x.font = "400 54px 'Bebas Neue', Impact, sans-serif"; x.fillStyle = "#f0e7dc"; x.textAlign = "center"; x.fillText("KP UNFILTERED · UPSTAIRS", W/2, H - (kind === "lock" ? 240 : 140));
   return c;
@@ -1243,7 +1307,7 @@ function showCard(kind){
       '</ol></div>' +
       '<div class="center" style="gap:10px;display:flex;flex-wrap:wrap"><button class="btn btn-pc" data-act="share-img">' + (isIOS ? 'share or save' : 'save image') + '</button></div>');
     showCard.blob = null;
-    c.toBlob(function(b){ showCard.blob = b; showCard.fname = kind === "lock" ? "my-standards.png" : "detox-graduated.png"; });
+    c.toBlob(function(b){ showCard.blob = b; showCard.fname = kind === "lock" ? "my-standards.png" : PRODUCT + "-graduated.png"; });
   };
   if (document.fonts && document.fonts.ready) Promise.all([document.fonts.load("400 100px 'Bebas Neue'"), document.fonts.load("600 60px Caveat"), document.fonts.load("600 40px Manrope")]).then(run, run); else run();
 }
@@ -1293,7 +1357,8 @@ var ACT = {
   "settings": openSettings,
   "close-ov": function(){ closeOv(); if (route().p === PRODUCT) render(); },
   "close-ov-home": function(){ closeOv(); go("#/" + PRODUCT); },
-  "start1": function(){ closeOv(); go("#/detox/day/1"); },
+  "start1": function(){ closeOv(); go("#/" + PRODUCT + "/day/1"); },
+  "addkey": function(){ addKeyCard.open = true; unlockCard.s = {}; render(); setTimeout(function(){ var k = $("f-key"); if (k) { k.scrollIntoView({block:"center"}); } }, 50); },
   "sos": function(b){ openSOS(b.getAttribute("data-practice") ? Number(b.getAttribute("data-practice")) : 0); },
   "sos-log": sosLog,
   "sos-f": function(b){
@@ -1324,7 +1389,7 @@ var ACT = {
   "set-push": function(b){ if (b.checked) pushOn(); else { if (window.OneSignalDeferred) OneSignalDeferred.push(function(OS){ try { OS.User.PushSubscription.optOut(); } catch(e){} }); setPush(false); } },
   "signout": function(){ api("signout", {}).then(function(){}); signOutLocal(); closeOv(); go("#/"); toast("signed out on this device"); },
   "notebook": openNotebook,
-  "lockscreen": function(){ if (!(D(16).w.std||[]).filter(Boolean).length) { toast("write your standards first"); return; } showCard("lock"); },
+  "lockscreen": function(){ if (!(D(stdRef().day).w[stdRef().id]||[]).filter(Boolean).length) { toast("write your standards first"); return; } showCard("lock"); },
   "gradcard": function(){ showCard("grad"); },
   "share-img": shareImg,
   "breaker": function(b){ var on = b.getAttribute("aria-pressed") !== "true"; b.setAttribute("aria-pressed", String(on)); if (document.querySelectorAll('[data-act=breaker][aria-pressed=true]').length === 3) toast("good. you're back in the room."); },
@@ -1380,7 +1445,7 @@ var ACT = {
     });
     api("complete", {day:n, checkin:{space:s.ci.space, rum:s.ci.rum, nc:s.ci.nc, slip:s.ci.slip}, picks:picks, counts:counts, local_hour:hourNow()}).then(function(r){
       if (r.ok) { take(r); if (s.ci.nc === "slipped" && s.ci.slip !== "checked") { /* server reset the streak */ } dayClosed(n); }
-      else if (r.error === "not_current" && r.state) { L.st = r.state; save(); toast("this day is already closed"); go("#/detox"); }
+      else if (r.error === "not_current" && r.state) { L.st = r.state; save(); toast("this day is already closed"); go("#/" + PRODUCT); }
       else { b.disabled = false; b.textContent = "i'm done with day " + n; toast(r.error === "offline" ? "you're offline. everything's saved. close the day when you're back online." : (ERR[r.error] || ERR.server)); }
     });
   }
@@ -1462,7 +1527,7 @@ function handoffUse(){
   if (L.auth) return Promise.resolve(false);
   return call({action:"handoff", product:PRODUCT, h:h, tz:TZ, ua:UA.slice(0,60)}).then(function(r){
     try { history.replaceState(null, "", "/upstairs/" + (location.hash || "#/" + PRODUCT)); } catch(e){}
-    if (r.ok && r.token) { L.auth = {email:r.email, token:r.token}; if (r.state) L.st = r.state; L.welcomed = true; save(); return true; }
+    if (r.ok && r.token) { if (r.product) useProduct(r.product); L.auth = {email:r.email, token:r.token}; if (r.state) L.st = r.state; L.welcomed = true; save(); return true; }
     return false;
   });
 }
