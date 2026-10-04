@@ -884,10 +884,19 @@ main[data-view]{--rc:var(--rose)}
 
   <section class="sec">
     <div class="bridge paper torn">
-      <p class="eyebrow" style="color:var(--paper-dim)">when you want a real answer</p>
-      <h2 class="display">a quiz reads <span>patterns.</span><br>i read him.</h2>
-      <p class="lede2">send me his texts and your situation. i'll record you a personal voice reading on what he's actually doing and what i'd do in your place. 15 to 20 minutes, in your inbox within 48 hours.</p>
-      <div class="cta"><a class="btn btn-ink" data-link="talk" href="#" target="_blank" rel="noopener">have me read him</a></div>
+      <p class="eyebrow" style="color:var(--paper-dim)">the next page · high value dating™</p>
+      <h2 class="display">the quiz shows <span>who.</span><br>this changes it.</h2>
+      <p class="lede2">you just named the man you keep meeting. high value dating is 28 days that change who you pick, how you show up and how fast you leave. 15 minutes a day, one day at a time, with my side of it every single day. it lives on your phone, not in a pdf you open twice.</p>
+      <ul class="inside">
+        <li>week 1 · the mirror: your pattern, your old story, your non-negotiables</li>
+        <li>week 2 · the market: photos, profile, first messages, meeting men offline</li>
+        <li>week 3 · the filter: the first-three-dates scanner, texting, when he goes quiet</li>
+        <li>week 4 · the choice: the available man, boundaries, walking away well</li>
+        <li>his side, every day: what men actually think while you're dating them</li>
+        <li>word-for-word replies for "wyd" at 11pm, the last-minute plan, the "what are we" talk</li>
+      </ul>
+      <div class="cta"><a class="btn btn-ink" data-link="dating" href="#" target="_blank" rel="noopener">get high value dating</a><a class="btn btn-line" data-link="talk" href="#" target="_blank" rel="noopener">or have me read him</a></div>
+      <p class="fine muted">have me read him is a personal voice reading from me on your exact situation, in your inbox within 48 hours.</p>
     </div>
   </section>
 
@@ -946,19 +955,18 @@ main[data-view]{--rc:var(--rose)}
 
   <section class="sec">
     <div class="bridge paper torn">
-      <p class="eyebrow" style="color:var(--paper-dim)">the next page · HVW™</p>
+      <p class="eyebrow" style="color:var(--paper-dim)">the next page · high value dating™</p>
       <h2 class="display">the map shows the <span>loop.</span><br>this breaks it.</h2>
-      <p class="lede2">your standards card is the first exercise in module one of high value women. the program takes it from there. it's for the woman who's done chasing and wants to be chosen, pursued and respected without proving her worth. it's not for mind games, and it's not for controlling one specific man.</p>
+      <p class="lede2">your standards card is day 6 of high value dating. the program takes it from there: 28 days that change who you pick, how you show up and how fast you leave. it's for the woman who's done chasing and wants to be chosen without proving her worth. it's not for mind games, and it's not for controlling one specific man.</p>
       <ul class="inside">
-        <li>6 core modules on rewiring the pattern</li>
-        <li>the inner work workbook, fillable</li>
-        <li>a 21-day roadmap with daily actions</li>
-        <li>high value texts and scripts for when he pulls away</li>
-        <li>guided meditations and affirmations</li>
-        <li>closure, boundary and no-contact templates</li>
-        <li>bonus: the 21-day glow-up tracker</li>
+        <li>a 15-minute day, every day for 28 days, one at a time</li>
+        <li>your pattern, your old story and your non-negotiables, in writing</li>
+        <li>the first-three-dates scanner and a red-flag exit line</li>
+        <li>what to do when he goes quiet, comes back or tests a boundary</li>
+        <li>his side, every day: what men actually think while you're dating them</li>
+        <li>your standards as a lock screen, and your own dating code by day 28</li>
       </ul>
-      <div class="cta"><a class="btn btn-ink" data-link="hvw" href="#" target="_blank" rel="noopener">get HVW™</a></div>
+      <div class="cta"><a class="btn btn-ink" data-link="dating" href="#" target="_blank" rel="noopener">get high value dating</a></div>
     </div>
   </section>
 
@@ -1063,8 +1071,8 @@ var CONFIG = {
   api: "https://script.google.com/macros/s/AKfycbyyFkxJ-6jMacOrIE5jZsYveGMcpFOkAFBOXhyjmFrBJ8rtGwXS_sALWDv5w7K01m3T/exec", // Google Apps Script web app URL (ends in /exec). empty = nothing leaves the phone (preview mode).
   room: "healing",
   detox: "https://stan.store/unfilteredkp/p/detox-from-him",              // HEALING → Detox From Him
-  talk: "https://stan.store/unfilteredkp/p/clarity-session-jka79riv",     // DATING + 2am → Talk With Me
-  hvw: "https://stan.store/unfilteredkp/p/high-value-women-science-backed", // DONE → High Value Women
+  dating: "https://stan.store/unfilteredkp/p/high-value-dating",          // DATING + DONE → High Value Dating (replaced HVW, 4 Oct)
+  talk: "https://stan.store/unfilteredkp/p/clarity-session-jka79riv",     // 2am → Talk With Me (also the second button in DATING + HEALING)
   substack: "https://kpunfiltered.substack.com",
   ig: "https://instagram.com/kpunfilteredkp"
 };
@@ -1595,7 +1603,7 @@ function trackRoom(room,ev,fields){
   if(!S.email||!CONFIG.api)return;
   (pendingStart[room]||Promise.resolve()).then(function(){api({action:"event",room:room,email:S.email,event:ev,fields:fields||{}});});
 }
-var LINKS={talk:CONFIG.talk,hvw:CONFIG.hvw,detox:CONFIG.detox,substack:CONFIG.substack};
+var LINKS={talk:CONFIG.talk,dating:CONFIG.dating,detox:CONFIG.detox,substack:CONFIG.substack};
 function wireLinks(scope){(scope||document).querySelectorAll("[data-link]").forEach(function(a){a.href=LINKS[a.dataset.link]||"#";});}
 
 /* ---------- shared capture (name / email / country) ---------- */
