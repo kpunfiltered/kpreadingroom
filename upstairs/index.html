@@ -359,14 +359,14 @@ var CONFIG = {
     {id:"detox", name:"detox from him", line:"21 days to emotionally disconnect from the wrong man.", c:"var(--rose)", app:true,
       buy:"https://stan.store/unfilteredkp/p/detox-from-him"},
     {id:"dating", name:"high value dating", line:"28 days to stop auditioning and start choosing. on the apps and off them.", c:"var(--slate)", app:true,
-      buy:"https://stan.store/unfilteredkp"},   // <- swap for the high value dating stan link once the product exists
+      buy:"https://stan.store/unfilteredkp/p/high-value-dating"},
     {id:"talk", name:"talk with me", line:"one on one. you tell me the situation, i tell you the male side.", c:"var(--candle)", status:"book",
       buy:"https://stan.store/unfilteredkp/p/clarity-session-jka79riv"},
     {id:"lovespell", name:"love spell", line:"the video and guide.", c:"var(--amber)", status:"moving upstairs soon",
       buy:"https://stan.store/unfilteredkp"}
   ],
   hvw: "https://stan.store/unfilteredkp/p/high-value-women-science-backed",
-  dating: "https://stan.store/unfilteredkp",   // <- high value dating on stan (same link as in products above)
+  dating: "https://stan.store/unfilteredkp/p/high-value-dating",
   talk: "https://stan.store/unfilteredkp/p/clarity-session-jka79riv",
   readingRoom: "/",
   rrApi: "https://script.google.com/macros/s/AKfycbyyFkxJ-6jMacOrIE5jZsYveGMcpFOkAFBOXhyjmFrBJ8rtGwXS_sALWDv5w7K01m3T/exec",   // the reading room's sheet: the secret room waitlist lives there
@@ -650,29 +650,35 @@ var ERR = {
   wrong_code:"that code isn't right. check the latest email.", expired:"that code expired. go back and unlock again for a new one.",
   too_many:"too many tries. go back and unlock again for a new code.", no_code:"go back and unlock again for a new code.", server:"something went wrong on my side. try again in a minute."
 };
+var busy = false;   // an unlock or code check is running: ignore extra taps (a second unlock on the same email would email her a code)
+function busyBtn(b, on){ if (!b) return; b.disabled = on; b.innerHTML = on ? '<span class="spinner"></span> <span style="margin-left:8px">opening…</span>' : b.getAttribute("data-label"); }
 function onUnlock(form){
+  if (busy) return;
   var s = unlockCard.s = {name:$("f-name").value.trim(), email:$("f-email").value.trim(), key:$("f-key").value.trim()};
   var err = $("f-err"); err.textContent = "";
   if (!s.email || s.email.indexOf("@") < 1) { err.textContent = ERR.email; return; }
   if (s.key.replace(/[^a-z0-9]/gi,"").length < 6) { err.textContent = "type the key from your purchase email."; return; }
-  var b = form.querySelector("button[type=submit]"); b.disabled = true; b.innerHTML = '<span class="spinner"></span>';
+  var b = form.querySelector("button[type=submit]"); b.setAttribute("data-label", "unlock"); busy = true; busyBtn(b, true);
+  if (document.activeElement && document.activeElement.blur) document.activeElement.blur();   // close the keyboard so the screen doesn't jump under her finger
   var kp = keyProduct(s.key);
   call({action:"unlock", product:kp, name:s.name, email:s.email, key:s.key, tz:TZ, src:src, ua:UA.slice(0,60)}).then(function(r){
-    b.disabled = false; b.textContent = "unlock";
     var rp = r.product || (kp === "auto" ? PRODUCT : kp);
-    if (r.ok && r.need_code) { unlockCard.s.code = true; unlockCard.s.hint = r.hint; unlockCard.s.product = rp; render(); setTimeout(function(){ var c = $("f-code"); if (c) c.focus(); }, 50); return; }
+    if (r.ok && r.need_code) { busy = false; unlockCard.s.code = true; unlockCard.s.hint = r.hint; unlockCard.s.product = rp; render(); setTimeout(function(){ var c = $("f-code"); if (c) c.focus(); }, 50); return; }
     if (r.ok && r.token) { useProduct(rp); addKeyCard.open = false; return signedIn(s.email, r); }
+    busy = false; busyBtn(b, false);
     err.textContent = ERR[r.error] || ERR.server;
   });
 }
 function onVerify(form){
+  if (busy) return;
   var code = $("f-code").value.replace(/\D/g,""), err = $("f-err"); err.textContent = "";
   if (code.length !== 6) { err.textContent = "the code is 6 digits."; return; }
-  var b = form.querySelector("button[type=submit]"); b.disabled = true; b.innerHTML = '<span class="spinner"></span>';
+  var b = form.querySelector("button[type=submit]"); b.setAttribute("data-label", "open my shelf"); busy = true; busyBtn(b, true);
+  if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
   var vp = unlockCard.s.product || PRODUCT;
   call({action:"verify", product:vp, email:unlockCard.s.email, code:code, tz:TZ, ua:UA.slice(0,60)}).then(function(r){
-    b.disabled = false; b.textContent = "open my shelf";
     if (r.ok && r.token) { useProduct(r.product || vp); addKeyCard.open = false; return signedIn(unlockCard.s.email, r); }
+    busy = false; busyBtn(b, false);
     err.textContent = ERR[r.error] || ERR.server;
   });
 }
@@ -680,9 +686,12 @@ function signedIn(email, r){
   L.auth = {email:email.trim().toLowerCase(), token:r.token};
   L.handoff = null;
   if (r.state) L.st = r.state;
+  if (r.content) L.c = r.content;
   save(); unlockCard.s = {};
   pushLogin();
-  refresh(true).then(function(){ go("#/" + PRODUCT); handoffPrep(); if (!L.welcomed) setTimeout(showWelcome, 250); else toast(r.restored ? "welcome back. your place is saved." : "unlocked"); });
+  var open = function(){ busy = false; go("#/" + PRODUCT); handoffPrep(); if (!L.welcomed) setTimeout(showWelcome, 60); else toast(r.restored ? "welcome back. your place is saved." : "unlocked"); };
+  if (L.c) { open(); refresh(true).then(function(){ if (route().sub === "journey") render(); }); }   // weekly numbers load in the background
+  else refresh(true).then(open);
 }
 function signOutLocal(){ L.auth = null; L.st = null; L.c = null; L.weekly = null; save(); }
 
