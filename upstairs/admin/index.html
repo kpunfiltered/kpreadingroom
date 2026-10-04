@@ -59,6 +59,7 @@ th{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint
 "use strict";
 var CONFIG = { api: "https://script.google.com/macros/s/AKfycbxtcONB1x9Y1PJMGF0tofCc6jiy2OSn45sERu7WUx5VVidjvsOb_L8D0C0J_kcCzHAeFg/exec" };
 var KEY = "kp_upstairs_admin";
+var PROD = (function(){ try { return new URLSearchParams(location.search).get("p") || "detox"; } catch(e){ return "detox"; } })();   // ?p=dating shows high value dating
 var pw = ""; try { pw = localStorage.getItem(KEY) || ""; } catch(e){}
 var root = document.getElementById("root"), tip = document.getElementById("tip"), DATA = null, sortK = "last_active", sortDir = -1;
 function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
@@ -73,7 +74,7 @@ function login(err){
 }
 function load(){
   root.innerHTML = '<div class="login"><p class="eyebrow">loading…</p></div>';
-  call({action:"admin", secret:pw, include_preview:location.hash === "#preview"}).then(function(r){
+  call({action:"admin", secret:pw, product:PROD, include_preview:location.hash === "#preview"}).then(function(r){
     if (!r.ok) { try { localStorage.removeItem(KEY); } catch(e){} return login(r.error === "auth" ? "wrong password" : r.error === "not_configured" ? "paste the api url into CONFIG first" : "couldn't load (" + r.error + ")"); }
     try { localStorage.setItem(KEY, pw); } catch(e){}
     DATA = r; draw();
@@ -121,10 +122,12 @@ function draw(){
   Object.keys(d.stuck).forEach(function(k){ if (d.stuck[k] > maxDrop) { maxDrop = d.stuck[k]; dropDay = Number(k) - 1; } });
   var peakH = d.urge_hours.indexOf(Math.max.apply(null, d.urge_hours));
   var h = '<div class="wrap"><header><h1>UPSTAIRS<em>admin</em></h1><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="csv">download members csv</button><button class="btn" id="rl">refresh</button><button class="btn" id="lo">log out</button></div></header>';
-  h += '<p class="sub" style="margin-top:10px">detox from him · updated ' + new Date(d.generated).toLocaleString() + (location.hash === '#preview' ? ' · including preview accounts' : ' · your own preview accounts are excluded') + '</p>';
+  var NM = d.name || "detox from him", TOT = d.total || 21;
+  h += '<p class="sub" style="margin-top:10px"><a href="?p=detox" style="color:' + (PROD === 'detox' ? 'var(--candle)' : 'inherit') + '">detox from him</a> · <a href="?p=dating" style="color:' + (PROD === 'dating' ? 'var(--candle)' : 'inherit') + '">high value dating</a></p>';
+  h += '<p class="sub" style="margin-top:6px">' + esc(NM) + ' · updated ' + new Date(d.generated).toLocaleString() + (location.hash === '#preview' ? ' · including preview accounts' : ' · your own preview accounts are excluded') + '</p>';
   h += '<div class="grid g4">' +
-    tile(t.members, "members", "unlocked detox upstairs") + tile(t.active7, "active 7 days", t.members ? Math.round(t.active7/t.members*100) + "% of members" : "") +
-    tile(t.graduated, "graduated", comp + "% finished all 21") + tile(Object.keys(d.stuck).reduce(function(s,k){ return s + d.stuck[k]; },0), "stuck 3+ days", "day open, no activity") + '</div>';
+    tile(t.members, "members", "unlocked " + NM + " upstairs") + tile(t.active7, "active 7 days", t.members ? Math.round(t.active7/t.members*100) + "% of members" : "") +
+    tile(t.graduated, "graduated", comp + "% finished all " + TOT) + tile(Object.keys(d.stuck).reduce(function(s,k){ return s + d.stuck[k]; },0), "stuck 3+ days", "day open, no activity") + '</div>';
   h += '<div class="grid g2"><div class="card"><h2>how far they get</h2><p class="sub">women who reached each day</p>' + vbars(d.reached, titles.map(function(x,i){ return "day " + (i+1) + " · " + x; }), {label:"women reaching each day", tick:function(i){ return i+1; }, every:2, unit:" women", hi:function(i){ return i === dropDay && maxDrop > 0; }}) +
     (maxDrop > 0 ? '<p class="insight">most women stall on <em>day ' + (dropDay+1) + '</em>, “' + esc(titles[dropDay]) + '” (' + maxDrop + (maxDrop === 1 ? ' woman' : ' women') + '). that\'s the day to tighten or record a voice note for.</p>' : '<p class="sub" style="margin-top:8px">stalled days get highlighted here once women go quiet for 3+ days.</p>') + '</div>';
   h += '<div class="card"><h2>where they\'re stuck</h2><p class="sub">day is open, no activity for 3+ days</p>' + hbars(Object.keys(d.stuck).reduce(function(o,k){ o["day " + k + " · " + titles[k-1]] = d.stuck[k]; return o; }, {})) + '</div></div>';
@@ -141,7 +144,7 @@ function draw(){
   h += salesBlock(d);
   var F = d.flags;
   h += '<div class="card" style="margin-top:14px"><h2>purchase check</h2>' +
-    (F.zap_live ? '<p class="sub">stan → zapier is feeding the buyers tab. a key only counts as verified when its email bought detox.</p>' +
+    (F.zap_live ? '<p class="sub">stan → zapier is feeding the buyers tab. a key only counts as verified when its email bought ' + esc(DATA.name || 'detox') + '.</p>' +
         '<p style="font-size:14px">' + (F.not_verified.length ? '<span class="flag">not matched to a purchase after 48h: ' + F.not_verified.map(function(x){ return esc(x.email); }).join(", ") + '</span><br><span class="sub">could be a shared key, or a buyer who unlocked with a different email. they still have access unless you switch on LOCK_UNVERIFIED.</span>' : '<span class="ok">every account is matched to a purchase (or still inside its 48h window).</span>') + '</p>' +
         (F.pending.length ? '<p class="sub" style="margin-top:6px">waiting for stan (under 48h): ' + F.pending.map(function(x){ return esc(x.email) + ' (' + x.hours + 'h)'; }).join(", ") + '</p>' : '')
       : '<p class="sub">not switched on yet. connect stan → zapier → the <b>buyers</b> tab (steps in the handoff note) and every unlock gets checked against a real purchase.</p>') +
@@ -176,7 +179,7 @@ function spaceInsight(v){
   var a = v.slice(0,3).filter(function(x){ return x != null; }), b = v.slice(-3).filter(function(x){ return x != null; });
   if (!a.length || !b.length) return "";
   var av = function(x){ return Math.round(x.reduce(function(s,q){ return s+q; },0)/x.length*10)/10; };
-  return '<p class="insight">days 1–3 average <em>' + av(a) + '</em>. days 19–21 average <em>' + av(b) + '</em>. that drop is your proof line for the sales page.</p>';
+  return '<p class="insight">days 1–3 average <em>' + av(a) + '</em>. the last 3 days average <em>' + av(b) + '</em>. that drop is your proof line for the sales page.</p>';
 }
 var COLS = [["email","email"],["name","name"],["verified","purchase"],["day","day"],["idle_days","idle days"],["streak","nc streak"],["resets","restarts"],["email_opt","emails"],["push_opt","push"],["tz","timezone"],["created","joined"]];
 function table(){
