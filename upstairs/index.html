@@ -255,7 +255,13 @@ textarea.field{min-height:110px;resize:vertical;font-family:var(--hand);font-siz
 .rows{display:flex;flex-direction:column;gap:12px}
 .rowset{display:grid;gap:6px;border:1px solid var(--line-soft);border-radius:8px;padding:10px;background:var(--night)}
 .rowset label{font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
-.rowset .field{background:var(--night-2);padding:10px 12px;font-size:15px}
+.rowset .field{background:var(--night-2);padding:10px 12px;font-size:16px}
+.still{list-style:none;margin:0 0 12px;padding:0;display:flex;flex-direction:column;gap:6px;text-align:left}
+.still button{width:100%;text-align:left;background:rgba(138,40,70,.08);border:1px solid rgba(138,40,70,.35);border-radius:6px;padding:10px 12px;font-size:14px;line-height:1.35;color:var(--paper-ink);cursor:pointer}
+.still button b{color:var(--wine)}
+.step-why{grid-column:1 / -1;justify-self:start;display:block;margin:2px 0 0 48px;text-align:left;font-size:12.5px;color:var(--pc);font-weight:700}
+@keyframes flash{0%,100%{box-shadow:none}30%{box-shadow:0 0 0 3px var(--pc)}}
+.flash{animation:flash 1.6s ease 2;border-radius:8px}
 .breath{display:flex;flex-direction:column;align-items:center;gap:12px;padding:10px 0 4px}
 .bcirc{width:170px;height:170px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--pc) 60%,transparent),color-mix(in srgb,var(--pc) 8%,transparent) 70%);display:grid;place-items:center;transform:scale(.55);transition-property:transform;transition-timing-function:ease-in-out}
 .bcirc span{font-family:var(--display);font-size:30px;line-height:1;letter-spacing:.06em;color:var(--text);display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center}
@@ -855,7 +861,7 @@ function viewDay(n){
   var names = [["read","the lesson and his side"],["do","today's action and practice"],["write","your journal, private"],["check in","ten seconds"]];
   for (var i=0;i<4;i++){
     var cls = ro || sd[i] ? "done" : (i === cur ? "now" : (cur !== -1 && i > cur ? "locked" : "now"));
-    h += '<section class="step ' + cls + '" data-step="' + i + '"><div class="step-h"><span class="step-n">' + (i+1) + '</span><div><b>' + names[i][0] + '</b><span>' + names[i][1] + '</span></div><span class="step-tag">' + (cls === "done" ? "done" : cls === "locked" ? "after " + names[i-1][0] : "") + '</span></div><div class="step-b">' + stepBody(n, i, d, s, ro) + '</div></section>';
+    h += '<section class="step ' + cls + '" data-step="' + i + '"><div class="step-h"><span class="step-n">' + (i+1) + '</span><div><b>' + names[i][0] + '</b><span>' + names[i][1] + '</span></div><span class="step-tag">' + (cls === "done" ? "done" : cls === "locked" ? "after " + names[i-1][0] : "") + '</span>' + (cls === "locked" && i === cur + 1 ? '<button type="button" class="linkish step-why" data-act="goto" data-n="' + n + '" data-step="' + cur + '" data-first="1">' + stepWhy(n, cur + 1) + '</button>' : '') + '</div><div class="step-b">' + stepBody(n, i, d, s, ro) + '</div></section>';
   }
   h += '</div>';
   if (!ro) h += '<div class="paper closebar torn" id="closebar">' + closeBody(n) + '</div>';
@@ -863,10 +869,30 @@ function viewDay(n){
   h += '</main>' + tabbar("");
   return h;
 }
+/* what's still open on this day, in plain words, so a locked step never looks broken */
+function wLabel(w){ var q = String(w.q || "").replace(/\s+/g, " ").trim(); var cut = q.search(/[.?:]\s/); if (cut > 8) q = q.slice(0, cut + 1); if (q.length > 70) q = q.slice(0, 67).replace(/\s\S*$/, "") + "…"; return q || "the practice"; }
+function rowsLeft(n, w){ var v = wv(n, w.id) || [], full = v.filter(function(r){ return r && w.cols.every(function(_, c){ return String(r[c]||"").trim().length > 0; }); }).length; return Math.max(0, (w.min||1) - full); }
+function stillOpen(n){
+  var d = dayContent(n), s = D(n), sd = stepsDone(n), out = [];
+  if (!d) return out;
+  if (!sd[0]) out.push({step:0, text: s.his ? 'tap <b>got it</b> under the lesson' : 'read <b>his side</b>, then tap got it'});
+  if (!sd[1]) (d.act||[]).concat(d.prac||[]).forEach(function(w){
+    if (wDone(n, w)) return;
+    var extra = w.t === "rows" ? ' (' + rowsLeft(n, w) + ' more row' + (rowsLeft(n, w) === 1 ? '' : 's') + ', every box filled)' : w.t === "pick" ? ' (tap at least ' + (w.min||1) + ')' : (w.t === "breath" || w.t === "timer" || w.t === "seq") ? ' (let it run to the end)' : '';
+    out.push({step:1, w:w.id, text:'<b>do:</b> ' + esc(wLabel(w)) + extra});
+  });
+  if (!sd[2] && sd[0] && sd[1]) out.push({step:2, text:'<b>write:</b> a sentence or more for each prompt'});
+  if (!sd[3] && sd[0] && sd[1] && sd[2]) out.push({step:3, text:'<b>check in:</b> answer all three'});
+  return out;
+}
+function stillHTML(n){
+  return '<ul class="still">' + stillOpen(n).map(function(x){ return '<li><button type="button" data-act="goto" data-n="' + n + '" data-step="' + x.step + '"' + (x.w ? ' data-w="' + x.w + '"' : '') + '>' + x.text + ' →</button></li>'; }).join("") + '</ul>';
+}
+function stepWhy(n, i){ if (i < 1) return ""; var open = stillOpen(n).filter(function(x){ return x.step === i - 1; }); return open.length ? (open.length === 1 ? '1 thing left above' : open.length + ' things left above') + ' · tap to see' : ""; }
 function closeBody(n){
   if (L.st.preview && n !== L.st.current && n > L.st.done) return '<p><b>preview account.</b> you can open and try everything on this day. closing still goes in order, so the next one to close is day ' + L.st.current + '. buyers never see this.</p><a class="btn btn-ink btn-block" href="#/' + PRODUCT + '/day/' + L.st.current + '">go to day ' + L.st.current + '</a>';
   var sd = stepsDone(n), all = sd.every(Boolean), leftN = sd.filter(function(x){ return !x; }).length;
-  return '<p>' + (all ? 'that\'s all four. close the day and it\'s yours.' : leftN + ' step' + (leftN === 1 ? '' : 's') + ' left before you can close day ' + n + '.') + '</p>' +
+  return '<p>' + (all ? 'that\'s all four. close the day and it\'s yours.' : leftN + ' step' + (leftN === 1 ? '' : 's') + ' left before you can close day ' + n + '. still open:') + '</p>' + (all ? '' : stillHTML(n)) +
     '<button class="btn btn-ink btn-block" data-act="close" data-n="' + n + '"' + (all ? '' : ' disabled') + '>i\'m done with day ' + n + '</button>';
 }
 function stepBody(n, i, d, s, ro){
@@ -923,7 +949,7 @@ function wDone(n, w){
     case "check": return !!v && w.items.every(function(_, i){ return v[i]; });
     case "pick": return Array.isArray(v) && v.length >= (w.min||1);
     case "lines": return Array.isArray(v) && v.filter(function(x){ return String(x||"").trim().length > 1; }).length >= (w.min||w.n);
-    case "rows": return Array.isArray(v) && v.filter(function(r){ return r && w.cols.every(function(_, c){ return String(r[c]||"").trim().length > 1; }); }).length >= (w.min||1);
+    case "rows": return Array.isArray(v) && v.filter(function(r){ return r && w.cols.every(function(_, c){ return String(r[c]||"").trim().length > 0; }); }).length >= (w.min||1);
     case "text": return words(v) >= (w.minWords || 3);
     case "breath": case "seq": case "confirm": case "sos": case "review": return !!(v && v.done);
     case "timer": return !!(v && (v.done || (v.start && Date.now() - v.start >= w.secs*1000)));
@@ -1030,6 +1056,9 @@ function chrome(n){
     var cls = sd[i] ? "done" : (i === cur ? "now" : (cur !== -1 && i > cur ? "locked" : "now"));
     if (!el.classList.contains(cls)) { el.classList.remove("done","now","locked"); el.classList.add(cls); }
     el.querySelector(".step-tag").textContent = cls === "done" ? "done" : cls === "locked" ? "after " + names[i-1] : "";
+    var why = el.querySelector(".step-why");
+    if (cls === "locked" && i === cur + 1) { var t = stepWhy(n, cur + 1); if (!why) { el.querySelector(".step-h").insertAdjacentHTML("beforeend", '<button type="button" class="linkish step-why" data-act="goto" data-n="' + n + '" data-step="' + cur + '" data-first="1"></button>'); why = el.querySelector(".step-why"); } why.setAttribute("data-step", cur); why.textContent = t; }
+    else if (why) why.remove();
   });
   var need = document.querySelector('[data-need="j"]'); if (need) need.innerHTML = sd[2] ? '<span class="w-done">✓ written</span>' : 'a sentence or more for each one.';
   var cb = $("closebar"); if (cb) cb.innerHTML = closeBody(n);
@@ -1362,6 +1391,15 @@ function setPush(on){
 /* ================= events ================= */
 var ACT = {
   "retry": function(){ render(); },
+  "goto": function(b){
+    var n = Number(b.getAttribute("data-n")), st = b.getAttribute("data-step"), id = b.getAttribute("data-w");
+    if (!id && b.getAttribute("data-first")) { var f = stillOpen(n).filter(function(x){ return String(x.step) === st; })[0]; if (f && f.w) id = f.w; }
+    var el = id ? $("w-" + n + "-" + id) : document.querySelector('#steps .step[data-step="' + st + '"]');
+    if (!el) return;
+    el.scrollIntoView({behavior:"smooth", block:"center"});
+    el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash");
+    setTimeout(function(){ el.classList.remove("flash"); }, 3400);
+  },
   "code-back": function(){ unlockCard.s = {email:(unlockCard.s||{}).email}; render(); },
   "settings": openSettings,
   "close-ov": function(){ closeOv(); if (route().p === PRODUCT) render(); },
