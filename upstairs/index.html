@@ -425,11 +425,20 @@ var src = (function(){ try { var q = new URLSearchParams(location.search); retur
 var TZ = (function(){ try { return Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch(e){ return ""; } })();
 
 /* ================= api ================= */
+/* a link from one of my emails carries ?em=<id>. it rides along on the next call so the dashboard knows the email landed. */
+var EM = (function(){
+  var v = "";
+  try { var q = new URLSearchParams(location.search); v = q.get("em") || ""; if (v) { q.delete("em"); var s = q.toString(); history.replaceState(null, "", location.pathname + (s ? "?" + s : "") + location.hash); } } catch(e){}
+  return /^e_[a-f0-9]{12}$/.test(v) ? v : "";
+})();
 function call(payload){
   if (!CONFIG.api) return Promise.resolve({ok:false, error:"not_configured"});
+  if (!payload.mode) payload.mode = standalone() ? "app" : "browser";   // home-screen app or browser tab, for the dashboard
+  if (EM && !payload.em) payload.em = EM;
   if (CONFIG.api.indexOf("mock:") === 0 && window.__upstairsMock) return window.__upstairsMock(payload);
   return fetch(CONFIG.api, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify(payload)})
     .then(function(r){ return r.json(); })
+    .then(function(j){ if (j && j.ok && payload.em === EM) EM = ""; return j; })
     .catch(function(){ return {ok:false, error:"offline"}; });
 }
 function api(action, data){
