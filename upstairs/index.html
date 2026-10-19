@@ -863,6 +863,7 @@ function viewDay(n){
     return h;
   }
   var ro = n <= st.done, s = D(n), sd = stepsDone(n);
+  if (!ro && !L.weekly && (d.act||[]).concat(d.prac||[]).some(function(w){ return w.t === "sos"; })) refresh(true).then(function(){ if (route().sub === "day" && route().n === n) render(); });
   var cur = ro ? -1 : sd.indexOf(false);
   h += '<section class="dayhead"><a class="back" href="#/' + PRODUCT + '">← today</a><div class="eyebrow">day ' + n + ' of ' + st.total + ' · ' + esc(phaseOf(n).name) + '</div><h1 class="display rise">' + esc(d.t) + '</h1><p class="sub">' + esc(d.s) + '</p>' +
     (ro ? '<div class="ro">✓ you closed this day. you can re-read it anytime.</div>' : '') + '</section>';
@@ -952,6 +953,10 @@ function textBack(d){
 /* ---------- widgets ---------- */
 function wv(n, id){ return D(n).w[id]; }
 function setW(n, id, v){ D(n).w[id] = v; save(); }
+function sosLoggedOn(n){
+  if ((L.urges || []).some(function(u){ return Number(u.day) === n; })) return true;
+  var w = L.weekly && L.weekly.urges_by_day; return !!(w && Number(w[n]) > 0);
+}
 function wDone(n, w){
   var v = wv(n, w.id);
   switch (w.t) {
@@ -960,7 +965,8 @@ function wDone(n, w){
     case "lines": return Array.isArray(v) && v.filter(function(x){ return String(x||"").trim().length > 1; }).length >= (w.min||w.n);
     case "rows": return Array.isArray(v) && v.filter(function(r){ return r && w.cols.every(function(_, c){ return String(r[c]||"").trim().length > 0; }); }).length >= (w.min||1);
     case "text": return words(v) >= (w.minWords || 3);
-    case "breath": case "seq": case "confirm": case "sos": case "review": return !!(v && v.done);
+    case "sos": return !!(v && v.done) || sosLoggedOn(n);
+    case "breath": case "seq": case "confirm": case "review": return !!(v && v.done);
     case "timer": return !!(v && (v.done || (v.start && Date.now() - v.start >= w.secs*1000)));
     case "ncstart": return !!(L.st && L.st.nc_start);
     case "sign": return !!(v && sentence(v.letter) && String(v.name||"").trim().length > 1);
@@ -1018,7 +1024,7 @@ function widget(n, w, ro){
       h += '<button class="chk" data-act="confirm" data-n="' + n + '" data-w="' + w.id + '" aria-pressed="' + !!(v && v.done) + '"' + dis + '><i></i><span>' + esc(w.label) + '</span></button>';
       break;
     case "sos":
-      h += (ro ? '' : '<button class="btn btn-pc" data-act="sos" data-practice="' + n + '">run the sos now</button>');
+      h += (ro ? '' : (done ? '' : '<button class="btn btn-pc" data-act="sos" data-practice="' + n + '">run the sos now</button><p class="faint" style="font-size:13px;margin-top:8px">or press the round sos button in your bar. either one counts.</p>'));
       break;
     case "review":
       var rv2 = weekReview(w), RL = U().review || {a:"days closed", b:"avg space /10", c:"urges logged"};
@@ -1192,6 +1198,8 @@ function sosSave(){
   var S = U().sos || {};
   if (s.out === "texted" && U().streak !== false) { queue("slip", {type:"texted", day:L.st.current}); L.st.nc_start = Date.now(); L.st.nc_resets = (L.st.nc_resets||0) + 1; save(); }
   if (s.day) { setW(s.day, "sos", {done:true}); }
+  var cd = dayContent(L.st.current);
+  if (cd && !L.st.graduated) (cd.act||[]).concat(cd.prac||[]).forEach(function(w){ if (w.t === "sos") setW(L.st.current, w.id, {done:true}); });
   var msg = S.msgs && S.msgs[s.out] ? S.msgs[s.out] : s.out === "rode" ? ["that's one.", "every wave you ride makes the next one smaller. that's not a quote, that's how your brain rewires."]
     : s.out === "checked" ? ["okay. no shame.", "checking doesn't reset your streak. next time, press the button before you open the app. you'll get there."]
     : ["okay. breathe.", "your streak restarts. your days don't. you keep your place in the program and you keep going tomorrow. don't send a second one."];
