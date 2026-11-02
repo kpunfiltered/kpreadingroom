@@ -94,7 +94,7 @@
         var id = en.target.id; if (!id || seen[id]) return;
         seen[id] = 1; emit("section", cur, { section: id });
       });
-    }, { threshold: 0.35 });
+    }, { threshold: 0, rootMargin: "0px 0px -40% 0px" });  // counts once a section's top reaches the upper 60% of the screen, works for tall sections too
     var main = document.getElementById("v-" + cur);
     if (!main) return;
     main.querySelectorAll("section[id], [id=secret]").forEach(function (s) { io.observe(s); });
