@@ -1341,7 +1341,7 @@ function renderClock(){
         '<div class="err" id="sfErr"></div>'+
         '<div class="clock-actions"><button class="btn btn-candle" type="submit" id="sfGo">start my 72 hours</button></div>'+
         '<div class="alt"><button class="linkish" id="bdToggle" type="button">already went no contact? set the time</button><button class="linkish" id="lkToggle" type="button">started on another phone?</button></div>'+
-        '<p class="fine">by starting you agree to get emails from me. want off the list? email team@unfilteredprojects.com and you\'re off. your notes and unsent texts never leave this phone.</p>'+
+        '<p class="fine">by starting you agree to get emails from me, including my free tuesday letter. want off the list? email team@unfilteredprojects.com and you\'re off. your notes and unsent texts never leave this phone.</p>'+
       '</form>'+
       '<form class="startf" id="lookF" hidden novalidate>'+
         '<p style="color:var(--text)" id="lkSay">put in the email you started with. i\'ll send a 6-digit code to that inbox so only you can bring your clock back.</p>'+
@@ -1623,7 +1623,7 @@ function needCapture(room,title,sub,cb){
       '<input id="cfOther" placeholder="type your country" aria-label="type your country" value="'+(isOther?esc(S.country):"")+'"'+(isOther?"":" hidden")+'>'+
       '<div class="err" id="cfErr"></div>'+
       '<div class="clock-actions"><button class="btn btn-ink" type="submit">show me</button><button class="linkish" type="button" id="cfClose">not now</button></div>'+
-      '<p class="fine">by continuing you agree to get emails from me. want off the list? email team@unfilteredprojects.com and you\'re off. anything you write in these rooms stays on your phone.</p>'+
+      '<p class="fine">by continuing you agree to get emails from me, including my free tuesday letter. want off the list? email team@unfilteredprojects.com and you\'re off. anything you write in these rooms stays on your phone.</p>'+
     '</form>';
   tear(card);
   $("cap").hidden=false;document.body.style.overflow="hidden";
