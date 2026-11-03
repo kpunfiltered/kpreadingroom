@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>KP Unfiltered</title>
+<style>
+body{margin:0;background:#15101a;color:#f0e7dc;font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;display:flex;min-height:100vh;align-items:center;justify-content:center;text-align:center;padding:24px;box-sizing:border-box}
+h1{font:600 26px/1.2 Georgia,serif;margin:0 0 10px}p{color:#b9a9b4;margin:0 0 18px}a{color:#eab861}
+</style>
+</head>
+<body>
+<div id="box"><p>one second…</p></div>
+<script>
+/* KP Reading Room · email link hop (v1 · 2 Nov 2026)
+   every link in an email comes here first: ?i=<email id>&t=<link key>&s=<signature>
+   it tells the email script about the tap, then sends her on. unknown keys go to the home page. */
+(function () {
+  var API = "https://script.google.com/macros/s/AKfycbx3xHIeppsNMkC_KitlZlC-cwzmeXYnOpcOjQQVEAxKW7PYKY6VdtfvLXnYfuKpL3TP/exec";
+  var LINKS = {
+    room_healing: "https://kpreadingroom.com/?src=email#healing",
+    room_decode: "https://kpreadingroom.com/?src=email#decode",
+    room_dating: "https://kpreadingroom.com/?src=email#dating",
+    room_done: "https://kpreadingroom.com/?src=email#done",
+    room_standards: "https://kpreadingroom.com/?src=email#standards",
+    room_2am: "https://kpreadingroom.com/?src=email#2am",
+    room_spiral: "https://kpreadingroom.com/?src=email#spiral",
+    room_letter: "https://kpreadingroom.com/?src=email#letter",
+    hub: "https://kpreadingroom.com/?src=email",
+    substack: "https://kpunfiltered.substack.com/subscribe?utm_source=email&utm_medium=sequence",
+    tuesday: "https://kpunfiltered.substack.com/?utm_source=email",
+    secret: "https://kpunfiltered.substack.com/subscribe?utm_source=email&utm_medium=waitlist",
+    detox: "https://stan.store/unfilteredkp/p/detox-from-him",
+    dating: "https://stan.store/unfilteredkp/p/high-value-dating",
+    talk: "https://stan.store/unfilteredkp/p/clarity-session-jka79riv"
+  };
+  var q = new URLSearchParams(location.search), i = q.get("i") || "", t = q.get("t") || "", s = q.get("s") || "";
+  var box = document.getElementById("box");
+  function send(action) {
+    if (!API || /PASTE/.test(API) || !i) return;
+    var body = JSON.stringify({ action: action, i: i, t: t, s: s });
+    try { if (navigator.sendBeacon && navigator.sendBeacon(API, new Blob([body], { type: "text/plain;charset=utf-8" }))) return; } catch (e) {}
+    try { fetch(API, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: body, keepalive: true }); } catch (e) {}
+  }
+  if (t === "unsub") {
+    send("unsub");
+    box.innerHTML = "<h1>you're off the list.</h1><p>no more emails from me. no hard feelings, i promise.</p><p><a href='https://kpreadingroom.com/'>the reading room</a> is still there whenever you need it.</p>";
+    return;
+  }
+  send("click");
+  var to = LINKS[t] || "https://kpreadingroom.com/";
+  setTimeout(function () { location.replace(to); }, 150);
+})();
+</script>
+</body>
+</html>
