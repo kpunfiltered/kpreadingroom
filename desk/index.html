@@ -41,6 +41,14 @@ ul{margin:6px 0 12px 18px;padding:0;color:var(--dim)}li{margin:4px 0}
 .week b{display:block;color:var(--faint);font-size:11px;margin-bottom:6px}
 .status td:last-child{white-space:nowrap}
 .ok{color:var(--sage)}.todo{color:var(--candle)}
+.btn{background:var(--text);color:var(--night);border:0;border-radius:40px;padding:10px 16px;font:700 13px var(--body);cursor:pointer}
+.kpi{background:var(--n2);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.kpi b{display:block;font:600 28px/1.1 var(--serif);color:var(--text)}.kpi span{font-size:12px;color:var(--faint);text-transform:uppercase;letter-spacing:.06em}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:12px 0}
+.bar{height:8px;background:var(--rose);border-radius:4px;min-width:2px}
+.scroll{overflow-x:auto}.muted{color:var(--faint);font-size:12px}
+input.search{width:100%;background:var(--n3);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:10px 12px;font:15px var(--body);margin:8px 0}
+select.f{background:var(--n3);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:8px 10px;font:14px var(--body);margin:0 6px 6px 0}
 .foot{margin-top:40px;font-size:12px;color:var(--faint)}
 @media(max-width:600px){.week{grid-template-columns:repeat(4,1fr)}th,td{padding:8px 6px}}
 </style>
@@ -49,16 +57,28 @@ ul{margin:6px 0 12px 18px;padding:0;color:var(--dim)}li{margin:4px 0}
 <div class="wrap">
 <header>
   <div><div class="tag">KP Unfiltered · private</div><h1>the <em>desk</em></h1></div>
-  <div class="tag" id="upd">map updated 1 nov 2026</div>
+  <div class="tag" id="upd">map updated 2 nov 2026</div>
 </header>
-<nav>
-  <button class="on">the email map</button>
-  <button disabled title="coming in part 3">emails · soon</button>
-  <button disabled title="coming in part 3">website visits · soon</button>
-  <button disabled title="coming in part 3">people · soon</button>
+<nav id="nav">
+  <button class="on" data-t="map">the email map</button>
+  <button data-t="emails">emails</button>
+  <button data-t="visits">website visits</button>
+  <button data-t="people">people</button>
 </nav>
 
-<section>
+<div id="login" class="card" hidden>
+  <b>desk password</b>
+  <p>only needed once on this device.</p>
+  <form id="lf" style="display:flex;gap:8px;flex-wrap:wrap"><input id="pw" type="password" autocomplete="current-password" placeholder="password" style="flex:1;min-width:200px;background:var(--n3);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:10px 12px;font:15px var(--body)"><button class="btn">open the desk</button></form>
+  <p id="lerr" style="color:var(--rose)"></p>
+</div>
+<div id="loading" hidden><p>loading the latest numbers…</p></div>
+
+<section id="t-emails" class="tab" hidden></section>
+<section id="t-visits" class="tab" hidden></section>
+<section id="t-people" class="tab" hidden></section>
+
+<section id="t-map" class="tab">
 <p>the whole system on one page. everyone ends up on one thing: <b>the tuesday letter</b> on substack. the sequences are the short personal follow-up that gets her there and sells the one product that fixes her problem.</p>
 
 <div class="flow"><span>reel</span><i>→</i><span>comment keyword</span><i>→</i><span>LinkDM email</span><i>→</i><span>reading room</span><i>→</i><span>sequence (8 days)</span><i>→</i><span>tuesday letter</span><i>→</i><span>the secret room · stan</span></div>
@@ -66,8 +86,8 @@ ul{margin:6px 0 12px 18px;padding:0;color:var(--dim)}li{margin:4px 0}
 <h2>the lists</h2>
 <table>
 <tr><th>list</th><th>who</th><th>size</th><th>what we know</th></tr>
-<tr><td><span class="pill a">A</span><b>reading room</b></td><td>started at least one room</td><td>~88, growing daily</td><td>her room, her result, country</td></tr>
-<tr><td><span class="pill b">B</span><b>LinkDM only</b></td><td>gave email in a DM, never started a room</td><td>~319</td><td>email + instagram username only</td></tr>
+<tr><td><span class="pill a">A</span><b>reading room</b></td><td>started at least one room</td><td>90, growing daily</td><td>her room, her result, country</td></tr>
+<tr><td><span class="pill b">B</span><b>LinkDM only</b></td><td>gave email in a DM, never started a room</td><td>337, plus every new LinkDM drop</td><td>email + instagram username only</td></tr>
 <tr><td><span class="pill c">C</span><b>secret room waitlist</b></td><td>joined the waitlist (all are in A too)</td><td>16</td><td>which room she joined from</td></tr>
 </table>
 <p>in both LinkDM and the reading room (71 women) → treated as <b>A</b>, because we know more about her.</p>
@@ -96,11 +116,12 @@ ul{margin:6px 0 12px 18px;padding:0;color:var(--dim)}li{margin:4px 0}
 <tr><td>9</td><td>Detox From Him offer, Talk With Me as the second button</td><td class="aim">sale</td></tr>
 </table>
 
-<h2><span class="pill c">C</span> secret room waitlist · 2 emails</h2>
+<h2><span class="pill c">C</span> secret room waitlist · 2 emails · <span style="color:var(--candle)">switched off</span></h2>
+<p>on hold until the waitlist is bigger. launch on black friday (fri 27 nov) or when the waitlist hits about 100, whichever comes first.</p>
 <table>
 <tr><th>when</th><th>email</th><th>aim</th></tr>
-<tr><td>fri 6 nov</td><td>"the secret room is open, you're first" · founding $7/mo or $70/yr</td><td class="aim">paid substack</td></tr>
-<tr><td>sun 8 nov</td><td>"closes tonight"</td><td class="aim">paid substack</td></tr>
+<tr><td>launch day</td><td>"the secret room is open, you're first" · founding price</td><td class="aim">paid substack</td></tr>
+<tr><td>2 days later</td><td>"closes tonight"</td><td class="aim">paid substack</td></tr>
 </table>
 
 <h2>the rules</h2>
@@ -114,6 +135,7 @@ ul{margin:6px 0 12px 18px;padding:0;color:var(--dim)}li{margin:4px 0}
   <div class="card"><b>waitlist launch day</b><p>the secret room email replaces whatever A email she was due.</p></div>
   <div class="card"><b>sequence ends</b><p>she only hears from KP through the tuesday letter + rare big offers (black friday).</p></div>
 </div>
+<p>new LinkDM leads: export the CSV from LinkDM and drop it in the <a style="color:var(--candle)" href="https://drive.google.com/drive/folders/1EQTun9-FA030LlgrLqfU0vooU6TMOlGt">LinkDM drops</a> folder. new emails are added within the hour.</p>
 <p>how it knows she's on substack: she taps the subscribe link in an email (instant), confirmed by a weekly 1-minute substack export uploaded here.</p>
 
 <h2>her first week (new free subscriber)</h2>
@@ -131,21 +153,135 @@ ul{margin:6px 0 12px 18px;padding:0;color:var(--dim)}li{margin:4px 0}
 <h2>order of launch</h2>
 <ol style="color:var(--dim);padding-left:18px">
   <li><b>tue 3 nov</b> · first essay on substack</li>
-  <li><b>engine live</b> · A starts (existing 88 at day 0, new signups within the hour) · B starts the same day with the after-tuesday invite</li>
-  <li><b>fri 6 nov</b> · C launch email</li>
+  <li><b>test emails</b> · first email of each list sent to kp · 2 nov</li>
+  <li><b>pilot</b> · 10 women from list A, then 25, then everyone (A + B)</li>
+  <li><b>black friday · 27 nov</b> · secret room launch (C) with the founding price</li>
 </ol>
 
 <h2>status</h2>
 <table class="status">
 <tr><th>piece</th><th></th></tr>
 <tr><td>visit tracking on kpreadingroom (visits tab in the signups sheet)</td><td class="ok">live · 1 nov</td></tr>
-<tr><td>email copy (A · B · C)</td><td class="todo">writing → your approval</td></tr>
-<tr><td>email engine (sends, rules, unsubscribe, bounces)</td><td class="todo">after copy</td></tr>
-<tr><td>this desk: emails · website visits · people tabs</td><td class="todo">after the engine</td></tr>
+<tr><td>email copy (A · B · C)</td><td class="ok">approved · test emails sent 2 nov</td></tr>
+<tr><td>email engine (sends, rules, unsubscribe, bounces)</td><td class="ok">built · paused until the pilot</td></tr>
+<tr><td>LinkDM drops folder (hourly import)</td><td class="ok">live · 2 nov</td></tr>
+<tr><td>secret room waitlist emails</td><td class="todo">switched off · launch later</td></tr>
+<tr><td>10-woman pilot</td><td class="todo">waiting for your go</td></tr>
+<tr><td>this desk: emails · website visits · people</td><td class="ok">live · 2 nov</td></tr>
 </table>
 
 <p class="foot">not linked from the website. livinxkp lists are kept separate and never mix with this system.</p>
 </section>
 </div>
+<script>
+(function () {
+  var API = "https://script.google.com/macros/s/AKfycbx3xHIeppsNMkC_KitlZlC-cwzmeXYnOpcOjQQVEAxKW7PYKY6VdtfvLXnYfuKpL3TP/exec";
+  var KEY_NAME = "kp_desk_key", data = null, loadingP = null, want = "map";
+  var $ = function (id) { return document.getElementById(id); };
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return "&#" + c.charCodeAt(0) + ";"; }); }
+  function getKey() { try { return localStorage.getItem(KEY_NAME) || ""; } catch (e) { return ""; } }
+  function setKey(k) { try { if (k) localStorage.setItem(KEY_NAME, k); else localStorage.removeItem(KEY_NAME); } catch (e) {} }
+  function pct(a, b) { return b ? Math.round(100 * a / b) + "%" : "–"; }
+  function d(ts) { if (!ts) return ""; var x = new Date(ts); return isNaN(x) ? "" : x.toLocaleString(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }); }
+  function mins(s) { s = Math.round(Number(s) || 0); return s < 60 ? s + "s" : Math.round(s / 60) + "m"; }
+  function kpi(v, l) { return '<div class="kpi"><b>' + esc(v) + '</b><span>' + esc(l) + '</span></div>'; }
+  var ROOM = { healing: "healing · first 72 hours", dating: "dating · available man", done: "done · pattern map", clarity: "2am mind", linkdm: "LinkDM" };
+
+  function load(force) {
+    if (data && !force) return Promise.resolve(data);
+    if (loadingP) return loadingP;
+    var key = getKey(); if (!key) { showLogin(""); return Promise.reject("nokey"); }
+    $("loading").hidden = false;
+    loadingP = fetch(API, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "admin", key: key }) })
+      .then(function (r) { return r.json(); })
+      .then(function (j) { loadingP = null; $("loading").hidden = true; if (!j.ok) { setKey(""); showLogin(j.error === "wrong password" ? "that password didn't work." : "couldn't load the desk."); throw "bad"; } data = j; return j; },
+            function (e) { loadingP = null; $("loading").hidden = true; if (e !== "bad") showLogin("couldn't reach the email system. try again in a minute."); throw e; });
+    return loadingP;
+  }
+  function showLogin(msg) { $("login").hidden = false; $("lerr").textContent = msg || ""; document.querySelectorAll(".tab").forEach(function (t) { if (t.id !== "t-map") t.hidden = true; }); }
+  $("lf").addEventListener("submit", function (e) { e.preventDefault(); setKey($("pw").value.trim()); $("login").hidden = true; data = null; show(want === "map" ? "emails" : want); });
+
+  function show(t) {
+    want = t;
+    document.querySelectorAll("#nav button").forEach(function (b) { b.classList.toggle("on", b.dataset.t === t); });
+    document.querySelectorAll(".tab").forEach(function (s) { s.hidden = s.id !== "t-" + t; });
+    if (t === "map") { $("login").hidden = true; return; }
+    load().then(function (j) { $("login").hidden = true; ({ emails: renderEmails, visits: renderVisits, people: renderPeople })[t](j); $("t-" + t).hidden = false; }, function () {});
+  }
+  $("nav").addEventListener("click", function (e) { var b = e.target.closest("button"); if (b) show(b.dataset.t); });
+
+  function head(title, j) { return '<h2>' + title + '</h2><p class="muted">updated ' + esc(d(j.at)) + (j.paused ? ' · <span style="color:var(--candle)">sending is paused</span>' : ' · <span style="color:var(--sage)">sending is on</span>') + ' · <a href="#" class="rl" style="color:var(--candle)">refresh</a></p>'; }
+  document.addEventListener("click", function (e) { if (e.target.classList.contains("rl")) { e.preventDefault(); data = null; show(want); } });
+
+  function renderEmails(j) {
+    var T = j.totals, h = head("emails", j);
+    h += '<div class="kpis">' + kpi(T.people, "women") + kpi(T.A, "list A") + kpi(T.B, "list B") + kpi(T.sent, "emails sent") + kpi(pct(T.opened, T.sent), "opened") + kpi(pct(T.clicked, T.sent), "tapped a link") + kpi(T.converted, "bought after an email") + kpi(T.onSubstack, "on substack") + kpi(T.unsub, "unsubscribed") + kpi(T.bounced, "bounced") + '</div>';
+    var rows = (j.perEmail || []).slice().sort(function (a, b) { return (a.track + a.step) < (b.track + b.step) ? -1 : 1; });
+    h += '<h3>each email</h3>';
+    if (!rows.length) h += '<p>nothing sent yet. the numbers show up here after the first email goes out.</p>';
+    else h += '<div class="scroll"><table><tr><th>list</th><th>email</th><th>sent</th><th>opened</th><th>tapped</th><th>unsub</th></tr>' + rows.map(function (r) {
+      return '<tr><td>' + esc(ROOM[r.track] || r.track) + '</td><td><b>' + esc(r.subject) + '</b><br><span class="muted">' + (r.step === "" ? "campaign" : "email " + (Number(r.step) + 1)) + '</span></td><td>' + r.sent + (r.failed ? ' <span style="color:var(--rose)">(' + r.failed + ' failed)</span>' : '') + '</td><td>' + r.opened + ' · ' + pct(r.opened, r.sent) + '</td><td>' + r.clicked + ' · ' + pct(r.clicked, r.sent) + '</td><td>' + r.unsub + '</td></tr>';
+    }).join("") + '</table></div>';
+    var recent = [];
+    (j.people || []).forEach(function (p) { (p.emails || []).forEach(function (m) { recent.push({ p: p, m: m }); }); });
+    recent.sort(function (a, b) { return new Date(b.m.ts) - new Date(a.m.ts); });
+    h += '<h3>latest sends</h3>';
+    h += recent.length ? '<div class="scroll"><table><tr><th>when</th><th>who</th><th>email</th><th>opened</th><th>tapped</th></tr>' + recent.slice(0, 60).map(function (x) {
+      return '<tr><td>' + esc(d(x.m.ts)) + '</td><td><b>' + esc(x.p.name || x.p.email) + '</b><br><span class="muted">' + esc(x.p.email) + '</span></td><td>' + esc(x.m.subject) + (x.m.status !== "sent" ? ' <span style="color:var(--rose)">' + esc(x.m.status) + '</span>' : '') + (x.m.unsub ? ' <span style="color:var(--rose)">unsubscribed</span>' : '') + '</td><td>' + (x.m.opens ? "yes" : "·") + '</td><td>' + esc((x.m.clicks || []).join(", ") || "·") + '</td></tr>';
+    }).join("") + '</table></div>' : '<p>nothing sent yet.</p>';
+    h += '<p class="muted">opens are a rough signal (apple mail and some phones load images on their own, others block them). taps and sales are the real numbers.</p>';
+    $("t-emails").innerHTML = h;
+  }
+
+  function list(obj, n, label) {
+    var k = Object.keys(obj || {}).sort(function (a, b) { return obj[b] - obj[a]; }).slice(0, n || 12), max = k.length ? obj[k[0]] : 1;
+    if (!k.length) return '<p class="muted">nothing yet.</p>';
+    return '<table>' + k.map(function (x) { return '<tr><td style="width:45%">' + esc(x || "(direct)") + '</td><td><div class="bar" style="width:' + Math.max(2, Math.round(100 * obj[x] / max)) + '%"></div></td><td style="width:60px;text-align:right">' + obj[x] + '</td></tr>'; }).join("") + '</table>';
+  }
+  function renderVisits(j) {
+    var V = j.visits, h = head("website visits", j);
+    if (!V || V.error) { $("t-visits").innerHTML = h + '<p>couldn\'t read the visits tab' + (V && V.error ? ': ' + esc(V.error) : '') + '.</p>'; return; }
+    h += '<div class="kpis">' + kpi(V.visitors, "visitors") + kpi(V.views, "page views") + kpi(V.known, "visitors we know by email") + '</div>';
+    var days = V.days || {}, dk = Object.keys(days).sort().slice(-21), dmax = Math.max.apply(null, dk.map(function (k) { return days[k]; }).concat([1]));
+    h += '<h3>views per day (LA time)</h3><div style="display:flex;align-items:flex-end;gap:4px;height:110px;margin:8px 0 4px">' + dk.map(function (k) { return '<div title="' + esc(k + ": " + days[k]) + '" style="flex:1;background:var(--rose);border-radius:4px 4px 0 0;height:' + Math.max(3, Math.round(100 * days[k] / dmax)) + '%"></div>'; }).join("") + '</div><p class="muted">' + esc(dk[0] || "") + ' → ' + esc(dk[dk.length - 1] || "") + '</p>';
+    h += '<div class="grid"><div class="card"><h3 style="margin-top:0">pages</h3>' + list(V.pages, 12) + '</div><div class="card"><h3 style="margin-top:0">where they came from</h3>' + list(V.sources, 10) + '</div></div>';
+    h += '<div class="grid"><div class="card"><h3 style="margin-top:0">what they tapped</h3>' + list(V.taps, 14) + '</div><div class="card"><h3 style="margin-top:0">sections they reached</h3>' + list(V.sections, 14) + '</div></div>';
+    var vl = (V.visitorList || []).slice().reverse();
+    h += '<h3>latest visitors</h3><div class="scroll"><table><tr><th>first seen</th><th>who</th><th>views</th><th>time</th><th>pages</th><th>from</th></tr>' + vl.slice(0, 120).map(function (x) {
+      return '<tr><td>' + esc(d(x.first)) + '</td><td>' + (x.email ? '<b>' + esc(x.email) + '</b>' : '<span class="muted">anonymous</span>') + '<br><span class="muted">' + esc(x.device || "") + ' · ' + esc(x.tz || "") + '</span></td><td>' + x.views + '</td><td>' + mins(x.secs) + '</td><td>' + esc(Object.keys(x.pages || {}).join(", ")) + '</td><td>' + esc(x.source || "(direct)") + '</td></tr>';
+    }).join("") + '</table></div><p class="muted">your own visits are left out.</p>';
+    $("t-visits").innerHTML = h;
+  }
+
+  var pf = { q: "", list: "", status: "" };
+  function renderPeople(j) {
+    var h = head("people", j);
+    h += '<input class="search" id="pq" placeholder="search name, email, room, result" value="' + esc(pf.q) + '">';
+    h += '<select class="f" id="pl"><option value="">all lists</option><option value="A">A · reading room</option><option value="B">B · LinkDM</option><option value="W">waitlist only</option></select>';
+    h += '<select class="f" id="ps"><option value="">any status</option><option value="active">active</option><option value="done">finished</option><option value="stopped">stopped</option><option value="pilot">pilot</option></select>';
+    h += '<div id="pt"></div>';
+    $("t-people").innerHTML = h;
+    $("pl").value = pf.list; $("ps").value = pf.status;
+    function draw() {
+      var q = pf.q.toLowerCase(), vis = (j.visits && j.visits.people) || {};
+      var rows = (j.people || []).filter(function (p) {
+        if (pf.list && p.list !== pf.list) return false;
+        if (pf.status === "pilot") { if (!p.pilot) return false; } else if (pf.status && p.status !== pf.status) return false;
+        return !q || [p.name, p.email, p.track, p.result, p.country].join(" ").toLowerCase().indexOf(q) >= 0;
+      });
+      var t = '<p class="muted">' + rows.length + ' women</p><div class="scroll"><table><tr><th>who</th><th>list · room</th><th>emails</th><th>opened · tapped</th><th>site visits</th><th>substack</th><th>bought</th></tr>';
+      t += rows.slice(0, 300).map(function (p) {
+        var em = p.emails || [], op = em.filter(function (m) { return m.opens; }).length, tp = em.filter(function (m) { return (m.clicks || []).length; }).length, v = vis[String(p.email).toLowerCase()];
+        return '<tr><td><b>' + esc(p.name || "") + '</b>' + (p.pilot ? ' <span class="pill s">pilot</span>' : '') + '<br><span class="muted">' + esc(p.email) + ' · ' + esc(p.country || "") + '</span></td><td>' + esc(p.list) + (p.track ? ' · ' + esc(ROOM[p.track] || p.track) : '') + (p.result ? '<br><span class="muted">' + esc(p.result) + '</span>' : '') + '</td><td>' + em.length + (p.status && p.status !== "active" ? '<br><span class="muted">' + esc(p.status) + (p.why ? ' · ' + esc(p.why) : '') + '</span>' : '') + '</td><td>' + op + ' · ' + tp + '</td><td>' + (v ? v.visits + ' · ' + mins(v.secs) : '·') + '</td><td>' + esc(p.substack || "·") + '</td><td>' + esc((p.bought || []).join(", ") || "·") + '</td></tr>';
+      }).join("") + '</table></div>' + (rows.length > 300 ? '<p class="muted">showing the first 300. search to narrow it down.</p>' : '');
+      $("pt").innerHTML = t;
+    }
+    $("pq").addEventListener("input", function () { pf.q = this.value; draw(); });
+    $("pl").addEventListener("change", function () { pf.list = this.value; draw(); });
+    $("ps").addEventListener("change", function () { pf.status = this.value; draw(); });
+    draw();
+  }
+})();
+</script>
 </body>
 </html>
