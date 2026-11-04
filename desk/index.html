@@ -215,21 +215,21 @@ select.f{background:var(--n3);border:1px solid var(--line);color:var(--text);bor
 
   function renderEmails(j) {
     var T = j.totals, h = head("emails", j);
-    h += '<div class="kpis">' + kpi(T.people, "women") + kpi(T.A, "list A") + kpi(T.B, "list B") + kpi(T.sent, "emails sent") + kpi(pct(T.opened, T.sent), "opened") + kpi(pct(T.clicked, T.sent), "tapped a link") + kpi(T.converted, "bought after an email") + kpi(T.onSubstack, "on substack") + kpi(T.unsub, "unsubscribed") + kpi(T.bounced, "bounced") + '</div>';
+    h += '<div class="kpis">' + kpi(T.people, "women") + kpi(T.A, "list A") + kpi(T.B, "list B") + kpi(T.sent, "emails sent") + kpi(pct(T.clicked, T.sent), "tapped a link") + kpi(T.converted, "bought after an email") + kpi(T.onSubstack, "on substack") + kpi(T.unsub, "unsubscribed") + kpi(T.bounced, "bounced") + '</div>';
     var rows = (j.perEmail || []).slice().sort(function (a, b) { return (a.track + a.step) < (b.track + b.step) ? -1 : 1; });
     h += '<h3>each email</h3>';
     if (!rows.length) h += '<p>nothing sent yet. the numbers show up here after the first email goes out.</p>';
-    else h += '<div class="scroll"><table><tr><th>list</th><th>email</th><th>sent</th><th>opened</th><th>tapped</th><th>unsub</th></tr>' + rows.map(function (r) {
-      return '<tr><td>' + esc(ROOM[r.track] || r.track) + '</td><td><b>' + esc(r.subject) + '</b><br><span class="muted">' + (r.step === "" ? "campaign" : "email " + (Number(r.step) + 1)) + '</span></td><td>' + r.sent + (r.failed ? ' <span style="color:var(--rose)">(' + r.failed + ' failed)</span>' : '') + '</td><td>' + r.opened + ' · ' + pct(r.opened, r.sent) + '</td><td>' + r.clicked + ' · ' + pct(r.clicked, r.sent) + '</td><td>' + r.unsub + '</td></tr>';
+    else h += '<div class="scroll"><table><tr><th>list</th><th>email</th><th>sent</th><th>tapped</th><th>unsub</th></tr>' + rows.map(function (r) {
+      return '<tr><td>' + esc(ROOM[r.track] || r.track) + '</td><td><b>' + esc(r.subject) + '</b><br><span class="muted">' + (r.step === "" ? "campaign" : "email " + (Number(r.step) + 1)) + '</span></td><td>' + r.sent + (r.failed ? ' <span style="color:var(--rose)">(' + r.failed + ' failed)</span>' : '') + '</td><td>' + r.clicked + ' · ' + pct(r.clicked, r.sent) + '</td><td>' + r.unsub + '</td></tr>';
     }).join("") + '</table></div>';
     var recent = [];
     (j.people || []).forEach(function (p) { (p.emails || []).forEach(function (m) { recent.push({ p: p, m: m }); }); });
     recent.sort(function (a, b) { return new Date(b.m.ts) - new Date(a.m.ts); });
     h += '<h3>latest sends</h3>';
-    h += recent.length ? '<div class="scroll"><table><tr><th>when</th><th>who</th><th>email</th><th>opened</th><th>tapped</th></tr>' + recent.slice(0, 60).map(function (x) {
-      return '<tr><td>' + esc(d(x.m.ts)) + '</td><td><b>' + esc(x.p.name || x.p.email) + '</b><br><span class="muted">' + esc(x.p.email) + '</span></td><td>' + esc(x.m.subject) + (x.m.status !== "sent" ? ' <span style="color:var(--rose)">' + esc(x.m.status) + '</span>' : '') + (x.m.unsub ? ' <span style="color:var(--rose)">unsubscribed</span>' : '') + '</td><td>' + (x.m.opens ? "yes" : "·") + '</td><td>' + esc((x.m.clicks || []).join(", ") || "·") + '</td></tr>';
+    h += recent.length ? '<div class="scroll"><table><tr><th>when</th><th>who</th><th>email</th><th>tapped</th></tr>' + recent.slice(0, 60).map(function (x) {
+      return '<tr><td>' + esc(d(x.m.ts)) + '</td><td><b>' + esc(x.p.name || x.p.email) + '</b><br><span class="muted">' + esc(x.p.email) + '</span></td><td>' + esc(x.m.subject) + (x.m.status !== "sent" ? ' <span style="color:var(--rose)">' + esc(x.m.status) + '</span>' : '') + (x.m.unsub ? ' <span style="color:var(--rose)">unsubscribed</span>' : '') + '</td><td>' + esc((x.m.clicks || []).join(", ") || "·") + '</td></tr>';
     }).join("") + '</table></div>' : '<p>nothing sent yet.</p>';
-    h += '<p class="muted">opens are a rough signal (apple mail and some phones load images on their own, others block them). taps and sales are the real numbers.</p>';
+    h += '<p class="muted">opens are not tracked on purpose. gmail blocks them, and the hidden image pushes emails into promotions. taps, replies and sales are the real numbers. replies land in your team@ inbox.</p>';
     $("t-emails").innerHTML = h;
   }
 
@@ -269,10 +269,10 @@ select.f{background:var(--n3);border:1px solid var(--line);color:var(--text);bor
         if (pf.status === "pilot") { if (!p.pilot) return false; } else if (pf.status && p.status !== pf.status) return false;
         return !q || [p.name, p.email, p.track, p.result, p.country].join(" ").toLowerCase().indexOf(q) >= 0;
       });
-      var t = '<p class="muted">' + rows.length + ' women</p><div class="scroll"><table><tr><th>who</th><th>list · room</th><th>emails</th><th>opened · tapped</th><th>site visits</th><th>substack</th><th>bought</th></tr>';
+      var t = '<p class="muted">' + rows.length + ' women</p><div class="scroll"><table><tr><th>who</th><th>list · room</th><th>emails</th><th>tapped</th><th>site visits</th><th>substack</th><th>bought</th></tr>';
       t += rows.slice(0, 300).map(function (p) {
         var em = p.emails || [], op = em.filter(function (m) { return m.opens; }).length, tp = em.filter(function (m) { return (m.clicks || []).length; }).length, v = vis[String(p.email).toLowerCase()];
-        return '<tr><td><b>' + esc(p.name || "") + '</b>' + (p.pilot ? ' <span class="pill s">pilot</span>' : '') + '<br><span class="muted">' + esc(p.email) + ' · ' + esc(p.country || "") + '</span></td><td>' + esc(p.list) + (p.track ? ' · ' + esc(ROOM[p.track] || p.track) : '') + (p.result ? '<br><span class="muted">' + esc(p.result) + '</span>' : '') + '</td><td>' + em.length + (p.status && p.status !== "active" ? '<br><span class="muted">' + esc(p.status) + (p.why ? ' · ' + esc(p.why) : '') + '</span>' : '') + '</td><td>' + op + ' · ' + tp + '</td><td>' + (v ? v.visits + ' · ' + mins(v.secs) : '·') + '</td><td>' + esc(p.substack || "·") + '</td><td>' + esc((p.bought || []).join(", ") || "·") + '</td></tr>';
+        return '<tr><td><b>' + esc(p.name || "") + '</b>' + (p.pilot ? ' <span class="pill s">pilot</span>' : '') + '<br><span class="muted">' + esc(p.email) + ' · ' + esc(p.country || "") + '</span></td><td>' + esc(p.list) + (p.track ? ' · ' + esc(ROOM[p.track] || p.track) : '') + (p.result ? '<br><span class="muted">' + esc(p.result) + '</span>' : '') + '</td><td>' + em.length + (p.status && p.status !== "active" ? '<br><span class="muted">' + esc(p.status) + (p.why ? ' · ' + esc(p.why) : '') + '</span>' : '') + '</td><td>' + tp + '</td><td>' + (v ? v.visits + ' · ' + mins(v.secs) : '·') + '</td><td>' + esc(p.substack || "·") + '</td><td>' + esc((p.bought || []).join(", ") || "·") + '</td></tr>';
       }).join("") + '</table></div>' + (rows.length > 300 ? '<p class="muted">showing the first 300. search to narrow it down.</p>' : '');
       $("pt").innerHTML = t;
     }
