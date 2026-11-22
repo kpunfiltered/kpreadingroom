@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>the pattern map · KP Unfiltered</title>
+<meta name="theme-color" content="#15101a">
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://kpreadingroom.com/">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<noscript><meta http-equiv="refresh" content="0; url=/?src=youtube#done"></noscript>
+<style>body{margin:0;background:#15101a;color:#b9a9b4;font:15px -apple-system,sans-serif;display:grid;place-items:center;height:100vh}a{color:#e27592}</style>
+</head><body><p>opening the room… <a href="/?src=youtube#done">tap here if it doesn't</a></p>
+<script>
+/* KP Reading Room · youtube short link (v1 · 22 Nov 2026)
+   logs one tap (target yt:done) to the visits tab, then sends her on.
+   your own taps: open any /yt link once with ?me=1 on a device and that device stops counting. */
+(function () {
+  var TO = "/?src=youtube#done", KEY = "done";
+  var API = "https://script.google.com/macros/s/AKfycbyyFkxJ-6jMacOrIE5jZsYveGMcpFOkAFBOXhyjmFrBJ8rtGwXS_sALWDv5w7K01m3T/exec";
+  function go() { location.replace(TO); }
+  try {
+    if (navigator.webdriver) { go(); return; }
+    var ls = function (k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } };
+    var ss = function (k, v) { try { if (v === undefined) return sessionStorage.getItem(k); sessionStorage.setItem(k, v); } catch (e) { return null; } };
+    var rid = function () { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); };
+    var q; try { q = new URLSearchParams(location.search); } catch (e) { q = { get: function () { return null; } }; }
+    if (q.get("me") === "1") ls("kp_me", "1");
+    if (q.get("me") === "0") ls("kp_me", "0");
+    var me = q.get("me") === "1" || (q.get("me") !== "0" && ls("kp_me") === "1");
+    var vid = ls("kp_vid"); if (!vid) { vid = rid(); ls("kp_vid", vid); }
+    var sid = ss("kp_sid"); if (!sid) { sid = rid(); ss("kp_sid", sid); }
+    var s = {}; try { s = JSON.parse(ls("kp_reading_room_v1") || "{}") || {}; } catch (e) {}
+    var ua = navigator.userAgent || "", device = /Mobi|Android|iPhone|iPad/i.test(ua) ? "phone" : "desktop";
+    var tz = ""; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (e) {}
+    var body = JSON.stringify({ action: "pvs", vid: vid, sid: sid, email: String(s.email || "").toLowerCase(), name: String(s.name || ""), source: "youtube",
+      ref: (document.referrer || "").slice(0, 120), device: device, tz: tz, lang: (navigator.language || "").slice(0, 12),
+      me: me, events: [{ e: "tap", page: "yt", t: Date.now(), target: "yt:" + KEY }] });
+    var sent = false;
+    try { if (navigator.sendBeacon) sent = navigator.sendBeacon(API, new Blob([body], { type: "text/plain;charset=utf-8" })); } catch (e) {}
+    if (!sent) { try { fetch(API, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: body, keepalive: true }).catch(function () {}); } catch (e) {} }
+  } catch (e) {}
+  setTimeout(go, 150);
+})();
+</script>
+</body></html>
